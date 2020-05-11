@@ -1,0 +1,2 @@
+rootProject.name='Coloseum'
+include ':app'
