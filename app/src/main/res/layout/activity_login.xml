@@ -5,7 +5,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".view.SignUpActivity">
 
 
     <TextView
@@ -20,38 +20,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="로그인"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtColoseum" />
-
     <EditText
         android:id="@+id/editEmail"
         android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/sign_up_edit_background"
         android:ems="10"
         android:hint="이메일 주소"
-        android:textSize="15sp"
         android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLogin"
-        android:background="@drawable/sign_up_edit_background"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtColoseum" />
 
 
     <EditText
         android:id="@+id/editPassword"
         android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:padding="10dp"
         android:ems="10"
         android:hint="비밀번호"
@@ -63,10 +52,10 @@
         android:background="@drawable/sign_up_edit_background"/>
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/btnLogin"
         android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/sign_up_btn_background"
         android:text="로그인"
         android:textColor="#F6F6F6"
@@ -74,5 +63,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPassword"
         android:stateListAnimator="@null"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        >
+
+        <Button
+            android:id="@+id/btnFindId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:stateListAnimator="@null"
+            android:text="아이디 찾기"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnFindPw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:stateListAnimator="@null"
+            android:text="비밀번호 찾기"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/btnFindId"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/border_top"
+        android:stateListAnimator="@null"
+        android:text="가입하기"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

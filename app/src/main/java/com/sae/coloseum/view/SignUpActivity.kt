@@ -1,4 +1,4 @@
-package com.sae.coloseum
+package com.sae.view.coloseum
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
+import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivitySignUpBinding
 import com.sae.coloseum.model.entity.SignUpEntity
 import com.sae.coloseum.network.NetworkHelper
