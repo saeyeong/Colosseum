@@ -4,12 +4,14 @@ import com.sae.coloseum.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkHelper {
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://ec2-15-165-177-142.ap-northeast-2.compute.amazonaws.com/")
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(getOkHttpClient())
         .build()
     var server: RetrofitService = retrofit.create(RetrofitService::class.java)
