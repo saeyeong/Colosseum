@@ -38,7 +38,8 @@ class TabAdapter(fm: FragmentManager) :
 
     fun makeTempPage() {
         fragmentList?.let {
-            addToListFragmentItem(PostList1Fragment())
+            // addToListFragmentItem(PostList1Fragment()) 이렇게 말고 아래와 같은 패턴으로 프래그먼트 생성할 것
+            addToListFragmentItem(PostList1Fragment.newInstance()) //
             addToListFragmentItem(PostList2Fragment())
             addToListFragmentItem(PostList3Fragment())
         }

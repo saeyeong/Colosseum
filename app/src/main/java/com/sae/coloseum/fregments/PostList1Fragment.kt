@@ -38,7 +38,20 @@ class PostList1Fragment : Fragment() {
         model = DataModel()
         adapter = PostListAdapter(model?.itemsList)
 
-        postListView.adapter = adapter
-        postListView.layoutManager = LinearLayoutManager(activity)
+        binding.postListView.adapter = adapter
+        postListView.layoutManager = LinearLayoutManager(context)
+    }
+
+
+
+    companion object{
+
+          fun newInstance(): Fragment{
+            val args = Bundle()
+
+            val fragment = PostList1Fragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

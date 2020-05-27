@@ -39,6 +39,6 @@ class PostList3Fragment : Fragment() {
         adapter = PostListAdapter(model?.itemsList)
 
         postListView.adapter = adapter
-        postListView.layoutManager = LinearLayoutManager(activity)
+        postListView.layoutManager = LinearLayoutManager(context)
     }
 }

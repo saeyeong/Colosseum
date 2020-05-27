@@ -13,7 +13,9 @@ import com.sae.coloseum.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
-
+    val tabAdapter : TabAdapter by lazy {
+        TabAdapter(childFragmentManager)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,6 +31,7 @@ class HomeFragment : Fragment() {
     }
 
     fun init() {
-        binding.container.setAdapter(TabAdapter(getChildFragmentManager()))
+        binding.container.setAdapter(TabAdapter(getChildFragmentManager())) //안좋은 코드 표기
+        binding.container.setAdapter(tabAdapter)
     }
 }
