@@ -1,31 +1,24 @@
 package com.sae.view.coloseum
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivitySignUpBinding
-import com.sae.coloseum.model.entity.SignUpEntity
 import com.sae.coloseum.network.NetworkHelper
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.HttpException
-import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignUpBinding
-    var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +28,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun init() {
-        actionBar = supportActionBar
-        actionBar?.hide()
-
         setListener()
     }
 
@@ -92,7 +82,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 inline fun <reified T> Single<T>.onErrorToResponse() : Single<T> {
     return flatMap {
         val httpException = it as HttpException
-        val errorBody = httpException.response().errorBody()
+        val errorBody = httpException.response()?.errorBody()
 
         if (errorBody == null) {
             Single.error(it)
