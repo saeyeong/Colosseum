@@ -13,14 +13,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.IntroActivity">
+        </activity>
+        <activity android:name=".view.LoginActivity"></activity>
+        <activity android:name=".view.SignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity"></activity>
-        <activity android:name=".view.SignUpActivity"></activity>
     </application>
 
 </manifest>

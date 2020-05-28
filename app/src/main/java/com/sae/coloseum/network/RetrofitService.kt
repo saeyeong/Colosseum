@@ -12,7 +12,6 @@ interface RetrofitService {
     fun postUserInfo(
         @Field("email") email: String?,
         @Field("password") password: String?,
-        @Field("nick_name") nickname: String?,
-        @Field("phone_num") phoneNumber: String?
+        @Field("nick_name") nickname: String?
     ): Single<SignUpEntity>
 }
