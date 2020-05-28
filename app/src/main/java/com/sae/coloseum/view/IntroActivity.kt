@@ -4,10 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
-import android.view.Window
-import androidx.appcompat.app.ActionBar
-import com.sae.coloseum.MainActivity
 import com.sae.coloseum.R
 import com.sae.coloseum.utils.GlobalApplication
 

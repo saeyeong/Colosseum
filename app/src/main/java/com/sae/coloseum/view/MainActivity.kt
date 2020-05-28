@@ -1,7 +1,8 @@
-package com.sae.coloseum
+package com.sae.coloseum.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.sae.coloseum.R
 
 class MainActivity : AppCompatActivity() {
 

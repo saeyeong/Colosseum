@@ -1,19 +1,15 @@
 package com.sae.coloseum.view
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.sae.coloseum.MainActivity
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivityLoginBinding
 import com.sae.coloseum.network.NetworkHelper
-import com.sae.coloseum.utils.GlobalApplication
 import com.sae.coloseum.utils.GlobalApplication.Companion.prefs
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -37,6 +33,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     fun setListener() {
         binding.btnLogin.setOnClickListener(this)
+        binding.btnSignUp.setOnClickListener(this)
 
     }
 
@@ -73,6 +70,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        loginApi()
+        when (v) {
+            binding.btnLogin-> {
+                loginApi()
+            }
+            binding.btnSignUp -> {
+                val intent = Intent(applicationContext, SignUpActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 }
