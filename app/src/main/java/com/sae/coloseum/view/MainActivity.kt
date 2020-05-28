@@ -13,6 +13,7 @@ import com.sae.coloseum.fregments.AlarmFragment
 import com.sae.coloseum.fregments.HeartFragment
 import com.sae.coloseum.fregments.HomeFragment
 import com.sae.coloseum.fregments.SettingFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -79,6 +80,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.heart.getBackground()?.setAlpha(100)
         binding.alarm.getBackground()?.setAlpha(100)
         binding.setting.getBackground()?.setAlpha(100)
+
+        setSupportActionBar(app_toolbar)
     }
 
     fun setListener(){
