@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -42,8 +41,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         val nickname: String = binding.editNickname.text.toString()
         val regex = """[a-z|1-9]{4,15}\@[a-z|1-9]{4,15}\..+""".toRegex()
 
-        Log.d(passwordCheck, password)
-
         if (email.isNullOrEmpty() || password.isNullOrEmpty() || nickname.isNullOrEmpty()) {
 
         }
@@ -57,7 +54,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(mContext, "비밀번호가 맞지 않습니다.", Toast.LENGTH_LONG).show()
         }
         else {
-            network.server.postUserInfo(email, password, nickname)
+            network.server.putUserInfo(email, password, nickname)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
