@@ -1,26 +1,22 @@
 package com.sae.coloseum.view
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
-import com.google.gson.Gson
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivitySignUpBinding
 import com.sae.coloseum.network.NetworkHelper
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignUpBinding
-    var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +26,11 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun init() {
-        actionBar = supportActionBar
-        actionBar?.hide()
-
         setListener()
     }
 
     fun setListener() {
         binding.btnSignUp.setOnClickListener(this)
-
     }
 
     fun signUpApi() {
@@ -75,6 +67,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                             it.message,
                             Toast.LENGTH_LONG
                         ).show()
+
+                        val intent = Intent(mContext, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     },
                     onError = {
                         Toast.makeText(
