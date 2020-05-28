@@ -33,6 +33,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     fun setListener() {
         binding.btnLogin.setOnClickListener(this)
+        binding.btnSignUp.setOnClickListener(this)
 
     }
 
@@ -69,6 +70,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        loginApi()
+        when (v) {
+            binding.btnLogin-> {
+                loginApi()
+            }
+            binding.btnSignUp -> {
+                val intent = Intent(applicationContext, SignUpActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 }
