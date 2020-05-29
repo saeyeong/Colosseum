@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.sae.coloseum.R
+import com.sae.coloseum.utils.GlobalApplication
 
 class IntroActivity : AppCompatActivity() {
 
@@ -33,9 +34,16 @@ class IntroActivity : AppCompatActivity() {
     fun init() {
 
 
-
         runnable = Runnable {
-            val intent = Intent(applicationContext, LoginActivity::class.java)
+            var intent: Intent
+            val token = GlobalApplication.prefs.myEditText
+
+            intent =
+                if (token.isNullOrEmpty()) {
+                    Intent(applicationContext, LoginActivity::class.java)
+                } else {
+                    Intent(applicationContext, MainActivity::class.java)
+                }
             startActivity(intent)
             finish()
         }

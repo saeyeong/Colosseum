@@ -4,7 +4,6 @@ data class SignUpEntity(
     val email: String?,
     val password: String?,
     val nickname: String?,
-    val phoneNumber: String?,
     val code: String,
     val message: String,
     val data: DataEntity?
