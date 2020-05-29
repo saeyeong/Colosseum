@@ -1,11 +1,9 @@
 package com.sae.coloseum.network
 
+import com.sae.coloseum.model.entity.EmailCheckEntity
 import com.sae.coloseum.model.entity.SignUpEntity
 import io.reactivex.Single
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface RetrofitService {
     @PUT("user")
@@ -22,4 +20,10 @@ interface RetrofitService {
         @Field("email") email: String?,
         @Field("password") password: String?
     ): Single<SignUpEntity>
+
+    @GET("user_check")
+    fun getUserIDCheck(
+        @Query("type") type: String?,
+        @Query("value") value: String?
+    ): Single<EmailCheckEntity>
 }
