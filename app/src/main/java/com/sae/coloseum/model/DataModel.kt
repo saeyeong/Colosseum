@@ -2,6 +2,7 @@ package com.sae.coloseum.model
 
 import android.content.Context
 import android.widget.Toast
+import com.sae.coloseum.model.entity.PostListEntity
 import com.sae.coloseum.network.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -9,6 +10,29 @@ import io.reactivex.schedulers.Schedulers
 
 class DataModel {
     private val network = NetworkHelper()
+    var itemsList: ArrayList<PostListEntity>? = null
+        get() = field ?: ArrayList()
+
+    init {
+        itemsList = makeTestItems()
+    }
+
+    fun makeTestItems(): ArrayList<PostListEntity> {
+        var items = ArrayList<PostListEntity>()
+        for (i in 0..10) {
+            var item = PostListEntity(
+                "${i}",
+                "제목",
+                "99999",
+                "99999",
+                "99999",
+                "작성자"
+            )
+            items.add(item)
+        }
+
+        return items
+    }
 
     fun signUpApi(mContext: Context, email: String, password: String, passwordCheck: String, nickname: String, startActivity: () -> Unit) {
         val regex = """[a-z|1-9]{4,15}\@[a-z|1-9]{4,15}\..+""".toRegex()
