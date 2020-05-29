@@ -13,7 +13,7 @@ import com.sae.coloseum.fregments.AlarmFragment
 import com.sae.coloseum.fregments.HeartFragment
 import com.sae.coloseum.fregments.HomeFragment
 import com.sae.coloseum.fregments.SettingFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -32,7 +32,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
 
-        firstInitFragment()
+        if(currentFragmentTag.isNullOrEmpty()) {
+            firstInitFragment()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     override fun onClick(v: View?) {

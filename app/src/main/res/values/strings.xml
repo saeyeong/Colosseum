@@ -4,4 +4,7 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">
         com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior
     </string>
+    <string name="post_list1">시 인기글</string>
+    <string name="post_list2">주간 인기글</string>
+    <string name="post_list3">월간 인기글</string>
 </resources>
