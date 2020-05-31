@@ -9,10 +9,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivityMainBinding
-import com.sae.coloseum.fregments.AlarmFragment
-import com.sae.coloseum.fregments.HeartFragment
-import com.sae.coloseum.fregments.HomeFragment
-import com.sae.coloseum.fregments.SettingFragment
+import com.sae.coloseum.fragments.AlarmFragment
+import com.sae.coloseum.fragments.HeartFragment
+import com.sae.coloseum.fragments.HomeFragment
+import com.sae.coloseum.fragments.SettingFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -37,11 +37,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-
-    }
-
     override fun onClick(v: View?) {
         when (v) {
             binding.home-> {
@@ -57,12 +52,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 replaceFragment(SettingFragment())
             }
         }
-        binding.home.getBackground()?.setAlpha(100)
-        binding.heart.getBackground()?.setAlpha(100)
-        binding.alarm.getBackground()?.setAlpha(100)
-        binding.setting.getBackground()?.setAlpha(100)
-        v?.getBackground()?.setAlpha(255)
-    }
+        binding.home.background.alpha = 100
+        binding.heart.background.alpha = 100
+        binding.alarm.background.alpha = 100
+        binding.setting.background.alpha = 100
+        v?.background?.alpha = 255
+        }
 
     override fun onBackPressed() {
         fm?.let {
@@ -84,11 +79,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ft = it.beginTransaction()
         }
 
-        binding.heart.getBackground()?.setAlpha(100)
-        binding.alarm.getBackground()?.setAlpha(100)
-        binding.setting.getBackground()?.setAlpha(100)
-
-        setSupportActionBar(app_toolbar)
+        binding.heart.background.alpha = 100
+        binding.alarm.background.alpha = 100
+        binding.setting.background.alpha = 100
     }
 
     fun setListener(){

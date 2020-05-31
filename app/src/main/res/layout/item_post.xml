@@ -2,20 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/desc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="20dp"
+    android:padding="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
     android:background="@color/colorWhite"
     android:orientation="horizontal">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/desc"
-        android:layout_width="300dp"
-        android:layout_height="90dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/postNumber"
@@ -30,24 +28,34 @@
             android:id="@+id/postTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="글 제목"
+            android:text="딱딱복숭아 VS 물렁복숭아 뭐가 더 맛있나"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postNumber" />
 
+        <TextView
+            android:id="@+id/nickName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="새요미"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postTitle" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/line3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postTitle">
+            app:layout_constraintTop_toBottomOf="@+id/nickName">
 
             <TextView
                 android:id="@+id/agree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="3dp"
                 android:text="찬성"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +64,7 @@
                 android:id="@+id/agreeCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:text="120"
                 app:layout_constraintStart_toEndOf="@+id/agree"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +73,7 @@
                 android:id="@+id/disagree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="3dp"
                 android:text="반대"
                 app:layout_constraintStart_toEndOf="@+id/agreeCount"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -72,6 +82,7 @@
                 android:id="@+id/disagreeCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:text="120"
                 app:layout_constraintStart_toEndOf="@+id/disagree"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -81,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="댓글"
+                android:paddingRight="3dp"
                 app:layout_constraintStart_toEndOf="@+id/disagreeCount"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,22 +105,5 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/Writer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="작성자"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line3" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toEndOf="@+id/desc"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

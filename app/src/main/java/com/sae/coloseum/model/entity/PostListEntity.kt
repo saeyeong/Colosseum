@@ -6,5 +6,5 @@ data class PostListEntity(
     val agreeCount: String,
     val disagreeCount: String,
     val commentCount: String,
-    val Writer: String
+    val nickName: String
 )

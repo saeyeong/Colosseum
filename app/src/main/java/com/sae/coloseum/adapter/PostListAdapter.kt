@@ -27,7 +27,7 @@ class PostListAdapter(val list: List<PostListEntity>?) : RecyclerView.Adapter<Po
             holder.containerView.agreeCount.text = it.agreeCount
             holder.containerView.disagreeCount.text = it.disagreeCount
             holder.containerView.commentCount.text = it.commentCount
-            holder.containerView.Writer.text = it.Writer
+            holder.containerView.nickName.text = it.nickName
         }
     }
 }

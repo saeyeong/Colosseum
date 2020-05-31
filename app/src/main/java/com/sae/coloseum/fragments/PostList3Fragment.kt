@@ -1,6 +1,7 @@
-package com.sae.coloseum.fregments
+package com.sae.coloseum.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.sae.coloseum.databinding.FragmentPostList1Binding
 import com.sae.coloseum.model.DataModel
 import kotlinx.android.synthetic.main.fragment_post_list1.*
 
-class PostList1Fragment : Fragment() {
+class PostList3Fragment : Fragment() {
     var model: DataModel? = null
     var adapter: PostListAdapter? = null
 
@@ -38,15 +39,13 @@ class PostList1Fragment : Fragment() {
         model = DataModel()
         adapter = PostListAdapter(model?.itemsList)
 
-        binding.postListView.adapter = adapter
+        postListView.adapter = adapter
         postListView.layoutManager = LinearLayoutManager(context)
     }
 
-
-
     companion object{
 
-          fun newInstance(): Fragment{
+        fun newInstance(): Fragment{
             val args = Bundle()
 
             val fragment = PostList1Fragment()

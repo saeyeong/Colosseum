@@ -1,11 +1,10 @@
 package com.sae.coloseum.adapter
 
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.sae.coloseum.fregments.PostList1Fragment
-import com.sae.coloseum.fregments.PostList2Fragment
-import com.sae.coloseum.fregments.PostList3Fragment
+import com.sae.coloseum.fragments.*
 
 class TabAdapter(fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -25,6 +24,7 @@ class TabAdapter(fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
         fragmentList?.let {
+
             return it[position]
         }
         return PostList1Fragment()
@@ -38,11 +38,9 @@ class TabAdapter(fm: FragmentManager) :
 
     fun makeTempPage() {
         fragmentList?.let {
-            // addToListFragmentItem(PostList1Fragment()) 이렇게 말고 아래와 같은 패턴으로 프래그먼트 생성할 것
-            addToListFragmentItem(PostList1Fragment.newInstance()) //
-            addToListFragmentItem(PostList2Fragment())
-            addToListFragmentItem(PostList3Fragment())
+            addToListFragmentItem(PostList1Fragment.newInstance())
+            addToListFragmentItem(PostList2Fragment.newInstance())
+            addToListFragmentItem(PostList3Fragment.newInstance())
         }
-
     }
 }
