@@ -2,6 +2,8 @@ package com.sae.coloseum.model
 
 import android.content.Context
 import android.widget.Toast
+import com.sae.coloseum.R
+import com.sae.coloseum.model.entity.AlarmListEntity
 import com.sae.coloseum.model.entity.CmtListEntity
 import com.sae.coloseum.model.entity.PostListEntity
 import com.sae.coloseum.network.NetworkHelper
@@ -16,9 +18,13 @@ class DataModel {
     var itemsList2: ArrayList<CmtListEntity>? = null
         get() = field ?: ArrayList()
 
+    var itemsList3: ArrayList<AlarmListEntity>? = null
+        get() = field ?: ArrayList()
+
     init {
         itemsList = makeTestItems()
         itemsList2 = makeTestItems2()
+        itemsList3 = makeTestItems3()
     }
 
     fun makeTestItems(): ArrayList<PostListEntity> {
@@ -48,6 +54,20 @@ class DataModel {
                 "33",
                 "222",
                 "안녕하세요~~~~~"
+            )
+            items.add(item)
+        }
+
+        return items
+    }
+
+    fun makeTestItems3(): ArrayList<AlarmListEntity> {
+        var items = ArrayList<AlarmListEntity>()
+        for (i in 0..10) {
+            var item = AlarmListEntity(
+                R.drawable.heart_color,
+                "새요미",
+                R.string.heart_like_alarm
             )
             items.add(item)
         }

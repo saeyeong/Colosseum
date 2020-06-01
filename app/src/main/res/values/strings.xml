@@ -7,7 +7,7 @@
     <string name="post_list1">시 인기 토론</string>
     <string name="post_list2">주간 인기 토론</string>
     <string name="post_list3">월간 인기 토론</string>
-    <string name="heart_like_alert">님이 회원님의 의견에 좋아요를 눌렀습니다.</string>
-    <string name="heart_comment_alert">님이 회원님의 의견에 댓글을 달았습니다.</string>
+    <string name="heart_like_alarm">님이 회원님의 의견에 좋아요를 눌렀습니다.</string>
+    <string name="heart_comment_alarm">님이 회원님의 의견에 댓글을 달았습니다.</string>
 
 </resources>

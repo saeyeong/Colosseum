@@ -9,7 +9,7 @@
     tools:context=".fragments.AlarmFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_home"
+        android:id="@+id/toolbar_alarm"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:contentInsetStart="0dp"
@@ -27,6 +27,16 @@
             android:textSize="20sp" />
 
     </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alarm_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_alarm" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
