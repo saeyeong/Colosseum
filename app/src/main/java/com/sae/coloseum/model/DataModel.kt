@@ -114,4 +114,19 @@ class DataModel {
             )
     }
 
+    fun getMainInfo(token: String, loginActivity: () -> Unit, mainActivity: () -> Unit) {
+        network.server.getMainInfo(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    mainActivity()
+                },
+                onError = {
+                    loginActivity()
+
+                }
+            )
+    }
+
 }

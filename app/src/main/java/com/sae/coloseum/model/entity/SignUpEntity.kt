@@ -11,7 +11,8 @@ data class SignUpEntity(
 
 data class DataEntity(
     val user: UserEntity,
-    val token: String
+    val token: String,
+    val message: String
 )
 
 data class UserEntity(

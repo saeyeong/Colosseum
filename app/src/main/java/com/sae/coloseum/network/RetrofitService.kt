@@ -1,5 +1,6 @@
 package com.sae.coloseum.network
 
+import com.sae.coloseum.model.entity.DataEntity
 import com.sae.coloseum.model.entity.EmailCheckEntity
 import com.sae.coloseum.model.entity.SignUpEntity
 import io.reactivex.Single
@@ -26,4 +27,9 @@ interface RetrofitService {
         @Query("type") type: String?,
         @Query("value") value: String?
     ): Single<EmailCheckEntity>
+
+    @GET("main_info")
+    fun getMainInfo(
+        @Header("X-Http-Token") token: String?
+    ): Single<DataEntity>
 }
