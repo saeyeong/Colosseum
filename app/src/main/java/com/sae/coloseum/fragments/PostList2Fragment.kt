@@ -39,8 +39,8 @@ class PostList2Fragment : Fragment() {
         model = DataModel()
         adapter = PostListAdapter(model?.itemsList)
 
-        postListView.adapter = adapter
-        postListView.layoutManager = LinearLayoutManager(context)
+        post_list.adapter = adapter
+        post_list.layoutManager = LinearLayoutManager(context)
     }
 
     companion object{

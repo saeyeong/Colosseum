@@ -24,12 +24,12 @@
                 android:layout_height="wrap_content"
                 android:text="관심글"
                 android:textAlignment="center"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/postListView"
+            android:id="@+id/post_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintVertical_bias="0"

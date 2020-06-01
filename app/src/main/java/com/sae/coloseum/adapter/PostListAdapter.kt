@@ -10,7 +10,7 @@ import com.sae.coloseum.adapter.holder.PostListViewHolder
 import com.sae.coloseum.model.entity.PostListEntity
 import kotlinx.android.synthetic.main.item_post.view.*
 
-class PostListAdapter(val list: List<PostListEntity>?) : RecyclerView.Adapter<PostListViewHolder>() {
+class PostListAdapter(private val list: List<PostListEntity>?) : RecyclerView.Adapter<PostListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
         return PostListViewHolder(view)
