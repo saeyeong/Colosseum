@@ -1,20 +1,18 @@
 package com.sae.coloseum.view
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import com.sae.coloseum.R
-import com.sae.coloseum.model.DataModel
 import com.sae.coloseum.utils.GlobalApplication
+import com.sae.coloseum.utils.ServerUtil
 
 class IntroActivity : AppCompatActivity() {
 
     var handler: Handler? = null
     var runnable: Runnable? = null
-    lateinit var dataModel: DataModel
+    lateinit var serverUtil: ServerUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +35,7 @@ class IntroActivity : AppCompatActivity() {
 
     fun init() {
 
-        dataModel = DataModel()
+        serverUtil = ServerUtil(this)
 
         runnable = Runnable {
             var intentLogin: Intent = Intent(applicationContext, LoginActivity::class.java)
@@ -55,7 +53,7 @@ class IntroActivity : AppCompatActivity() {
             if (token.isNullOrEmpty()) {
                 loginActivity()
             } else {
-                dataModel.getMainInfo(token, loginActivity, mainActivity)
+                serverUtil.getMainInfo(token, loginActivity, mainActivity)
             }
 
             finish()

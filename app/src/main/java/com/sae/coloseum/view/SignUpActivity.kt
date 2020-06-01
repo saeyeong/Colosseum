@@ -5,13 +5,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivitySignUpBinding
-import com.sae.coloseum.model.DataModel
+import com.sae.coloseum.utils.ServerUtil
+
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignUpBinding
-    lateinit var dataModel: DataModel
+    private lateinit var mContext: Context
+    lateinit var serverUtil: ServerUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +25,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     fun init() {
         setListener()
-        dataModel = DataModel()
+        mContext = this
+        serverUtil = ServerUtil(mContext)
     }
 
     fun setListener() {
@@ -30,17 +34,31 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val mContext: Context = this
         val email: String = binding.editEmail.text.toString()
         val password: String = binding.editPassword.text.toString()
         val passwordCheck: String = binding.editPasswordCheck.text.toString()
         val nickname: String = binding.editNickname.text.toString()
+
+        val regex = """[a-z|1-9]{4,15}\@[a-z|1-9]{4,15}\..+""".toRegex()
+
         val intent = Intent(mContext, LoginActivity::class.java)
         val startActivity: () -> Unit = {
             startActivity(intent)
             finish()
         }
 
-        dataModel.signUpApi(mContext, email, password, passwordCheck, nickname, startActivity)
+        if (email.isNullOrEmpty() || password.isNullOrEmpty() || nickname.isNullOrEmpty()) {
+
+        } else if (!regex.containsMatchIn(input = email)) {
+            Toast.makeText(this, "이메일 양식이 올바르지 않습니다.", Toast.LENGTH_LONG).show()
+        } else if (password.length !in 8..15) {
+            Toast.makeText(this, "비밀번호는 8자리 이상 15자리 이하로 입력해주세요.", Toast.LENGTH_LONG).show()
+        } else if (password != passwordCheck) {
+            Toast.makeText(this, "비밀번호가 맞지 않습니다.", Toast.LENGTH_LONG).show()
+        } else {
+            var toast: () -> Unit = {Toast.makeText(this, "이메일 또는 닉네임이 중복입니다.", Toast.LENGTH_LONG).show()}
+            serverUtil.signUpApi(email, password, nickname, toast, startActivity)
+        }
+
     }
 }
