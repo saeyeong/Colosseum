@@ -2,11 +2,14 @@ package com.sae.coloseum.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.coloseum.R
 import com.sae.coloseum.databinding.ActivityMainBinding
 import com.sae.coloseum.fragments.AlarmFragment
@@ -17,10 +20,13 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
+    var currentLayoutIndex = -1
+
     private lateinit var binding: ActivityMainBinding
     var fm: FragmentManager? = null
     var ft: FragmentTransaction? = null
-    var currentFragmentTag: String? = null
+
+    val fragLayouts = ArrayList<LinearLayout>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
 
-        if(currentFragmentTag.isNullOrEmpty()) {
+        if(currentLayoutIndex == -1) {
             firstInitFragment()
         }
     }
@@ -40,16 +46,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.home-> {
-                replaceFragment(HomeFragment())
+                replaceFragment(0)
             }
             binding.heart -> {
-                replaceFragment(HeartFragment())
+                replaceFragment(1)
             }
             binding.alarm -> {
-                replaceFragment(AlarmFragment())
+                replaceFragment(2)
             }
             binding.setting -> {
-                replaceFragment(SettingFragment())
+                replaceFragment(3)
             }
         }
         binding.home.background.alpha = 100
@@ -74,6 +80,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     fun init(){
         setListener()
 
+        fragLayouts.add(binding.homeFragLayout)
+        fragLayouts.add(binding.heartFragLayout)
+        fragLayouts.add(binding.alarmFragLayout)
+        fragLayouts.add(binding.settingFragLayout)
+
         supportFragmentManager.let {
             fm = it
             ft = it.beginTransaction()
@@ -92,29 +103,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun firstInitFragment() {
-        replaceFragment(HomeFragment())
+        replaceFragment(0)
     }
 
 
-    fun replaceFragment(fragment: Fragment?) {
-        fragment?.let {
-            if (isCurrentFragmentEqual(it)) {
+    fun replaceFragment(layoutIndex: Int) {
 
-            } else {
-                currentFragmentTag = fragment::class.java.simpleName
-                ft= fm?.beginTransaction()
-                ft?.replace(R.id.container, it)
-                ft?.addToBackStack(null)
-                ft?.commit()
+
+        for (i in fragLayouts.indices) {
+
+            if (i == layoutIndex) {
+                fragLayouts[i].visibility = View.VISIBLE
             }
+            else {
+                fragLayouts[i].visibility = View.GONE
+            }
+
         }
+        currentLayoutIndex = layoutIndex
     }
 
-    fun isCurrentFragmentEqual(fragment: Fragment): Boolean {
-        currentFragmentTag?.let {
-            return currentFragmentTag == fragment::class.java.simpleName
-        } ?: run {
-            return false
-        }
-    }
 }

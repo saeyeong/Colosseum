@@ -2,29 +2,77 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.MainActivity">
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/homeFragLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="0">
+            <fragment
+                android:id="@+id/fragHome"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.sae.coloseum.fragments.HomeFragment" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/heartFragLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/fragHeart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.sae.coloseum.fragments.HeartFragment" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alarmFragLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/fragAlarm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.sae.coloseum.fragments.AlarmFragment" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settingFragLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/fragSetting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.sae.coloseum.fragments.SettingFragment" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorDarkGray"
-        android:paddingTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:paddingTop="10dp">
 
         <ImageButton
             android:id="@+id/home"
@@ -64,5 +112,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 </layout>
