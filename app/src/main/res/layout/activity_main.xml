@@ -23,7 +23,7 @@
                 android:id="@+id/fragHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.sae.coloseum.fragments.HomeFragment" />
+                class="com.sae.colosseum.fragments.HomeFragment" />
 
         </LinearLayout>
 
@@ -35,7 +35,7 @@
                 android:id="@+id/fragHeart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.sae.coloseum.fragments.HeartFragment" />
+                class="com.sae.colosseum.fragments.HeartFragment" />
 
         </LinearLayout>
 
@@ -47,7 +47,7 @@
                 android:id="@+id/fragAlarm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.sae.coloseum.fragments.AlarmFragment" />
+                class="com.sae.colosseum.fragments.AlarmFragment" />
 
         </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:id="@+id/fragSetting"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.sae.coloseum.fragments.SettingFragment" />
+                class="com.sae.colosseum.fragments.SettingFragment" />
 
         </LinearLayout>
 

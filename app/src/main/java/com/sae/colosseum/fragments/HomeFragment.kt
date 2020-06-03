@@ -1,0 +1,61 @@
+package com.sae.colosseum.fragments
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.viewpager.widget.ViewPager
+import com.sae.colosseum.R
+import com.sae.colosseum.adapter.TabAdapter
+import com.sae.colosseum.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.fragment_home.*
+
+class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
+
+    lateinit var binding: FragmentHomeBinding
+    private val tabAdapter : TabAdapter by lazy {
+        TabAdapter(childFragmentManager)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        init()
+    }
+
+    fun init() {
+        binding.viewPager.adapter = tabAdapter
+        binding.viewPager.addOnPageChangeListener(this)
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    }
+
+    override fun onPageSelected(position: Int) {
+        when (position) {
+            0-> {
+                collapsing.title = getString(R.string.post_list_hour)
+            }
+            1 -> {
+                collapsing.title = getString(R.string.post_list_week)
+            }
+            2 -> {
+                collapsing.title = getString(R.string.post_list_month)
+            }
+        }
+    }
+}

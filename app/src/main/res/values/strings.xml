@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Coloseum</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Colosseum</string>
+
     <string name="appbar_scrolling_view_behavior" translatable="false">
         com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior
     </string>
-    <string name="post_list1">시 인기 토론</string>
-    <string name="post_list2">주간 인기 토론</string>
-    <string name="post_list3">월간 인기 토론</string>
+    <string name="post_list_hour">시 인기 토론</string>
+    <string name="post_list_week">주간 인기 토론</string>
+    <string name="post_list_month">월간 인기 토론</string>
     <string name="heart_like_alarm">님이 회원님의 의견에 좋아요를 눌렀습니다.</string>
     <string name="heart_comment_alarm">님이 회원님의 의견에 댓글을 달았습니다.</string>
 

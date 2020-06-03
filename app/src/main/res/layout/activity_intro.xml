@@ -7,12 +7,11 @@
     tools:context=".view.IntroActivity">
 
     <TextView
-        android:id="@+id/txtColoseum2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="540dp"
         android:layout_marginBottom="130dp"
-        android:text="Coloseum"
+        android:text="Colosseum"
         android:textColor="#000000"
         android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="parent"

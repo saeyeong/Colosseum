@@ -1,0 +1,36 @@
+package com.sae.colosseum.network
+
+import android.content.res.Resources
+import com.sae.colosseum.BuildConfig
+import com.sae.colosseum.R
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+
+class NetworkHelper {
+    private val BASEURL: String = "http://ec2-15-165-177-142.ap-northeast-2.compute.amazonaws.com/"
+    private var retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(getOkHttpClient())
+        .build()
+    var server: RetrofitService = retrofit.create(RetrofitService::class.java)
+
+    private fun getHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.BODY
+            }
+        }
+    }
+    private fun getOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(getHttpLoggingInterceptor())
+            .build()
+    }
+}
