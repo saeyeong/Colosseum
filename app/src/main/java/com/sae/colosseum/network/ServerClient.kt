@@ -102,7 +102,7 @@ class ServerClient() {
             )
     }
 
-    fun getMainPostList(token: String?, context: Context?, postList: RecyclerView?) {
+    fun getMainPostList(token: String?, context: Context, postList: RecyclerView?) {
 
         var adapter: PostListAdapter?
         var postListEntity = ArrayList<PostListEntity>()
@@ -115,7 +115,7 @@ class ServerClient() {
                 onSuccess = {
                     postListEntity.add(it)
                     topic = postListEntity[0].data.topic
-                    adapter = PostListAdapter(topic)
+                    adapter = PostListAdapter(context, topic)
 
                     postList?.adapter = adapter
                     postList?.layoutManager = LinearLayoutManager(context)

@@ -1,5 +1,6 @@
 package com.sae.colosseum.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.FragmentPostListHourBinding
-import com.sae.colosseum.model.entity.PostListEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
 import kotlinx.android.synthetic.main.fragment_post_list_hour.*
@@ -36,9 +36,12 @@ class PostListHourFragment : Fragment() {
     fun init() {
         serverClient = ServerClient()
         val token = GlobalApplication.prefs.myEditText
-        var context = context
+        var context: Context? = context
         var postList = post_list
-        serverClient?.getMainPostList(token, context, postList)
+        if (context != null) {
+            serverClient?.getMainPostList(token, context, postList)
+        }
+
     }
 
     companion object{

@@ -13,6 +13,7 @@ data class Data(
 data class Topic(
     val id: Int,
     val title: String,
+    val img_url: String,
     val end_date: String,
     val sides: List<Sides>
 )
