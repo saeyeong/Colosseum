@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.RepliesViewHolder
+import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.view.TopicActivity
 import kotlinx.android.synthetic.main.item_reply.view.*
+import java.util.*
 
-class RepliesAdapter(var context: Context, private val list: ArrayList<RepliesEntity>?) :
+class RepliesAdapter(var context: Context, private val list: ArrayList<RepliesEntity>?, private val mCallback: RecyclerViewListener) :
     RecyclerView.Adapter<RepliesViewHolder>(), View.OnClickListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepliesViewHolder {
@@ -31,14 +33,19 @@ class RepliesAdapter(var context: Context, private val list: ArrayList<RepliesEn
 
 
         list?.get(position)?.let {
+            val item = it
             holder.containerView.nickname.text = it.user.nick_name
             holder.containerView.content.text = it.content
             holder.containerView.num_like.text = it.like_count.toString()
             holder.containerView.num_dislike.text = it.dislike_count.toString()
             holder.containerView.num_reply.text = it.reply_count.toString()
             holder.containerView.nickname.tag = it.id.toString()
-            holder.containerView.like_wrap.setOnClickListener(this)
-            holder.containerView.dislike_wrap.setOnClickListener(this)
+            holder.containerView.like_wrap.setOnClickListener {
+                mCallback.onClickItemForViewId(position, item, R.id.like_wrap)
+            }
+            holder.containerView.dislike_wrap.setOnClickListener {
+                mCallback.onClickItemForViewId(position, item, R.id.dislike_wrap)
+            }
 
 
             Log.d("test",it.my_like.toString())

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.RepliesAdapter
 import com.sae.colosseum.databinding.ActivityTopicBinding
+import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.DataEntity
+import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
@@ -38,6 +41,35 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     var vote: Int = -1 // 투표를 했는지 안했는지
     var reply: Int = -1 // 의견을 작성했는지 안했는지
 
+//    리싸이클러뷰 상황별 행동 가이드
+    val recyclerListener = object : RecyclerViewListener {
+        override fun onClick(position: Int, item: Any) {
+
+        }
+
+        override fun onLongClick(position: Int, item: Any) {
+
+        }
+
+//
+        override fun onClickItemForViewId(position: Int, item: Any, viewId: Int) {
+            when(viewId) {
+                R.id.like_wrap -> {
+                    // 좋아요?
+                    val reply = item as RepliesEntity
+
+                    Log.d("댓글id", "${reply.id}")
+                }
+                R.id.dislike_wrap -> {
+                    // 싫어요?
+                    val reply = item as RepliesEntity
+
+                    Log.d("댓글id", "${reply.id}")
+                }
+            }
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,7 +175,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                     upId = it.sides[0].id
                     downId = it.sides[1].id
 
-                    adapter = RepliesAdapter(this@TopicActivity, it.replies)
+                    adapter = RepliesAdapter(this@TopicActivity, it.replies, recyclerListener)
                     binding.listItem.adapter = adapter
                     binding.listItem.layoutManager = LinearLayoutManager(this@TopicActivity)
 
