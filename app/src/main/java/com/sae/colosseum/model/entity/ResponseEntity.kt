@@ -1,8 +1,8 @@
 package com.sae.colosseum.model.entity
 
-data class TopicEntity(
+data class ResponseEntity(
+    val token: String,
     val code: Int,
     val message: String,
-    val data: TopicDataEntity
+    val data: DataEntity
 )
-

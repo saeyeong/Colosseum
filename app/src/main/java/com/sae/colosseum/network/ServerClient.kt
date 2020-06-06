@@ -5,9 +5,10 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.adapter.TopicListAdapter
-import com.sae.colosseum.model.entity.TopicEntity
+import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
+import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
 import com.sae.colosseum.utils.ResultInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -27,7 +28,8 @@ class ServerClient() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
-                        token = it.data?.token.toString()
+                        token = it.data.token
+                        userNickname = it.data.user.nick_name
                         GlobalApplication.prefs.myEditText = token
                         startActivity()
                     },
@@ -88,6 +90,7 @@ class ServerClient() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
+                    userNickname = it.data.user.nick_name
                     mainActivity()
                 },
                 onError = {
@@ -97,18 +100,16 @@ class ServerClient() {
     }
 
     fun getMainPostList(token: String?, context: Context, postList: RecyclerView?) {
-        val topicEntity = ArrayList<TopicEntity>()
+        var topicEntity: ArrayList<TopicInfoEntity>
         var adapter: TopicListAdapter?
-        var topicDataEntity: ArrayList<TopicInfoEntity>
 
         network.server.getMainPostList(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    topicEntity.add(it)
-                    topicDataEntity = topicEntity[0].data.topics
-                    adapter = TopicListAdapter(context, topicDataEntity)
+                    topicEntity= it.data.topics
+                    adapter = TopicListAdapter(context, topicEntity)
 
                     postList?.adapter = adapter
                     postList?.layoutManager = LinearLayoutManager(context)
@@ -121,14 +122,14 @@ class ServerClient() {
 
     fun getTopic(
         token: String?, topicId: Int?,
-        callback: ResultInterface<TopicEntity>
+        callback: ResultInterface<DataEntity>
     ) {
         network.server.getTopic(token, topicId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    callback.result(it)
+                    callback.result(it.data)
                 },
                 onError = {
                     Log.d("test", it.message)

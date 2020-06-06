@@ -62,6 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="복숭아는 딱딱복숭아가 맛있다. 아니다 물렁복숭아가 맛있다."
+
+                android:textColor="@android:color/tab_indicator_text"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

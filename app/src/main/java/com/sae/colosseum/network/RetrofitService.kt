@@ -11,43 +11,43 @@ interface RetrofitService {
         @Field("email") email: String?,
         @Field("password") password: String?,
         @Field("nick_name") nickname: String?
-    ): Single<SignUpEntity>
+    ): Single<ResponseEntity>
 
     @POST("user")
     @FormUrlEncoded
     fun postUserInfo(
         @Field("email") email: String?,
         @Field("password") password: String?
-    ): Single<SignUpEntity>
+    ): Single<ResponseEntity>
 
     @GET("user_check")
     fun getUserIDCheck(
         @Query("type") type: String?,
         @Query("value") value: String?
-    ): Single<EmailCheckEntity>
+    ): Single<ResponseEntity>
 
     @GET("user_info")
     fun getUserTokenCheck(
         @Header("X-Http-Token") token: String?
-    ): Single<DataEntity>
+    ): Single<ResponseEntity>
 
     @GET("v2/main_info")
     fun getMainPostList(
         @Header("X-Http-Token") token: String?
-    ): Single<TopicEntity>
+    ): Single<ResponseEntity>
 
     @GET("topic/{topicId}")
     fun getTopic(
         @Header("X-Http-Token") token: String?,
         @Path("topicId") topicId: String?
-    ): Single<TopicEntity>
+    ): Single<ResponseEntity>
 
     @POST("topic_vote")
     @FormUrlEncoded
     fun postTopicVote(
         @Header("X-Http-Token") token: String?,
         @Field("side_id") sideId: Int?
-    ): Single<TopicEntity>
+    ): Single<ResponseEntity>
 
     @POST("topic_reply")
     @FormUrlEncoded
@@ -55,5 +55,5 @@ interface RetrofitService {
         @Header("X-Http-Token") token: String?,
         @Field("topic_id") topicId: Int?,
         @Field("content") content: String?
-    ): Single<TopicEntity>
+    ): Single<ResponseEntity>
 }

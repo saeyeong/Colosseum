@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -16,12 +15,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.RepliesAdapter
-import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.databinding.ActivityTopicBinding
-import com.sae.colosseum.model.entity.TopicEntity
+import com.sae.colosseum.model.entity.DataEntity
+import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
+import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
 import com.sae.colosseum.utils.ResultInterface
 import kotlinx.android.synthetic.main.activity_topic.*
 
@@ -93,6 +93,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     fun init() {
+        binding.txtNickname.text = userNickname
         setListener()
         serverClient = ServerClient()
         token = GlobalApplication.prefs.myEditText
@@ -120,9 +121,9 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private fun setData() {
         var adapter: RepliesAdapter
 
-        serverClient?.getTopic(token, topicId, object : ResultInterface<TopicEntity> {
-            override fun result(value: TopicEntity) {
-                topicInfo = value.data.topic
+        serverClient?.getTopic(token, topicId, object : ResultInterface<DataEntity> {
+            override fun result(value: DataEntity) {
+                topicInfo = value.topic
 
                 topicInfo?.let {
                     txt_title.text = it.title
@@ -154,9 +155,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private fun topicReply(content: String) {
         serverClient?.postTopicReply(token, topicId, content, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
-                if(value) {
-
-                } else {
+                if(!value) {
                     Toast.makeText(
                         this@TopicActivity,
                         "이미 의견을 작성하셨습니다.",
@@ -205,14 +204,14 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private fun clickUpColor() {
         binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
         binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
-        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, R.attr.itemTextColor))
-        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, R.attr.itemTextColor))
+        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
     }
 
     @SuppressLint("ResourceType")
     private fun clickDownColor() {
-        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, R.attr.itemTextColor))
-        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, R.attr.itemTextColor))
+        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
         binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
         binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
     }
