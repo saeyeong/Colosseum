@@ -144,7 +144,7 @@
                     app:layout_constraintHorizontal_bias="1">
 
                     <ImageView
-                        android:id="@+id/txt_like"
+                        android:id="@+id/img_like"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:src="@drawable/like_off"
@@ -162,7 +162,7 @@
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/txt_like"
+                        app:layout_constraintStart_toEndOf="@+id/img_like"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -176,7 +176,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1">
                     <ImageView
-                        android:id="@+id/txt_dislike"
+                        android:id="@+id/img_dislike"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:src="@drawable/dislike_off"
@@ -194,7 +194,7 @@
                         android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/txt_dislike"
+                        app:layout_constraintStart_toEndOf="@+id/img_dislike"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

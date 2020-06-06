@@ -2,6 +2,7 @@ package com.sae.colosseum.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,6 @@ class RepliesAdapter(var context: Context, private val list: ArrayList<RepliesEn
     override fun onBindViewHolder(holder: RepliesViewHolder, position: Int) {
         val glide = Glide.with(context)
 
-        holder.containerView.item_post_wrap.setOnClickListener(this)
 
         list?.get(position)?.let {
             holder.containerView.nickname.text = it.user.nick_name
@@ -36,16 +36,23 @@ class RepliesAdapter(var context: Context, private val list: ArrayList<RepliesEn
             holder.containerView.num_like.text = it.like_count.toString()
             holder.containerView.num_dislike.text = it.dislike_count.toString()
             holder.containerView.num_reply.text = it.reply_count.toString()
+            holder.containerView.nickname.tag = it.id.toString()
+            holder.containerView.like_wrap.setOnClickListener(this)
+            holder.containerView.dislike_wrap.setOnClickListener(this)
+
+
+            Log.d("test",it.my_like.toString())
+
+            if(it.my_like) {
+                holder.containerView.img_like.setImageResource(R.drawable.like_on)
+            } else if (it.my_dislike) {
+                holder.containerView.img_dislike.setImageResource(R.drawable.dislike_on)
+            }
 //            glide.load(it.img_url).into(holder.containerView.img_post)
         }
     }
 
     override fun onClick(v: View?) {
-//        val position = Integer.parseInt(v?.postNumber?.text.toString())-1
-//        val intent = Intent(context, TopicActivity::class.java)
-//        val topicId: Int? = list?.get(position)?.id
 
-//        intent.putExtra("topicId", topicId)
-//        context.startActivity(intent)
     }
 }
