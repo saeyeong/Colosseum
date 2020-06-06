@@ -8,7 +8,8 @@
 
     <item android:state_focused="true">
 
-        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
 
             <stroke
 
@@ -20,7 +21,7 @@
 
             <solid
 
-                android:color="#F6F6F6" />
+                android:color="?android:colorBackground" />
 
         </shape>
 
@@ -34,7 +35,8 @@
 
     <item android:state_focused="false">
 
-        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
 
             <stroke
 
@@ -46,7 +48,7 @@
 
             <solid
 
-                android:color="#F6F6F6" />
+                android:color="?android:colorBackground" />
 
         </shape>
 

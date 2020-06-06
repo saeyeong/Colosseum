@@ -1,55 +1,58 @@
 package com.sae.colosseum.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.PostListAdapter
-import com.sae.colosseum.databinding.FragmentPostListWeekBinding
-import com.sae.colosseum.model.DataModel
+import com.sae.colosseum.databinding.FragmentPostListHourBinding
+import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.GlobalApplication
 import kotlinx.android.synthetic.main.fragment_post_list_hour.*
 
-class PostListWeekFragment : Fragment() {
-    var model: DataModel? = null
-    var adapter: PostListAdapter? = null
+class TopicListHourFragment : Fragment() {
+    var serverClient: ServerClient? = null
 
-    lateinit var binding: FragmentPostListWeekBinding
+    lateinit var binding: FragmentPostListHourBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_post_list_week,container,false)
+            R.layout.fragment_post_list_hour,container,false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
     fun init() {
-//        model = DataModel()
-//        adapter = PostListAdapter(model?.itemsList)
-//
-//        post_list.adapter = adapter
-//        post_list.layoutManager = LinearLayoutManager(context)
+        val token = GlobalApplication.prefs.myEditText
+        val context: Context? = context
+        val postList = post_list
+        serverClient = ServerClient()
+
+        if (context != null) {
+            serverClient?.getMainPostList(token, context, postList)
+        }
     }
 
     companion object{
-
-        fun newInstance(): Fragment{
+          fun newInstance(): Fragment{
             val args = Bundle()
 
-            val fragment = PostListHourFragment()
+            val fragment = TopicListHourFragment()
             fragment.arguments = args
             return fragment
         }
     }
+
+
 }

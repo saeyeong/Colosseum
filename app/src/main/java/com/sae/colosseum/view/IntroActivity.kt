@@ -35,7 +35,6 @@ class IntroActivity : AppCompatActivity() {
     }
 
     fun init() {
-
         serverUtil = ServerClient()
 
         runnable = Runnable {

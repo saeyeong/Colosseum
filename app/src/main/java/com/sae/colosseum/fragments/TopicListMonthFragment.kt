@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.PostListAdapter
+import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.databinding.FragmentPostListMonthBinding
 import com.sae.colosseum.model.DataModel
-import kotlinx.android.synthetic.main.fragment_post_list_hour.*
 
-class PostListMonthFragment : Fragment() {
+class TopicListMonthFragment : Fragment() {
     var model: DataModel? = null
-    var adapter: PostListAdapter? = null
+    var adapter: TopicListAdapter? = null
 
     lateinit var binding: FragmentPostListMonthBinding
 
@@ -47,7 +45,7 @@ class PostListMonthFragment : Fragment() {
         fun newInstance(): Fragment{
             val args = Bundle()
 
-            val fragment = PostListHourFragment()
+            val fragment = TopicListHourFragment()
             fragment.arguments = args
             return fragment
         }

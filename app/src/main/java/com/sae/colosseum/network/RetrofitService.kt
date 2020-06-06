@@ -1,9 +1,6 @@
 package com.sae.colosseum.network
 
-import com.sae.colosseum.model.entity.DataEntity
-import com.sae.colosseum.model.entity.EmailCheckEntity
-import com.sae.colosseum.model.entity.PostListEntity
-import com.sae.colosseum.model.entity.SignUpEntity
+import com.sae.colosseum.model.entity.*
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -37,5 +34,26 @@ interface RetrofitService {
     @GET("v2/main_info")
     fun getMainPostList(
         @Header("X-Http-Token") token: String?
-    ): Single<PostListEntity>
+    ): Single<TopicEntity>
+
+    @GET("topic/{topicId}")
+    fun getTopic(
+        @Header("X-Http-Token") token: String?,
+        @Path("topicId") topicId: String?
+    ): Single<TopicEntity>
+
+    @POST("topic_vote")
+    @FormUrlEncoded
+    fun postTopicVote(
+        @Header("X-Http-Token") token: String?,
+        @Field("side_id") sideId: Int?
+    ): Single<TopicEntity>
+
+    @POST("topic_reply")
+    @FormUrlEncoded
+    fun postTopicReply(
+        @Header("X-Http-Token") token: String?,
+        @Field("topic_id") topicId: Int?,
+        @Field("content") content: String?
+    ): Single<TopicEntity>
 }

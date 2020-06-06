@@ -8,7 +8,7 @@ import com.sae.colosseum.fragments.*
 class TabAdapter(fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    var fragmentList: ArrayList<Fragment>? = null
+    private var fragmentList: ArrayList<Fragment>? = null
 
     init {
         fragmentList = ArrayList()
@@ -26,7 +26,7 @@ class TabAdapter(fm: FragmentManager) :
 
             return it[position]
         }
-        return PostListHourFragment()
+        return TopicListHourFragment()
     }
 
     fun addToListFragmentItem(fragment: Fragment) {
@@ -37,9 +37,9 @@ class TabAdapter(fm: FragmentManager) :
 
     fun makeTempPage() {
         fragmentList?.let {
-            addToListFragmentItem(PostListHourFragment.newInstance())
-            addToListFragmentItem(PostListWeekFragment.newInstance())
-            addToListFragmentItem(PostListMonthFragment.newInstance())
+            addToListFragmentItem(TopicListHourFragment.newInstance())
+            addToListFragmentItem(TopicListWeekFragment.newInstance())
+            addToListFragmentItem(TopicListMonthFragment.newInstance())
         }
     }
 }

@@ -2,22 +2,16 @@ package com.sae.colosseum.network
 
 import android.content.Context
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewParent
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sae.colosseum.R
-import com.sae.colosseum.adapter.PostListAdapter
-import com.sae.colosseum.model.entity.Data
-import com.sae.colosseum.model.entity.DataEntity
-import com.sae.colosseum.model.entity.PostListEntity
-import com.sae.colosseum.model.entity.Topic
+import com.sae.colosseum.adapter.TopicListAdapter
+import com.sae.colosseum.model.entity.TopicEntity
+import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
+import com.sae.colosseum.utils.ResultInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_post_list_hour.*
 
 class ServerClient() {
     private val network = NetworkHelper()
@@ -103,22 +97,38 @@ class ServerClient() {
     }
 
     fun getMainPostList(token: String?, context: Context, postList: RecyclerView?) {
-
-        var adapter: PostListAdapter?
-        var postListEntity = ArrayList<PostListEntity>()
-        var topic: List<Topic>
+        val topicEntity = ArrayList<TopicEntity>()
+        var adapter: TopicListAdapter?
+        var topicDataEntity: ArrayList<TopicInfoEntity>
 
         network.server.getMainPostList(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    postListEntity.add(it)
-                    topic = postListEntity[0].data.topic
-                    adapter = PostListAdapter(context, topic)
+                    topicEntity.add(it)
+                    topicDataEntity = topicEntity[0].data.topics
+                    adapter = TopicListAdapter(context, topicDataEntity)
 
                     postList?.adapter = adapter
                     postList?.layoutManager = LinearLayoutManager(context)
+                },
+                onError = {
+                    Log.d("test111", it.message)
+                }
+            )
+    }
+
+    fun getTopic(
+        token: String?, topicId: Int?,
+        callback: ResultInterface<TopicEntity>
+    ) {
+        network.server.getTopic(token, topicId.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
                 },
                 onError = {
                     Log.d("test", it.message)
@@ -126,4 +136,38 @@ class ServerClient() {
             )
     }
 
+    fun postTopicVote(
+        token: String?, sideId: Int?,
+        callback: ResultInterface<Boolean>
+    ) {
+        network.server.postTopicVote(token, sideId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    Log.d("test", it.message)
+                    callback.result(false)
+                }
+            )
+    }
+
+    fun postTopicReply(
+        token: String?, topicId: Int?, content: String?,
+        callback: ResultInterface<Boolean>
+    ) {
+        network.server.postTopicReply(token, topicId, content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    callback.result(false)
+                }
+            )
+    }
 }

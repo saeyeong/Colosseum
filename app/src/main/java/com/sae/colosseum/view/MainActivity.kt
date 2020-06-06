@@ -2,6 +2,7 @@ package com.sae.colosseum.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
@@ -9,16 +10,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.item_post.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    var currentLayoutIndex = -1
+    private var currentLayoutIndex = -1
 
     private lateinit var binding: ActivityMainBinding
     var fm: FragmentManager? = null
     var ft: FragmentTransaction? = null
 
-    val fragLayouts = ArrayList<LinearLayout>()
+    private val fragLayouts = ArrayList<LinearLayout>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+
         when (v) {
             binding.home-> {
                 replaceFragment(0)
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.alarm.background.alpha = 100
         binding.setting.background.alpha = 100
         v?.background?.alpha = 255
-        }
+    }
 
     override fun onBackPressed() {
         fm?.let {
@@ -93,6 +96,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.alarm.setOnClickListener(this)
         binding.setting.setOnClickListener(this)
     }
+
 
     fun firstInitFragment() {
         replaceFragment(0)

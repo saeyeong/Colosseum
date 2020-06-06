@@ -7,10 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.PostActivity">
+        tools:context=".view.TopicActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_post"
+            android:id="@+id/toolbar_topic"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStart="0dp"
@@ -19,43 +19,41 @@
             app:layout_constraintVertical_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="토론장"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <ImageView
-                    android:id="@+id/bookmark"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/bookmark_off"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="1"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="토론장"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/bookmark"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/bookmark_off"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1"/>
 
         </androidx.appcompat.widget.Toolbar>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_post"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_topic"
             android:orientation="vertical"
             app:layout_constraintVertical_bias="0">
 
@@ -64,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="복숭아는 딱딱복숭아가 맛있다. 아니다 물렁복숭아가 맛있다."
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,9 +70,11 @@
                 app:layout_constraintVertical_bias="0"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/post_info"
+                android:id="@+id/topic_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/txt_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,10 +128,10 @@
                         app:layout_constraintTop_toBottomOf="@+id/author_nickname">
 
                         <TextView
-                            android:id="@+id/txt_date_post"
+                            android:id="@+id/txt_date_topic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="시간"
+                            android:text="작성일"
                             android:textSize="15sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -140,24 +140,27 @@
                             app:layout_constraintHorizontal_bias="0" />
 
                         <TextView
-                            android:id="@+id/txt_num"
+                            android:id="@+id/txt_start_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="20:33"
                             android:textSize="15sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/txt_date_post"
+                            app:layout_constraintStart_toEndOf="@+id/txt_date_topic"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/cmt_num_post"
+                    android:id="@+id/cmt_num_topic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="33"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:background="@drawable/title_area_comment_count_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +173,8 @@
                 android:id="@+id/up_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/post_info"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/topic_info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="찬성 하기"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +209,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="333"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toBottomOf="@+id/txt_up"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -227,7 +231,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="반대 하기"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -238,7 +242,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="333"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toBottomOf="@+id/txt_down"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -261,8 +265,8 @@
                     android:id="@+id/txt_cmt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="댓글"
-                    android:textSize="20sp"
+                    android:text="의견"
+                    android:textSize="15sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,31 +277,165 @@
                     android:id="@+id/num_cmt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="333"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txt_cmt"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0" />
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/txt_cmt"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/edit_cmt"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_cmt_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="댓글을 입력해주세요."
+                android:layout_marginTop="5dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/edit_background"
                 app:layout_constraintTop_toBottomOf="@+id/cmt_num"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintVertical_bias="0"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/comment_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="댓글을 입력해주세요."
+                    android:paddingTop="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingBottom="0dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/tab_indicator_text"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
+                    android:id="@+id/comment_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0"
+                    app:layout_constraintHorizontal_bias="0">
+                    <TextView
+                        android:id="@+id/txt_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="새요미"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0"
+                        app:layout_constraintHorizontal_bias="0" />
+                    <EditText
+                        android:id="@+id/edit_cmt"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:paddingTop="5dp"
+                        android:gravity="start"
+                        android:hint="타인에게 피해를 줄 수 있는 의견은 삭제되거나 관련 법률에 의해 제재를 받을 수 있습니다."
+                        android:textSize="15sp"
+                        android:maxLines="5"
+                        android:maxLength="300"
+                        android:background="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_nickname"
+                        app:layout_constraintVertical_bias="0" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/border_top"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_cmt"
+                        app:layout_constraintVertical_bias="1"
+                        app:layout_constraintHorizontal_bias="0">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/num_characters_wrap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.5"
+                            app:layout_constraintHorizontal_bias="0">
+                            <TextView
+                                android:id="@+id/num_characters"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0"
+                                app:layout_constraintHorizontal_bias="0"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" / 300"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/num_characters"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0"
+                                app:layout_constraintHorizontal_bias="0"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <Button
+                            android:id="@+id/btn_ok"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="등록하기"
+                            android:textColor="#ffff"
+                            android:background="@drawable/sign_up_btn_off_background"
+                            android:enabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/num_characters_wrap"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0"
+                            app:layout_constraintHorizontal_bias="1"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/filter_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/edit_cmt"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/edit_cmt_wrap"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -309,7 +447,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="추천순"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -321,7 +459,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="최신순"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/order_like"
@@ -330,14 +468,29 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cmt_list"
+                android:id="@+id/list_item"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@+id/filter_wrap"
+                app:layout_constraintBottom_toTopOf="@+id/btn_view_all_reply"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <Button
+                android:id="@+id/btn_view_all_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="의견 전체보기"
+                android:textColor="@android:color/tab_indicator_text"
+                android:background="@drawable/edit_background"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintTop_toBottomOf="@+id/list_item"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
+                app:layout_constraintVertical_bias="0"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
