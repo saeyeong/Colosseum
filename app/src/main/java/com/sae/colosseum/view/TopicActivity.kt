@@ -218,12 +218,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
     override fun afterTextChanged(s: Editable?) {
 
-        if ((s?.length ?: 0) > 5) {
-            binding.btnOk.isEnabled = true
-            binding.btnOk.setBackgroundResource(R.drawable.sign_up_btn_on_background)
-        } else {
-            binding.btnOk.isEnabled = false
-        }
+        binding.btnOk.isEnabled = (s?.length ?: 0) > 5
 
         binding.numCharacters.text = s?.length.toString()
     }

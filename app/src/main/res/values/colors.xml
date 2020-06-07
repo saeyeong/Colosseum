@@ -9,5 +9,6 @@
     <color name="colorUp">#EA4F49</color>
     <color name="colorDown">#4968EA</color>
     <color name="colorApp">#FF4400</color>
+    <color name="colorAppDark">#EE3300</color>
     <color name="colorBlack">#000000</color>
 </resources>
