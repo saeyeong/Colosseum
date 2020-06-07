@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -27,6 +28,8 @@ import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
 import com.sae.colosseum.utils.ResultInterface
 import kotlinx.android.synthetic.main.activity_topic.*
+import kotlinx.android.synthetic.main.item_reply.*
+import kotlinx.android.synthetic.main.item_reply.view.*
 
 class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
@@ -40,42 +43,12 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     var downId: Int? = null
     var vote: Int = -1 // 투표를 했는지 안했는지
     var reply: Int = -1 // 의견을 작성했는지 안했는지
-
-//    리싸이클러뷰 상황별 행동 가이드
-    val recyclerListener = object : RecyclerViewListener {
-        override fun onClick(position: Int, item: Any) {
-
-        }
-
-        override fun onLongClick(position: Int, item: Any) {
-
-        }
-
-//
-        override fun onClickItemForViewId(position: Int, item: Any, viewId: Int) {
-            when(viewId) {
-                R.id.like_wrap -> {
-                    // 좋아요?
-                    val reply = item as RepliesEntity
-
-                    Log.d("댓글id", "${reply.id}")
-                }
-                R.id.dislike_wrap -> {
-                    // 싫어요?
-                    val reply = item as RepliesEntity
-
-                    Log.d("댓글id", "${reply.id}")
-                }
-            }
-        }
-
-    }
+    lateinit var recyclerListener: RecyclerViewListener<RepliesEntity, View>
+    lateinit var adapter: RepliesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_topic)
-
         init()
     }
 
@@ -125,9 +98,9 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     fun init() {
-        binding.txtNickname.text = userNickname
-        setListener()
         serverClient = ServerClient()
+        setListener()
+        binding.txtNickname.text = userNickname
         token = GlobalApplication.prefs.myEditText
         topicId = intent.getIntExtra("topicId", -1)
 
@@ -137,7 +110,37 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
             finish()
         }
 
+        recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
+            override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+                var isLike: Boolean = false
+                when (clickedView.id) { // 좋아요/싫어요 입력
+                    like_wrap.id -> { // 좋아요 눌렀을 때
+                        isLike = true
+                    }
+                    dislike_wrap.id -> { // 싫어요 눌렀을 때
+                        isLike = false
+                    }
+                }
+                serverClient?.postTopicReplyLike(token, item.id, isLike, object : ResultInterface<RepliesEntity> {
+                    override fun result(value: RepliesEntity) {
+                        itemReplyView.num_like.text = value.like_count.toString()
+                        itemReplyView.num_dislike.text = value.dislike_count.toString()
 
+                        // 좋아요/싫어요 누른 결과 출력
+                        if(value.my_like) { // my_like 가 true 일때
+                            itemReplyView.img_like.setImageResource(R.drawable.like_on)
+                            itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
+                        } else if(value.my_dislike) { // my_dislike 가 true 일때
+                            itemReplyView.img_dislike.setImageResource(R.drawable.dislike_on)
+                            itemReplyView.img_like.setImageResource(R.drawable.like_off)
+                        } else { // 둘다 false 일때
+                            itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
+                            itemReplyView.img_like.setImageResource(R.drawable.like_off)
+                        }
+                    }
+                })
+            }
+        }
     }
 
     private fun setListener() {
@@ -151,7 +154,6 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun setData() {
-        var adapter: RepliesAdapter
 
         serverClient?.getTopic(token, topicId, object : ResultInterface<DataEntity> {
             override fun result(value: DataEntity) {
@@ -232,7 +234,6 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 
-    @SuppressLint("ResourceType")
     private fun clickUpColor() {
         binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
         binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
@@ -240,7 +241,6 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
     }
 
-    @SuppressLint("ResourceType")
     private fun clickDownColor() {
         binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
         binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))

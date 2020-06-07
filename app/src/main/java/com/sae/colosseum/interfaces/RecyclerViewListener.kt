@@ -1,7 +1,5 @@
 package com.sae.colosseum.interfaces
 
-interface RecyclerViewListener {
-    fun onClick(position: Int, item: Any)
-    fun onLongClick(position: Int, item: Any)
-    fun onClickItemForViewId(position: Int, item: Any, viewId: Int)
+interface RecyclerViewListener<T1, T3> {
+    fun onClickItemForViewId(position: T1, clickedView: T3, itemReplyView: T3)
 }

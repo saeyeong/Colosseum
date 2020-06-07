@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.model.entity.DataEntity
+import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
@@ -168,6 +169,23 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
+                }
+            )
+    }
+
+    fun postTopicReplyLike(
+        token: String?, replyId: Int?, isLike: Boolean?,
+        callback: ResultInterface<RepliesEntity>
+    ) {
+        network.server.postTopicReplyLike(token, replyId, isLike)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it.data.reply)
+                },
+                onError = {
+
                 }
             )
     }
