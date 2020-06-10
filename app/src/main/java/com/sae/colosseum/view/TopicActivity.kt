@@ -65,7 +65,6 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
                 content = binding.editCmt.text.toString()
                 topicReply(content)
-
             }
             // 찬성 눌렀을 때
             binding.upWrap -> {
@@ -90,6 +89,11 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                 val intent = Intent(this, ReplyActivity::class.java)
                 startActivity(intent)
             }
+            // 레이아웃 눌렀을때 (의견입력창 원상태로 되돌리기)
+            binding.topicWrap -> {
+                binding.commentOff.visibility = VISIBLE
+                binding.commentOn.visibility = GONE
+            }
         }
     }
 
@@ -108,6 +112,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+
                 var isLike: Boolean = false
                 when (clickedView.id) { // 좋아요/싫어요 입력
                     like_wrap.id -> { // 좋아요 눌렀을 때
@@ -147,6 +152,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         binding.upWrap.setOnClickListener(this)
         binding.downWrap.setOnClickListener(this)
         binding.btnViewAllReply.setOnClickListener(this)
+        binding.topicWrap.setOnClickListener(this)
     }
 
     private fun setData() {
