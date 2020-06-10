@@ -44,6 +44,13 @@ class RepliesAdapter(
             item = list[position]
             mCallback.onClickItemForViewId(item, it, view)
         }
+//        댓글 메뉴
+        holder.containerView.btn_menu.setOnClickListener {
+            position = holder.adapterPosition
+            item = list[position]
+            mCallback.onClickItemForViewId(item, it, view)
+        }
+
 
         return holder
     }

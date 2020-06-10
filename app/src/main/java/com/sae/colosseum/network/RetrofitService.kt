@@ -65,5 +65,11 @@ interface RetrofitService {
         @Field("is_like") isLike: Boolean?
     ): Single<ResponseEntity>
 
+    @DELETE("topic_reply")
+    fun deleteTopicReply(
+        @Header("X-Http-Token") token: String?,
+        @Query("reply_id") replyId: Int?
+    ): Single<ResponseEntity>
+
 
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
+import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.GlobalApplication.Companion.loginUser
@@ -182,6 +183,23 @@ class ServerClient() {
             .subscribeBy(
                 onSuccess = {
                     callback.result(it.data.reply)
+                },
+                onError = {
+
+                }
+            )
+    }
+
+    fun deleteTopicReply(
+        token: String?, replyId: Int?,
+        callback: ResultInterface<ResponseEntity>
+    ) {
+        network.server.deleteTopicReply(token, replyId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
                 },
                 onError = {
 
