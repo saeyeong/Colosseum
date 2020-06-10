@@ -6,6 +6,6 @@ data class UserEntity(
     val nickname: String,
     val createdAt: String,
     val updatedAt: String,
-    val nick_name: String,
+    var nick_name: String,
     val created_at: String
 )

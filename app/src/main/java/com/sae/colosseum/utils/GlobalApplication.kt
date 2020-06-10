@@ -7,9 +7,7 @@ class GlobalApplication : Application() {
 
     companion object{
         lateinit var prefs : SharedPreferencesActivity
-        lateinit var userNickname : String
 
-//        이걸 메꿔넣자!
         lateinit var loginUser : UserEntity
     }
 

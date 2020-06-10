@@ -1,6 +1,5 @@
 package com.sae.colosseum.view
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -21,11 +19,9 @@ import com.sae.colosseum.databinding.ActivityTopicBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
-import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
 import com.sae.colosseum.utils.ResultInterface
 import kotlinx.android.synthetic.main.activity_topic.*
 import kotlinx.android.synthetic.main.item_reply.*
@@ -100,7 +96,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     fun init() {
         serverClient = ServerClient()
         setListener()
-        binding.txtNickname.text = userNickname
+        binding.txtNickname.text = GlobalApplication.loginUser.nick_name
         token = GlobalApplication.prefs.myEditText
         topicId = intent.getIntExtra("topicId", -1)
 

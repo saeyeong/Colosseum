@@ -9,7 +9,7 @@ import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.GlobalApplication.Companion.userNickname
+import com.sae.colosseum.utils.GlobalApplication.Companion.loginUser
 import com.sae.colosseum.utils.ResultInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -30,7 +30,6 @@ class ServerClient() {
                 .subscribeBy(
                     onSuccess = {
                         token = it.data.token
-                        userNickname = it.data.user.nick_name
                         GlobalApplication.prefs.myEditText = token
                         startActivity()
                     },
@@ -91,7 +90,7 @@ class ServerClient() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    userNickname = it.data.user.nick_name
+                    loginUser = it.data.user
                     mainActivity()
                 },
                 onError = {

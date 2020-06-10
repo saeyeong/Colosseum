@@ -41,6 +41,7 @@ class IntroActivity : AppCompatActivity() {
             var intentLogin: Intent = Intent(applicationContext, LoginActivity::class.java)
             var intentMain: Intent = Intent(applicationContext, MainActivity::class.java)
             val token = GlobalApplication.prefs.myEditText
+
             val loginActivity: () -> Unit = {
                 startActivity(intentLogin)
                 finish()
