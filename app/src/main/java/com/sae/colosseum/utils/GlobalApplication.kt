@@ -7,7 +7,6 @@ class GlobalApplication : Application() {
 
     companion object{
         lateinit var prefs : SharedPreferencesActivity
-
         lateinit var loginUser : UserEntity
     }
 

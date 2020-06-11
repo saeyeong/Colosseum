@@ -4,16 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityLoginBinding
 import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.BaseActivity
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
-    lateinit var serverUtil: ServerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +24,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     fun init() {
         setListener()
-        serverUtil = ServerClient()
     }
 
     fun setListener() {
@@ -54,7 +52,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         when (v) {
             binding.btnLogin-> {
-                serverUtil.loginApi(email, password, startActivity, toast)
+                serverClient.loginApi(email, password, startActivity, toast)
             }
             binding.btnSignUp -> {
                 val intent = Intent(this, SignUpActivity::class.java)

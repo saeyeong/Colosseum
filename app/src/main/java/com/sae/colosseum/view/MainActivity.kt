@@ -1,8 +1,6 @@
 package com.sae.colosseum.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
@@ -10,9 +8,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.item_post.*
+import com.sae.colosseum.utils.BaseActivity
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : BaseActivity(), View.OnClickListener {
 
     private var currentLayoutIndex = -1
 

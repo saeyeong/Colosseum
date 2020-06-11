@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ReplyActivity"></activity>
-        <activity android:name=".view.TopicActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".view.ReplyModifyActivity"></activity>
+        <activity android:name=".view.ReplyActivity" />
+        <activity
+            android:name=".view.TopicActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity"></activity>
-        <activity android:name=".view.SignUpActivity"></activity>
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.SignUpActivity" />
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>

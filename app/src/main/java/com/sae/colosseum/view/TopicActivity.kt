@@ -1,7 +1,7 @@
 package com.sae.colosseum.view
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,19 +23,19 @@ import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.BaseActivity
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
 import kotlinx.android.synthetic.main.activity_topic.*
 import kotlinx.android.synthetic.main.item_reply.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 
-class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
+class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     private lateinit var binding: ActivityTopicBinding
+    var mIntent: Intent? = null
     var tag: String? = null
-    var serverClient: ServerClient? = null
-    var token: String? = null
-    private var topicId: Int? = null
+    private var topicId: Int = -1
     var topicInfo: TopicInfoEntity? = null
     var upId: Int? = null
     var downId: Int? = null
@@ -101,11 +101,9 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     fun init() {
-        serverClient = ServerClient()
         setListener()
         builder = AlertDialog.Builder(this)
         binding.txtNickname.text = GlobalApplication.loginUser.nick_name
-        token = GlobalApplication.prefs.myEditText
         topicId = intent.getIntExtra("topicId", -1)
 
         if (intent.hasExtra("topicId")) {
@@ -113,7 +111,6 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         } else {
             finish()
         }
-
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
                 if (clickedView.id == btn_menu.id) {
@@ -122,14 +119,19 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                         ) { dialog, which ->
                             when(which) {
                                 0 -> {
-                                    serverClient?.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
+                                    serverClient.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
                                         override fun result(value: ResponseEntity) {
                                             setData()
                                         }
                                     })
                                 }
                                 1 -> {
-                                    Log.d("test","test2")
+                                    if(topicId != -1) {
+                                        mIntent = Intent(this@TopicActivity, ReplyModifyActivity::class.java)
+                                            .putExtra("topicId", topicId)
+                                            .putExtra("replyId", item.id)
+                                        startActivity(mIntent)
+                                    }
                                 }
                                 2 -> {
                                     Log.d("test","test3")
@@ -148,7 +150,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                             isLike = false
                         }
                     }
-                    serverClient?.postTopicReplyLike(token, item.id, isLike, object : ResultInterface<RepliesEntity> {
+                    serverClient.postTopicReplyLike(token, item.id, isLike, object : ResultInterface<RepliesEntity> {
                             override fun result(value: RepliesEntity) {
                                 itemReplyView.num_like.text = value.like_count.toString()
                                 itemReplyView.num_dislike.text = value.dislike_count.toString()
@@ -184,7 +186,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
     private fun setData() {
 
-        serverClient?.getTopic(token, topicId, object : ResultInterface<DataEntity> {
+        serverClient.getTopic(token, topicId.toString(), object : ResultInterface<DataEntity> {
             override fun result(value: DataEntity) {
                 topicInfo = value.topic
 
@@ -216,9 +218,11 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun topicReply(content: String) {
-        serverClient?.postTopicReply(token, topicId, content, object : ResultInterface<Boolean> {
+        serverClient.postTopicReply(token, topicId, content, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
-                if(!value) {
+                if(value) {
+                    setData()
+                } else {
                     Toast.makeText(
                         this@TopicActivity,
                         "이미 의견을 작성하셨습니다.",
@@ -230,7 +234,7 @@ class TopicActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun topicVote(sideId: Int?) {
-        serverClient?.postTopicVote(token, sideId, object : ResultInterface<Boolean> {
+        serverClient.postTopicVote(token, sideId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                     if (value) {
                         vote = 0

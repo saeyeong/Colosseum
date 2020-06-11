@@ -1,19 +1,15 @@
 package com.sae.colosseum.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import com.sae.colosseum.R
-import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.BaseActivity
 
-class IntroActivity : AppCompatActivity() {
+class IntroActivity : BaseActivity() {
 
     var handler: Handler? = null
     var runnable: Runnable? = null
-    lateinit var serverUtil: ServerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +31,10 @@ class IntroActivity : AppCompatActivity() {
     }
 
     fun init() {
-        serverUtil = ServerClient()
 
         runnable = Runnable {
-            var intentLogin: Intent = Intent(applicationContext, LoginActivity::class.java)
-            var intentMain: Intent = Intent(applicationContext, MainActivity::class.java)
-            val token = GlobalApplication.prefs.myEditText
+            var intentLogin: Intent = Intent(this, LoginActivity::class.java)
+            var intentMain: Intent = Intent(this, MainActivity::class.java)
 
             val loginActivity: () -> Unit = {
                 startActivity(intentLogin)
@@ -54,7 +48,7 @@ class IntroActivity : AppCompatActivity() {
             if (token.isNullOrEmpty()) {
                 loginActivity()
             } else {
-                serverUtil.getUserTokenCheck(token, loginActivity, mainActivity)
+                serverClient.getUserTokenCheck(token, loginActivity, mainActivity)
             }
 
             finish()

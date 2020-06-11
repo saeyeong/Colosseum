@@ -33,24 +33,16 @@ class RepliesAdapter(
         var position: Int
         var item: RepliesEntity
 
-//        좋아요/싫어요 클릭 리스너
-        holder.containerView.like_wrap.setOnClickListener {
+        View.OnClickListener {
             position = holder.adapterPosition
             item = list[position]
             mCallback.onClickItemForViewId(item, it, view)
+        }.run {
+            // 좋아요/싫어요 클릭 리스너
+            holder.containerView.like_wrap.setOnClickListener(this)
+            holder.containerView.dislike_wrap.setOnClickListener(this)
+            holder.containerView.btn_menu.setOnClickListener(this)
         }
-        holder.containerView.dislike_wrap.setOnClickListener {
-            position = holder.adapterPosition
-            item = list[position]
-            mCallback.onClickItemForViewId(item, it, view)
-        }
-//        댓글 메뉴
-        holder.containerView.btn_menu.setOnClickListener {
-            position = holder.adapterPosition
-            item = list[position]
-            mCallback.onClickItemForViewId(item, it, view)
-        }
-
 
         return holder
     }

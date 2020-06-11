@@ -71,5 +71,11 @@ interface RetrofitService {
         @Query("reply_id") replyId: Int?
     ): Single<ResponseEntity>
 
-
+    @PUT("topic_reply")
+    @FormUrlEncoded
+    fun putTopicReply(
+        @Header("X-Http-Token") token: String?,
+        @Field("reply_id") replyId: Int?,
+        @Field("content") content: String?
+    ): Single<ResponseEntity>
 }

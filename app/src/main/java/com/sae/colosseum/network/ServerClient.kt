@@ -76,7 +76,6 @@ class ServerClient() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    toast()
                     startActivity()
                 },
                 onError = {
@@ -122,7 +121,7 @@ class ServerClient() {
     }
 
     fun getTopic(
-        token: String?, topicId: Int?,
+        token: String?, topicId: String?,
         callback: ResultInterface<DataEntity>
     ) {
         network.server.getTopic(token, topicId.toString())
@@ -203,6 +202,24 @@ class ServerClient() {
                 },
                 onError = {
 
+                }
+            )
+    }
+
+    fun putTopicReply(
+        token: String?, replyId: Int?, content: String?,
+        callback: ResultInterface<ResponseEntity>
+    ) {
+        network.server.putTopicReply(token, replyId, content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
+                    Log.d("test","test!!!")
+                },
+                onError = {
+                    Log.d("test", it.toString())
                 }
             )
     }

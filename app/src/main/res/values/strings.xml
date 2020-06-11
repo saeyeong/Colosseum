@@ -10,7 +10,7 @@
     <string name="heart_like_alarm">님이 회원님의 의견에 좋아요를 눌렀습니다.</string>
     <string name="heart_comment_alarm">님이 회원님의 의견에 댓글을 달았습니다.</string>
 
-    <string-array name = "menu_reply">
+    <string-array name="menu_reply">
         <item>삭제</item>
         <item>수정</item>
         <item>의견에 댓글 달기</item>

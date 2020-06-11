@@ -1,18 +1,16 @@
 package com.sae.colosseum.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivitySignUpBinding
-import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.BaseActivity
 
-class SignUpActivity : AppCompatActivity(), View.OnClickListener {
+class SignUpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignUpBinding
-    lateinit var serverUtil: ServerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +21,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     fun init() {
         setListener()
-        serverUtil = ServerClient()
     }
 
-    fun setListener() {
+    private fun setListener() {
         binding.btnSignUp.setOnClickListener(this)
     }
 
@@ -53,8 +50,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         } else if (password != passwordCheck) {
             Toast.makeText(this, "비밀번호가 맞지 않습니다.", Toast.LENGTH_LONG).show()
         } else {
-            var toast: () -> Unit = {Toast.makeText(this, "이메일 또는 닉네임이 중복입니다.", Toast.LENGTH_LONG).show()}
-            serverUtil.signUpApi(email, password, nickname, toast, startActivity)
+            val toast: () -> Unit = {Toast.makeText(this, "이메일 또는 닉네임이 중복입니다.", Toast.LENGTH_LONG).show()}
+
+            serverClient.signUpApi(email, password, nickname, toast, startActivity)
 
         }
 
