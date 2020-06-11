@@ -3,7 +3,7 @@ package com.sae.colosseum.model.entity
 data class UserEntity(
     val id: String,
     val email: String,
-    val nickname: String,
+    var nickname: String,
     val createdAt: String,
     val updatedAt: String,
     var nick_name: String,

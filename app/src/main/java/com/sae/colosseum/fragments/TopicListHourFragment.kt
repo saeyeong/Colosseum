@@ -1,29 +1,41 @@
 package com.sae.colosseum.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
-import com.sae.colosseum.databinding.FragmentPostListHourBinding
+import com.sae.colosseum.adapter.TopicListAdapter
+import com.sae.colosseum.databinding.FragmentTopicListHourBinding
+import com.sae.colosseum.interfaces.RecyclerViewListener
+import com.sae.colosseum.model.entity.ResponseEntity
+import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import kotlinx.android.synthetic.main.fragment_post_list_hour.*
+import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.view.TopicActivity
 
 class TopicListHourFragment : Fragment() {
     var serverClient: ServerClient? = null
-
-    lateinit var binding: FragmentPostListHourBinding
+    var mContext: Context? = null
+    var token: String? = null
+    var glide: RequestManager? = null
+    lateinit var recyclerListener: RecyclerViewListener<TopicInfoEntity, View>
+    lateinit var binding: FragmentTopicListHourBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_post_list_hour,container,false)
+            R.layout.fragment_topic_list_hour,container,false)
 
         return binding.root
     }
@@ -33,15 +45,43 @@ class TopicListHourFragment : Fragment() {
         init()
     }
 
-    fun init() {
-        val token = GlobalApplication.prefs.myEditText
-        val context: Context? = context
-        val postList = post_list
-        serverClient = ServerClient()
-
-        if (context != null) {
-            serverClient?.getMainPostList(token, context, postList)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+        mContext?.let {
+            glide = Glide.with(it)
         }
+    }
+
+    fun init() {
+        token = GlobalApplication.prefs.myEditText
+        serverClient = ServerClient()
+        setData()
+
+        recyclerListener = object : RecyclerViewListener<TopicInfoEntity, View> {
+            override fun onClickItemForViewId(
+                item: TopicInfoEntity,
+                clickedView: View,
+                itemReplyView: View
+            ) {
+                val intent = Intent(mContext, TopicActivity::class.java)
+                val topicId: Int = item.id
+
+                intent.putExtra("topicId", topicId)
+                mContext?.startActivity(intent)
+            }
+
+        }
+    }
+
+    private fun setData() {
+        serverClient?.getTopicList(token, object : ResultInterface<ResponseEntity> {
+            override fun result(value: ResponseEntity) {
+                val adapter = TopicListAdapter(glide, value.data.topics, recyclerListener)
+                binding.topicList.adapter = adapter
+                binding.topicList.layoutManager = LinearLayoutManager(mContext)
+            }
+        })
     }
 
     companion object{

@@ -32,7 +32,7 @@ interface RetrofitService {
     ): Single<ResponseEntity>
 
     @GET("v2/main_info")
-    fun getMainPostList(
+    fun getTopicList(
         @Header("X-Http-Token") token: String?
     ): Single<ResponseEntity>
 

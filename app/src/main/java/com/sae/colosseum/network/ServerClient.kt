@@ -1,10 +1,6 @@
 package com.sae.colosseum.network
 
-import android.content.Context
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -20,8 +16,6 @@ class ServerClient() {
     private val network = NetworkHelper()
 
     fun loginApi(email: String, password: String, startActivity: () -> Unit, toast: () -> Unit) {
-        var token: String
-
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
 
         } else {
@@ -30,8 +24,8 @@ class ServerClient() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
-                        token = it.data.token
-                        GlobalApplication.prefs.myEditText = token
+                        GlobalApplication.prefs.myEditText = it.data.token
+                        GlobalApplication.loginUser = it.data.user
                         startActivity()
                     },
                     onError = {
@@ -99,23 +93,16 @@ class ServerClient() {
             )
     }
 
-    fun getMainPostList(token: String?, context: Context, postList: RecyclerView?) {
-        var topicEntity: ArrayList<TopicInfoEntity>
-        var adapter: TopicListAdapter?
-
-        network.server.getMainPostList(token)
+    fun getTopicList(token: String?, callback: ResultInterface<ResponseEntity>) {
+        network.server.getTopicList(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    topicEntity= it.data.topics
-                    adapter = TopicListAdapter(context, topicEntity)
-
-                    postList?.adapter = adapter
-                    postList?.layoutManager = LinearLayoutManager(context)
+                    callback.result(it)
                 },
                 onError = {
-                    Log.d("test111", it.message)
+
                 }
             )
     }

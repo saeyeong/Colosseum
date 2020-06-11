@@ -22,8 +22,7 @@ import kotlinx.android.synthetic.main.item_reply.view.*
 import java.util.*
 
 class RepliesAdapter(
-    var context: Context,
-    private val list: ArrayList<RepliesEntity>,
+    private val list: ArrayList<RepliesEntity>?,
     private val mCallback: RecyclerViewListener<RepliesEntity, View>
 ) : RecyclerView.Adapter<RepliesViewHolder>() {
 
@@ -31,37 +30,37 @@ class RepliesAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reply, parent, false)
         val holder = RepliesViewHolder(view)
         var position: Int
-        var item: RepliesEntity
+        var item: RepliesEntity?
 
         View.OnClickListener {
             position = holder.adapterPosition
-            item = list[position]
-            mCallback.onClickItemForViewId(item, it, view)
+            item = list?.get(position)
+            item?.run {
+                mCallback.onClickItemForViewId(this, it, view)
+            }
         }.run {
             // 좋아요/싫어요 클릭 리스너
-            holder.containerView.like_wrap.setOnClickListener(this)
-            holder.containerView.dislike_wrap.setOnClickListener(this)
-            holder.containerView.btn_menu.setOnClickListener(this)
+            holder.itemView.like_wrap.setOnClickListener(this)
+            holder.itemView.dislike_wrap.setOnClickListener(this)
+            holder.itemView.btn_menu.setOnClickListener(this)
         }
 
         return holder
     }
 
     override fun getItemCount(): Int {
-        return list.count() ?: 0
+        return list?.count() ?: 0
     }
 
     override fun onBindViewHolder(holder: RepliesViewHolder, position: Int) {
-//        val glide = Glide.with(context)
-
-        list[position].let {
+        list?.get(position)?.let {
             holder.containerView.nickname.text = it.user.nick_name
             holder.containerView.content.text = it.content
             holder.containerView.num_like.text = it.like_count.toString()
             holder.containerView.num_dislike.text = it.dislike_count.toString()
             holder.containerView.num_reply.text = it.reply_count.toString()
 
-//            좋아요/싫어요 상태 바인딩
+    //            좋아요/싫어요 상태 바인딩
             if (it.my_like) { // my_like 가 true 라면
                 holder.containerView.img_like.setImageResource(R.drawable.like_on)
             } else if (it.my_dislike) { // my_dislike 가 true 라면
@@ -70,8 +69,6 @@ class RepliesAdapter(
                 holder.containerView.img_like.setImageResource(R.drawable.like_off)
                 holder.containerView.img_dislike.setImageResource(R.drawable.dislike_off)
             }
-
-//            glide.load(it.img_url).into(holder.containerView.img_post)
         }
     }
 }

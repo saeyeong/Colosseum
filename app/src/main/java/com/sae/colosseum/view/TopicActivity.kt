@@ -1,6 +1,5 @@
 package com.sae.colosseum.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -22,7 +21,6 @@ import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
-import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.BaseActivity
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
@@ -111,6 +109,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         } else {
             finish()
         }
+
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
                 if (clickedView.id == btn_menu.id) {
@@ -140,7 +139,6 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         }?.create()?.show()
                     }
                 } else {
-
                     var isLike: Boolean = false
                     when (clickedView.id) { // 좋아요/싫어요 입력
                         like_wrap.id -> { // 좋아요 눌렀을 때
@@ -151,23 +149,23 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         }
                     }
                     serverClient.postTopicReplyLike(token, item.id, isLike, object : ResultInterface<RepliesEntity> {
-                            override fun result(value: RepliesEntity) {
-                                itemReplyView.num_like.text = value.like_count.toString()
-                                itemReplyView.num_dislike.text = value.dislike_count.toString()
+                        override fun result(value: RepliesEntity) {
+                            itemReplyView.num_like.text = value.like_count.toString()
+                            itemReplyView.num_dislike.text = value.dislike_count.toString()
 
-                                // 좋아요/싫어요 누른 결과 출력
-                                if (value.my_like) { // my_like 가 true 일때
-                                    itemReplyView.img_like.setImageResource(R.drawable.like_on)
-                                    itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
-                                } else if (value.my_dislike) { // my_dislike 가 true 일때
-                                    itemReplyView.img_dislike.setImageResource(R.drawable.dislike_on)
-                                    itemReplyView.img_like.setImageResource(R.drawable.like_off)
-                                } else { // 둘다 false 일때
-                                    itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
-                                    itemReplyView.img_like.setImageResource(R.drawable.like_off)
-                                }
+                            // 좋아요/싫어요 누른 결과 출력
+                            if (value.my_like) { // my_like 가 true 일때
+                                itemReplyView.img_like.setImageResource(R.drawable.like_on)
+                                itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
+                            } else if (value.my_dislike) { // my_dislike 가 true 일때
+                                itemReplyView.img_dislike.setImageResource(R.drawable.dislike_on)
+                                itemReplyView.img_like.setImageResource(R.drawable.like_off)
+                            } else { // 둘다 false 일때
+                                itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
+                                itemReplyView.img_like.setImageResource(R.drawable.like_off)
                             }
-                        })
+                        }
+                    })
                 }
             }
         }
@@ -208,7 +206,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                     upId = it.sides[0].id
                     downId = it.sides[1].id
 
-                    adapter = RepliesAdapter(this@TopicActivity, it.replies, recyclerListener)
+                    adapter = RepliesAdapter(it.replies, recyclerListener)
                     binding.listItem.adapter = adapter
                     binding.listItem.layoutManager = LinearLayoutManager(this@TopicActivity)
 
