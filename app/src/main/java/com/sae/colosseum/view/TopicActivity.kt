@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.RepliesAdapter
+import com.sae.colosseum.adapter.ReplyAdapter
 import com.sae.colosseum.databinding.ActivityTopicBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.DataEntity
@@ -41,7 +41,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     var reply: Int = -1 // 의견을 작성했는지 안했는지
     var builder: AlertDialog.Builder? = null
     lateinit var recyclerListener: RecyclerViewListener<RepliesEntity, View>
-    lateinit var adapter: RepliesAdapter
+    lateinit var adapter: ReplyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -206,7 +206,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                     upId = it.sides[0].id
                     downId = it.sides[1].id
 
-                    adapter = RepliesAdapter(it.replies, recyclerListener)
+                    adapter = ReplyAdapter(it.replies, recyclerListener)
                     binding.listItem.adapter = adapter
                     binding.listItem.layoutManager = LinearLayoutManager(this@TopicActivity)
 

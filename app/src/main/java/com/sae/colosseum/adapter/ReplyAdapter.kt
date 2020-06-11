@@ -16,12 +16,13 @@ import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
 import com.sae.colosseum.view.TopicActivity
 import kotlinx.android.synthetic.main.item_reply.view.*
 import java.util.*
 
-class RepliesAdapter(
+class ReplyAdapter(
     private val list: ArrayList<RepliesEntity>?,
     private val mCallback: RecyclerViewListener<RepliesEntity, View>
 ) : RecyclerView.Adapter<RepliesViewHolder>() {
@@ -60,12 +61,19 @@ class RepliesAdapter(
             holder.containerView.num_dislike.text = it.dislike_count.toString()
             holder.containerView.num_reply.text = it.reply_count.toString()
 
-    //            좋아요/싫어요 상태 바인딩
-            if (it.my_like) { // my_like 가 true 라면
+//            내 댓글만 수정 메뉴 보임
+            if (it.user.id == GlobalApplication.loginUser.id) {
+                holder.containerView.btn_menu.visibility = VISIBLE
+            }
+
+//            좋아요/싫어요 상태
+            if (it.my_like) {
                 holder.containerView.img_like.setImageResource(R.drawable.like_on)
-            } else if (it.my_dislike) { // my_dislike 가 true 라면
+                holder.containerView.img_dislike.setImageResource(R.drawable.like_off)
+            } else if (it.my_dislike) {
+                holder.containerView.img_like.setImageResource(R.drawable.like_off)
                 holder.containerView.img_dislike.setImageResource(R.drawable.dislike_on)
-            } else { // 둘다 false 라면
+            } else {
                 holder.containerView.img_like.setImageResource(R.drawable.like_off)
                 holder.containerView.img_dislike.setImageResource(R.drawable.dislike_off)
             }
