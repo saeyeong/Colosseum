@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_post_wrap"
+    android:id="@+id/item_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border_bottom"
@@ -66,7 +66,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/txt_date_cmt"
+            android:id="@+id/txt_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
@@ -90,7 +90,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_date_cmt"
+            app:layout_constraintTop_toBottomOf="@+id/txt_date"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintHorizontal_bias="0"/>
 
@@ -104,7 +104,7 @@
             app:layout_constraintVertical_bias="0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/reply_wrap"
+                android:id="@+id/btn_re_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
@@ -117,7 +117,7 @@
                 app:layout_constraintHorizontal_bias="0">
 
                 <TextView
-                    android:id="@+id/txt_reply"
+                    android:id="@+id/txt_re_reply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
@@ -130,14 +130,14 @@
                     app:layout_constraintHorizontal_bias="0" />
 
                 <TextView
-                    android:id="@+id/num_reply"
+                    android:id="@+id/num_re_reply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="33"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txt_reply"
+                    app:layout_constraintStart_toEndOf="@+id/txt_re_reply"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

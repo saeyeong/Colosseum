@@ -210,4 +210,22 @@ class ServerClient() {
                 }
             )
     }
+
+    fun getTopicReReply(
+        token: String?, replyId: String?,
+        callback: ResultInterface<ResponseEntity>
+    ) {
+        network.server.getTopicReReply(token, replyId.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+
+                    callback.result(it)
+                },
+                onError = {
+                    Log.d("test", it.message)
+                }
+            )
+    }
 }

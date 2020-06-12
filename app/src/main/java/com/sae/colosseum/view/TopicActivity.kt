@@ -113,6 +113,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
                 if (clickedView.id == btn_menu.id) {
+//                의견 메뉴 눌렀을때
                     builder?.let {
                         it.setItems(R.array.menu_reply
                         ) { dialog, which ->
@@ -138,13 +139,14 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                             }
                         }?.create()?.show()
                     }
-                } else {
+                } else if (clickedView.id == like_wrap.id || clickedView.id == dislike_wrap.id) {
+//                    좋아요/싫어요 눌렀을때
                     var isLike: Boolean = false
-                    when (clickedView.id) { // 좋아요/싫어요 입력
-                        like_wrap.id -> { // 좋아요 눌렀을 때
+                    when (clickedView.id) {
+                        like_wrap.id -> {
                             isLike = true
                         }
-                        dislike_wrap.id -> { // 싫어요 눌렀을 때
+                        dislike_wrap.id -> {
                             isLike = false
                         }
                     }
@@ -154,10 +156,10 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                             itemReplyView.num_dislike.text = value.dislike_count.toString()
 
                             // 좋아요/싫어요 누른 결과 출력
-                            if (value.my_like) { // my_like 가 true 일때
+                            if (value.my_like!!) { // my_like 가 true 일때
                                 itemReplyView.img_like.setImageResource(R.drawable.like_on)
                                 itemReplyView.img_dislike.setImageResource(R.drawable.dislike_off)
-                            } else if (value.my_dislike) { // my_dislike 가 true 일때
+                            } else if (value.my_dislike!!) { // my_dislike 가 true 일때
                                 itemReplyView.img_dislike.setImageResource(R.drawable.dislike_on)
                                 itemReplyView.img_like.setImageResource(R.drawable.like_off)
                             } else { // 둘다 false 일때
@@ -166,6 +168,13 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                             }
                         }
                     })
+                } else {
+                    mIntent = Intent(this@TopicActivity, ReReplyActivity::class.java)
+                        .putExtra("topicId", topicId)
+                        .putExtra("replyId", item.id)
+                        .putExtra("replyObject", item)
+
+                    startActivity(mIntent)
                 }
             }
         }

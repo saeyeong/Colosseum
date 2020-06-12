@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.ReplyModifyActivity"></activity>
+        <activity android:name=".view.ReReplyActivity"></activity>
         <activity android:name=".view.ReplyActivity" />
         <activity
             android:name=".view.TopicActivity"
