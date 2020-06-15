@@ -145,9 +145,6 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                                         startActivity(mIntent)
                                     }
                                 }
-                                2 -> {
-                                    startReReply()
-                                }
                             }
                         }?.create()?.show()
                     }
