@@ -32,14 +32,13 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     private lateinit var binding: ActivityTopicBinding
     var mIntent: Intent? = null
-    var tag: String? = null
-    private var topicId: Int = -1
     var topicInfo: TopicInfoEntity? = null
     var upId: Int? = null
     var downId: Int? = null
-    var vote: Int = -1 // 투표를 했는지 안했는지
-    var reply: Int = -1 // 의견을 작성했는지 안했는지
+    var mySideId: Int? = null // 유저 찬/반 정보
+    var replyCheck: Int = -1 // 의견 작성 확인
     var builder: AlertDialog.Builder? = null
+    private var topicId: Int = -1
     lateinit var recyclerListener: RecyclerViewListener<RepliesEntity, View>
     lateinit var adapter: ReplyAdapter
 
@@ -50,50 +49,53 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     override fun onClick(v: View?) {
-        val sideId: Int
         val content: String
 
         when (v) {
-            // 댓글 영역 눌렀을 때
-            binding.commentOff -> {
+            // 의견 영역 눌렀을 때
+            binding.replyOff -> {
                 v.visibility = GONE
-                binding.commentOn.visibility = VISIBLE
+                binding.replyOn.visibility = VISIBLE
             }
-            // 댓글 등록하기 눌렀을 때
+            // 의견 등록하기 눌렀을 때
             binding.btnOk -> {
-                binding.commentOn.visibility = GONE
-                binding.commentOff.visibility = VISIBLE
+                if(mySideId == -1) { // 투표 검사
+                    Toast.makeText(this, "투표를 완료하시면 의견을 작성하실 수 있습니다", Toast.LENGTH_LONG).show()
+                } else {
+                    binding.replyOn.visibility = GONE
+                    binding.replyOff.visibility = VISIBLE
 
-                content = binding.editCmt.text.toString()
-                topicReply(content)
+                    content = binding.editReply.text.toString()
+                    postTopicReply(content)
+
+                    replyCheck = 0 // 의견을 작성했기때문에 투표를 바꿀 수 없음
+                }
             }
             // 찬성 눌렀을 때
             binding.upWrap -> {
-                sideId = upId ?: 0
-                if(sideId != 0) { // upId가 잘 들어왔는지 확인
-                    topicVote(sideId)
+                if(replyCheck != 0) { // 의견을 작성했는지 확인 (의견을 작성한 상태면 투표를 바꿀 수 없음)
+                    postTopicVote(upId)
+                } else {
+                    toast("진영을 변경하시려면 의견을 삭제해 주세요.")
                 }
             }
             // 반대 눌렀을 때
             binding.downWrap -> {
-                sideId = downId ?: 0
-                if(sideId != 0) {
-                    topicVote(sideId)
-                    if(reply == 0) {
-                        vote = 0
-                        clickDownColor()
-                    }
+                if(replyCheck != 0) { // 의견을 작성했는지 확인
+                    postTopicVote(downId)
+                } else {
+                    toast("진영을 변경하시려면 의견을 삭제해 주세요.")
                 }
             }
             // 의견 전체보기 눌렀을 때
-            binding.btnViewAllReply -> {
+            binding.btnGoReply -> {
                 val intent = Intent(this, ReplyActivity::class.java)
                 startActivity(intent)
             }
             // 레이아웃 눌렀을때 (의견입력창 원상태로 되돌리기)
             binding.topicWrap -> {
-                binding.commentOff.visibility = VISIBLE
-                binding.commentOn.visibility = GONE
+                binding.replyOff.visibility = VISIBLE
+                binding.replyOn.visibility = GONE
             }
         }
     }
@@ -112,6 +114,15 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+
+                fun startReReply() {
+                    mIntent = Intent(this@TopicActivity, ReReplyActivity::class.java)
+                        .putExtra("topicId", topicId)
+                        .putExtra("replyId", item.id)
+                        .putExtra("replyObject", item)
+                    startActivity(mIntent)
+                }
+
                 if (clickedView.id == btn_menu.id) {
 //                의견 메뉴 눌렀을때
                     builder?.let {
@@ -122,6 +133,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                                     serverClient.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
                                         override fun result(value: ResponseEntity) {
                                             setData()
+                                            replyCheck = -1 // 의견을 삭제했음
                                         }
                                     })
                                 }
@@ -134,22 +146,18 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                                     }
                                 }
                                 2 -> {
-                                    Log.d("test","test3")
+                                    startReReply()
                                 }
                             }
                         }?.create()?.show()
                     }
                 } else if (clickedView.id == like_wrap.id || clickedView.id == dislike_wrap.id) {
+
 //                    좋아요/싫어요 눌렀을때
-                    var isLike: Boolean = false
-                    when (clickedView.id) {
-                        like_wrap.id -> {
-                            isLike = true
-                        }
-                        dislike_wrap.id -> {
-                            isLike = false
-                        }
-                    }
+                    var isLike = false
+                    if (clickedView.id == like_wrap.id) isLike = true
+                    else if (clickedView.id == dislike_wrap.id) isLike = false
+
                     serverClient.postTopicReplyLike(token, item.id, isLike, object : ResultInterface<RepliesEntity> {
                         override fun result(value: RepliesEntity) {
                             itemReplyView.num_like.text = value.like_count.toString()
@@ -169,12 +177,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         }
                     })
                 } else {
-                    mIntent = Intent(this@TopicActivity, ReReplyActivity::class.java)
-                        .putExtra("topicId", topicId)
-                        .putExtra("replyId", item.id)
-                        .putExtra("replyObject", item)
-
-                    startActivity(mIntent)
+                    startReReply()
                 }
             }
         }
@@ -182,84 +185,76 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     private fun setListener() {
         binding.bookmark.setOnClickListener(this)
-        binding.commentOff.setOnClickListener(this)
+        binding.replyOff.setOnClickListener(this)
         binding.btnOk.setOnClickListener(this)
-        binding.editCmt.addTextChangedListener(this)
+        binding.editReply.addTextChangedListener(this)
         binding.upWrap.setOnClickListener(this)
         binding.downWrap.setOnClickListener(this)
-        binding.btnViewAllReply.setOnClickListener(this)
+        binding.btnGoReply.setOnClickListener(this)
         binding.topicWrap.setOnClickListener(this)
     }
 
     private fun setData() {
-
         serverClient.getTopic(token, topicId.toString(), object : ResultInterface<DataEntity> {
             override fun result(value: DataEntity) {
                 topicInfo = value.topic
 
                 topicInfo?.let {
                     txt_title.text = it.title
-                    cmt_num_topic.text = it.reply_count.toString()
+                    num_reply_top.text = it.reply_count.toString()
                     txt_start_data.text = it.start_date
                     num_up.text = it.sides[0].vote_count.toString()
                     num_down.text = it.sides[1].vote_count.toString()
-                    num_cmt.text = it.reply_count.toString()
+                    num_reply.text = it.reply_count.toString()
 
-                    if (it.my_side_id == it.sides[0].id) {
+                    upId = it.sides[0].id // 찬성 아이디 초기화
+                    downId = it.sides[1].id // 반대 아이디 초기화
+                    mySideId = it.my_side_id // 내 찬/반 정보 초기화
+
+//                    유저 찬/반 정보에 따라 버튼 색 초기화
+                    if (mySideId == upId) {
                         clickUpColor()
-                    } else if (it.my_side_id == it.sides[1].id) {
+                    } else if (mySideId == downId) {
                         clickDownColor()
                     } else {
-                        reply = 0
+                        noneColor()
                     }
-                    upId = it.sides[0].id
-                    downId = it.sides[1].id
 
                     adapter = ReplyAdapter(it.replies, recyclerListener)
                     binding.listItem.adapter = adapter
                     binding.listItem.layoutManager = LinearLayoutManager(this@TopicActivity)
-
                 }
             }
         })
     }
 
-    private fun topicReply(content: String) {
-        serverClient.postTopicReply(token, topicId, content, object : ResultInterface<Boolean> {
+    private fun postTopicReply(content: String) {
+        val parentReplyId: Int? = null
+        serverClient.postTopicReply(token, topicId, content, parentReplyId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if(value) {
                     setData()
                 } else {
-                    Toast.makeText(
-                        this@TopicActivity,
-                        "이미 의견을 작성하셨습니다.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("이미 의견을 작성하셨습니다.")
                 }
             }
         })
     }
 
-    private fun topicVote(sideId: Int?) {
+    private fun postTopicVote(sideId: Int?) {
         serverClient.postTopicVote(token, sideId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
-                    if (value) {
-                        vote = 0
-                    } else {
-                        Toast.makeText(
-                            this@TopicActivity,
-                            "투표를 변경하시려면 의견을 삭제해주시기 바랍니다.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                if (value) {
+                    setData()
+                } else {
+                    toast("투표를 변경하시려면 의견을 삭제해주시기 바랍니다.")
+                }
             }
         })
     }
 
     override fun afterTextChanged(s: Editable?) {
-
         binding.btnOk.isEnabled = (s?.length ?: 0) > 5
-
         binding.numCharacters.text = s?.length.toString()
     }
 
@@ -281,6 +276,21 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
         binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
         binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
+    }
+
+    private fun noneColor() {
+        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+    }
+
+    fun toast(tText: String) {
+        Toast.makeText(
+            this,
+            tText,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
 }

@@ -143,10 +143,10 @@ class ServerClient() {
     }
 
     fun postTopicReply(
-        token: String?, topicId: Int?, content: String?,
+        token: String?, topicId: Int?, content: String?, parentReplyId: Int?,
         callback: ResultInterface<Boolean>
     ) {
-        network.server.postTopicReply(token, topicId, content)
+        network.server.postTopicReply(token, topicId, content, parentReplyId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -155,6 +155,7 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
+                    Log.d("test", it.message)
                 }
             )
     }
