@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.ReplyAdapter
 import com.sae.colosseum.databinding.ActivityTopicBinding
@@ -106,6 +107,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         binding.txtNickname.text = GlobalApplication.loginUser.nick_name
         topicId = intent.getIntExtra("topicId", -1)
 
+
         if (intent.hasExtra("topicId")) {
             setData()
         } else {
@@ -198,7 +200,6 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
                 topicInfo?.let {
                     txt_title.text = it.title
-                    num_reply_top.text = it.reply_count.toString()
                     txt_start_data.text = it.start_date
                     num_up.text = it.sides[0].vote_count.toString()
                     num_down.text = it.sides[1].vote_count.toString()
@@ -217,9 +218,11 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         noneColor()
                     }
 
-                    adapter = ReplyAdapter(it.replies, recyclerListener)
+                    adapter = ReplyAdapter(it, recyclerListener)
                     binding.listItem.adapter = adapter
                     binding.listItem.layoutManager = LinearLayoutManager(this@TopicActivity)
+
+                    Glide.with(this@TopicActivity).load(it.img_url).into(binding.imgTopic)
                 }
             }
         })
@@ -262,24 +265,24 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun clickUpColor() {
-        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
-        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorUp))
-        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.txtUp.setTextColor(ContextCompat.getColor(this, R.color.colorUp))
+        binding.numUp.setTextColor(ContextCompat.getColor(this, R.color.colorUp))
+        binding.txtDown.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.numDown.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
     }
 
     private fun clickDownColor() {
-        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
-        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorDown))
+        binding.txtUp.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.numUp.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.txtDown.setTextColor(ContextCompat.getColor(this, R.color.colorDown))
+        binding.numDown.setTextColor(ContextCompat.getColor(this, R.color.colorDown))
     }
 
     private fun noneColor() {
-        binding.txtUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.numUp.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.txtDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
-        binding.numDown.setTextColor(ContextCompat.getColor(applicationContext, android.R.color.tab_indicator_text))
+        binding.txtUp.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.numUp.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.txtDown.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
+        binding.numDown.setTextColor(ContextCompat.getColor(this, android.R.color.tab_indicator_text))
     }
 
     fun toast(tText: String) {
