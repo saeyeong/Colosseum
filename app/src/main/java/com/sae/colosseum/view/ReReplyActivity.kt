@@ -73,7 +73,7 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun topicReply(content: String) {
-        serverClient.postTopicReply(token, topicId, content, replyId, object : ResultInterface<Boolean> {
+        serverClient.postTopicReply(token, null, content, replyId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if(value) {
                     setData()

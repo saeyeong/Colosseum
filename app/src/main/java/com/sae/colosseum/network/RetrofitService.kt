@@ -77,7 +77,8 @@ interface RetrofitService {
     fun putTopicReply(
         @Header("X-Http-Token") token: String?,
         @Field("reply_id") replyId: Int?,
-        @Field("content") content: String?
+        @Field("content") content: String?,
+        @Field("parent_reply_id") parentReplyId: Int?
     ): Single<ResponseEntity>
 
     @GET("topic_reply/{replyId}")

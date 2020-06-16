@@ -67,7 +67,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                     binding.replyOff.visibility = VISIBLE
 
                     content = binding.editReply.text.toString()
-                    postTopicReply(content)
+                    postTopicReply(content, null)
 
                     replyCheck = 0 // 의견을 작성했기때문에 투표를 바꿀 수 없음
                 }
@@ -228,8 +228,7 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         })
     }
 
-    private fun postTopicReply(content: String) {
-        val parentReplyId: Int? = null
+    private fun postTopicReply(content: String, parentReplyId: Int?) {
         serverClient.postTopicReply(token, topicId, content, parentReplyId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if(value) {

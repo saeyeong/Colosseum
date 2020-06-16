@@ -155,7 +155,7 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
-                    Log.d("test", it.message)
+                    Log.d("test", it.message + token + topicId + content + parentReplyId)
                 }
             )
     }
@@ -198,16 +198,14 @@ class ServerClient() {
         token: String?, replyId: Int?, content: String?,
         callback: ResultInterface<ResponseEntity>
     ) {
-        network.server.putTopicReply(token, replyId, content)
+        network.server.putTopicReply(token, replyId, content, null)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
                     callback.result(it)
-                    Log.d("test","test!!!")
                 },
                 onError = {
-                    Log.d("test", it.toString())
                 }
             )
     }
@@ -221,8 +219,8 @@ class ServerClient() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-
                     callback.result(it)
+                    Log.d("test", it.message)
                 },
                 onError = {
                     Log.d("test", it.message)
