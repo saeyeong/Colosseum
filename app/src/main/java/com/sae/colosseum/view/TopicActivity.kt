@@ -49,6 +49,11 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setData()
+    }
+
     override fun onClick(v: View?) {
         val content: String
 
@@ -117,14 +122,6 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
 
-                fun startReReply() {
-                    mIntent = Intent(this@TopicActivity, ReReplyActivity::class.java)
-                        .putExtra("topicId", topicId)
-                        .putExtra("replyId", item.id)
-                        .putExtra("replyObject", item)
-                    startActivity(mIntent)
-                }
-
                 if (clickedView.id == btn_menu.id) {
 //                의견 메뉴 눌렀을때
                     builder?.let {
@@ -151,7 +148,6 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         }?.create()?.show()
                     }
                 } else if (clickedView.id == like_wrap.id || clickedView.id == dislike_wrap.id) {
-
 //                    좋아요/싫어요 눌렀을때
                     var isLike = false
                     if (clickedView.id == like_wrap.id) isLike = true
@@ -176,7 +172,11 @@ class TopicActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                         }
                     })
                 } else {
-                    startReReply()
+                    mIntent = Intent(this@TopicActivity, ReReplyActivity::class.java)
+                        .putExtra("topicId", topicId)
+                        .putExtra("replyId", item.id)
+                        .putExtra("replyObject", item)
+                    startActivity(mIntent)
                 }
             }
         }

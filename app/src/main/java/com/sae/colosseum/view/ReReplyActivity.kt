@@ -1,16 +1,19 @@
 package com.sae.colosseum.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.ReReplyAdapter
 import com.sae.colosseum.databinding.ActivityReReplyBinding
+import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.utils.BaseActivity
@@ -22,7 +25,9 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     var replyId: Int = -1
     var replyObject: RepliesEntity? = null
     lateinit var adapter: ReReplyAdapter
-    var topicInfo: RepliesEntity? = null
+    lateinit var recyclerListener: RecyclerViewListener<RepliesEntity, View>
+    var builder: AlertDialog.Builder? = null
+    var mIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +40,39 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         topicId = intent.getIntExtra("topicId", -1)
         replyId = intent.getIntExtra("replyId", -1)
         replyObject = intent.getParcelableExtra("replyObject")
-
         binding.nickname.text = replyObject?.user?.nick_name.toString()
         binding.content.text = replyObject?.content.toString()
         binding.txtDate.text = replyObject?.updated_at.toString()
-
+        
+        builder = AlertDialog.Builder(this)
         setData()
         setListener()
+        recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
+            override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+                builder?.let {
+                    it.setItems(R.array.menu_reply
+                    ) { dialog, which ->
+                        when(which) {
+                            0 -> {
+                                serverClient.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
+                                    override fun result(value: ResponseEntity) {
+                                        setData()
+                                    }
+                                })
+                            }
+                            1 -> {
+                                if(topicId != -1) {
+                                    mIntent = Intent(this@ReReplyActivity, ReplyModifyActivity::class.java)
+                                        .putExtra("topicId", topicId)
+                                        .putExtra("replyId", item.id)
+                                    startActivity(mIntent)
+                                }
+                            }
+                        }
+                    }?.create()?.show()
+                }
+            }
+        }
     }
 
     private fun setListener() {
@@ -67,6 +98,7 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
                 content = binding.editReReply.text.toString()
                 topicReply(content)
+                setData()
             }
         }
 
@@ -91,10 +123,10 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     private fun setData() {
         serverClient.getTopicReReply(token, replyId.toString(), object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
-                topicInfo = value.data.reply
+                binding.txtNickname.text = value.data.reply.user?.nick_name ?: ""
 
-                topicInfo?.let {
-                    adapter = ReReplyAdapter(it.replies)
+                value.data.reply.let {
+                    adapter = ReReplyAdapter(it.replies, recyclerListener)
                     binding.listReReply.adapter = adapter
                     binding.listReReply.layoutManager = LinearLayoutManager(this@ReReplyActivity)
                 }

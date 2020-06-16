@@ -30,7 +30,11 @@ class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
+    }
 
+    override fun onResume() {
+        super.onResume()
         init()
     }
 

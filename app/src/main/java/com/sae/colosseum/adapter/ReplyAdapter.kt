@@ -1,19 +1,16 @@
 package com.sae.colosseum.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.ReplyViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
-import kotlinx.android.synthetic.main.activity_topic.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 
 class ReplyAdapter(
