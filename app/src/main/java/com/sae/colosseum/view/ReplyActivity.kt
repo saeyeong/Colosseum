@@ -5,8 +5,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityReplyBinding
+import com.sae.colosseum.utils.BaseActivity
 
-class ReplyActivity : AppCompatActivity() {
+class ReplyActivity : BaseActivity() {
     private lateinit var binding: ActivityReplyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
