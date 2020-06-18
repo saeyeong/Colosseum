@@ -45,7 +45,6 @@ class IntroActivity : BaseActivity() {
                 startActivity(intentMain)
                 finish()
             }
-            Log.d("test","${token}")
             if (token.isNullOrEmpty()) {
                 loginActivity()
             } else {

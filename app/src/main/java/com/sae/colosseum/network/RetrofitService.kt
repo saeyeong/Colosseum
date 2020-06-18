@@ -21,10 +21,9 @@ interface RetrofitService {
     ): Single<ResponseEntity>
 
     @DELETE("user")
-    @FormUrlEncoded
     fun deleteUser(
         @Header("X-Http-Token") token: String?,
-        @Field("text") text: String?
+        @Query("text") text: String?
     ): Single<ResponseEntity>
 
     @GET("user_check")
