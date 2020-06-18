@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 class ServerClient() {
     private val network = NetworkHelper()
 
-    fun postUser(email: String, password: String, startActivity: () -> Unit, toast: () -> Unit) {
+    fun postUser(email: String, password: String, callback: ResultInterface<Boolean>) {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
 
         } else {
@@ -24,12 +24,12 @@ class ServerClient() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
+                        callback.result(true)
                         GlobalApplication.prefs.myEditText = it.data.token
-                        loginUser = it.data.user
-                        startActivity()
+                        GlobalApplication.loginUser = it.data.user
                     },
                     onError = {
-                        toast()
+                        callback.result(false)
                     }
                 )
         }
