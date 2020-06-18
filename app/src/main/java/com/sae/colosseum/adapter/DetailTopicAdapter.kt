@@ -47,7 +47,6 @@ class DetailTopicAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         val view: View
         val holder: RecyclerView.ViewHolder
         var position: Int

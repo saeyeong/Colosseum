@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.item_reply.view.*
 class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTopicDetailBinding
     var mIntent: Intent? = null
-    var topicInfo: TopicInfoEntity? = null
     var upId: Int? = null
     var downId: Int? = null
     var mySideId: Int? = null // 유저 찬/반 정보

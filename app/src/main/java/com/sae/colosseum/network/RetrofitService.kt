@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface RetrofitService {
     @PUT("user")
     @FormUrlEncoded
-    fun putUserInfo(
+    fun putUser(
         @Field("email") email: String?,
         @Field("password") password: String?,
         @Field("nick_name") nickName: String?
@@ -15,9 +15,16 @@ interface RetrofitService {
 
     @POST("user")
     @FormUrlEncoded
-    fun postUserInfo(
+    fun postUser(
         @Field("email") email: String?,
         @Field("password") password: String?
+    ): Single<ResponseEntity>
+
+    @DELETE("user")
+    @FormUrlEncoded
+    fun deleteUser(
+        @Header("X-Http-Token") token: String?,
+        @Field("text") text: String?
     ): Single<ResponseEntity>
 
     @GET("user_check")

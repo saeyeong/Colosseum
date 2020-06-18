@@ -15,17 +15,17 @@ import io.reactivex.schedulers.Schedulers
 class ServerClient() {
     private val network = NetworkHelper()
 
-    fun loginApi(email: String, password: String, startActivity: () -> Unit, toast: () -> Unit) {
+    fun postUser(email: String, password: String, startActivity: () -> Unit, toast: () -> Unit) {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
 
         } else {
-            network.server.postUserInfo(email, password)
+            network.server.postUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
                         GlobalApplication.prefs.myEditText = it.data.token
-                        GlobalApplication.loginUser = it.data.user
+                        loginUser = it.data.user
                         startActivity()
                     },
                     onError = {
@@ -56,7 +56,7 @@ class ServerClient() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    putUserInfo(email, password, nickName, toast, startActivity)
+                    putUser(email, password, nickName, toast, startActivity)
                 },
                 onError = {
                     toast()
@@ -64,8 +64,8 @@ class ServerClient() {
             )
     }
 
-    private fun putUserInfo(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
-        network.server.putUserInfo(email, password, nickName)
+    private fun putUser(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
+        network.server.putUser(email, password, nickName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -74,6 +74,19 @@ class ServerClient() {
                 },
                 onError = {
                     toast()
+                }
+            )
+    }
+
+    fun deleteUser(token: String?, text: String?, callback: ResultInterface<ResponseEntity>) {
+        network.server.deleteUser(token, text)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
+                },
+                onError = {
                 }
             )
     }

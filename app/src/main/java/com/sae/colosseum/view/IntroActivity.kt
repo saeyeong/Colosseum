@@ -3,6 +3,7 @@ package com.sae.colosseum.view
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import com.sae.colosseum.R
 import com.sae.colosseum.utils.BaseActivity
 
@@ -44,7 +45,7 @@ class IntroActivity : BaseActivity() {
                 startActivity(intentMain)
                 finish()
             }
-
+            Log.d("test","${token}")
             if (token.isNullOrEmpty()) {
                 loginActivity()
             } else {

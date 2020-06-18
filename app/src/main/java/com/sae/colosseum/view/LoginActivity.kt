@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         when (v) {
             binding.btnLogin-> {
-                serverClient.loginApi(email, password, startActivity, toast)
+                serverClient.postUser(email, password, startActivity, toast)
             }
             binding.btnSignUp -> {
                 val intent = Intent(this, SignUpActivity::class.java)
