@@ -4,6 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 
-class ReReplyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+class HeaderTopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
 }

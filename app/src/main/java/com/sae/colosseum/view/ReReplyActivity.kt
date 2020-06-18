@@ -40,7 +40,7 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         topicId = intent.getIntExtra("topicId", -1)
         replyId = intent.getIntExtra("replyId", -1)
         replyObject = intent.getParcelableExtra("replyObject")
-        binding.nickname.text = replyObject?.user?.nick_name.toString()
+        binding.nickName.text = replyObject?.user?.nick_name.toString()
         binding.content.text = replyObject?.content.toString()
         binding.txtDate.text = replyObject?.updated_at.toString()
         
@@ -48,7 +48,7 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         setData()
         setListener()
         recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
-            override fun onClickItemForViewId(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+            override fun onClickItem(item: RepliesEntity, clickedView: View, itemReplyView: View) {
                 builder?.let {
                     it.setItems(R.array.menu_reply
                     ) { dialog, which ->
@@ -123,7 +123,7 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     private fun setData() {
         serverClient.getTopicReReply(token, replyId.toString(), object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
-                binding.txtNickname.text = value.data.reply.user?.nick_name ?: ""
+                binding.txtNickName.text = value.data.reply.user?.nick_name ?: ""
 
                 value.data.reply.let {
                     adapter = ReReplyAdapter(it.replies, recyclerListener)

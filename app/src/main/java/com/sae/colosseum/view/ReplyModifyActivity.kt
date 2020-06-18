@@ -44,7 +44,7 @@ class ReplyModifyActivity : BaseActivity(), View.OnClickListener {
                 if(topicId != -1 || replyId != -1) {
 
                     Log.d("test",topicId.toString())
-                    val mIntent = Intent(this@ReplyModifyActivity, TopicActivity::class.java).putExtra("topicId", topicId)
+                    val mIntent = Intent(this@ReplyModifyActivity, DetailTopicActivity::class.java).putExtra("topicId", topicId)
                     startActivity(mIntent)
                 }
             }

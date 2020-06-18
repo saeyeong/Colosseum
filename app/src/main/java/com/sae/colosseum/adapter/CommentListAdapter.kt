@@ -20,11 +20,11 @@ class CommentListAdapter(private val list: List<CommentListEntity>?) : RecyclerV
 
     override fun onBindViewHolder(holder: CommentListViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.containerView.nickname.text = it.cmtNickname
-            holder.containerView.txt_date.text = it.txtDateCmt
-            holder.containerView.num_like.text = it.numLike
-            holder.containerView.num_dislike.text = it.numDislike
-            holder.containerView.content.text = it.txtCmt
+            holder.itemView.nick_name.text = it.cmtNickname
+            holder.itemView.txt_date.text = it.txtDateCmt
+            holder.itemView.num_like.text = it.numLike
+            holder.itemView.num_dislike.text = it.numDislike
+            holder.itemView.content.text = it.txtCmt
         }
     }
 }

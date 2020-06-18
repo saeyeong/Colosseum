@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.TopicListAdapter
+import com.sae.colosseum.adapter.ListTopicAdapter
 import com.sae.colosseum.databinding.FragmentTopicListHourBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -20,7 +20,7 @@ import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
-import com.sae.colosseum.view.TopicActivity
+import com.sae.colosseum.view.DetailTopicActivity
 
 class TopicListHourFragment : Fragment() {
     var serverClient: ServerClient? = null
@@ -59,12 +59,12 @@ class TopicListHourFragment : Fragment() {
         setData()
 
         recyclerListener = object : RecyclerViewListener<TopicInfoEntity, View> {
-            override fun onClickItemForViewId(
+            override fun onClickItem(
                 item: TopicInfoEntity,
                 clickedView: View,
                 itemReplyView: View
             ) {
-                val intent = Intent(mContext, TopicActivity::class.java)
+                val intent = Intent(mContext, DetailTopicActivity::class.java)
                 val topicId: Int = item.id
 
                 intent.putExtra("topicId", topicId)
@@ -77,7 +77,7 @@ class TopicListHourFragment : Fragment() {
     private fun setData() {
         serverClient?.getTopicList(token, object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
-                val adapter = TopicListAdapter(glide, value.data.topics, recyclerListener)
+                val adapter = ListTopicAdapter(glide, value.data.topics, recyclerListener)
                 binding.topicList.adapter = adapter
                 binding.topicList.layoutManager = LinearLayoutManager(mContext)
             }

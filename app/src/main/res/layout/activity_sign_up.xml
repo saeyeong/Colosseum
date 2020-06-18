@@ -8,7 +8,7 @@
     tools:context=".view.SignUpActivity">
 
     <TextView
-        android:id="@+id/txtColosseum"
+        android:id="@+id/txt_colosseum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtSignUp"
+        android:id="@+id/txt_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -28,10 +28,10 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtColosseum" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_colosseum" />
 
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/edit_email"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
@@ -42,12 +42,12 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_signUp"
         android:background="@drawable/gray_rounded_line_background"/>
 
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/edit_password"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -58,11 +58,11 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edit_email"
         android:background="@drawable/gray_rounded_line_background"/>
 
     <EditText
-        android:id="@+id/editPasswordCheck"
+        android:id="@+id/edit_password_check"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -73,11 +73,11 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password"
         android:background="@drawable/gray_rounded_line_background"/>
 
     <EditText
-        android:id="@+id/editNickname"
+        android:id="@+id/edit_nick_name"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -88,11 +88,11 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPasswordCheck"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password_check"
         android:background="@drawable/gray_rounded_line_background"/>
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/btn_sign_up"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginTop="15dp"
@@ -101,7 +101,7 @@
         android:textColor="#F6F6F6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNickname"
+        app:layout_constraintTop_toBottomOf="@+id/edit_nick_name"
         android:stateListAnimator="@null"/>
 
 

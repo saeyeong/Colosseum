@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.TopicListAdapter
+import com.sae.colosseum.adapter.ListTopicAdapter
 import com.sae.colosseum.databinding.FragmentPostListWeekBinding
 import com.sae.colosseum.model.DataModel
 
 class TopicListWeekFragment : Fragment() {
     var model: DataModel? = null
-    var adapter: TopicListAdapter? = null
+    var adapterList: ListTopicAdapter? = null
 
     lateinit var binding: FragmentPostListWeekBinding
 

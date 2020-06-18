@@ -36,13 +36,13 @@ class ServerClient() {
     }
 
 
-    fun signUpApi(email: String, password: String, nickname: String, toast: () -> Unit, startActivity: () -> Unit) {
+    fun signUpApi(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
         network.server.getUserIDCheck( "EMAIL", email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    userNicknameCheckApi(email, password, nickname, toast, startActivity)
+                    userNicknameCheckApi(email, password, nickName, toast, startActivity)
                 },
                 onError = {
                     toast()
@@ -50,13 +50,13 @@ class ServerClient() {
             )
     }
 
-    private fun userNicknameCheckApi(email: String, password: String, nickname: String, toast: () -> Unit, startActivity: () -> Unit) {
-        network.server.getUserIDCheck( "NICKNAME", nickname)
+    private fun userNicknameCheckApi(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
+        network.server.getUserIDCheck( "NICKNAME", nickName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    putUserInfo(email, password, nickname, toast, startActivity)
+                    putUserInfo(email, password, nickName, toast, startActivity)
                 },
                 onError = {
                     toast()
@@ -64,8 +64,8 @@ class ServerClient() {
             )
     }
 
-    private fun putUserInfo(email: String, password: String, nickname: String, toast: () -> Unit, startActivity: () -> Unit) {
-        network.server.putUserInfo(email, password, nickname)
+    private fun putUserInfo(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
+        network.server.putUserInfo(email, password, nickName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -119,7 +119,6 @@ class ServerClient() {
                     callback.result(it.data)
                 },
                 onError = {
-                    Log.d("test", it.message)
                 }
             )
     }
@@ -136,7 +135,6 @@ class ServerClient() {
                     callback.result(true)
                 },
                 onError = {
-                    Log.d("test", it.message)
                     callback.result(false)
                 }
             )
@@ -155,7 +153,6 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
-                    Log.d("test", it.message + token + topicId + content + parentReplyId)
                 }
             )
     }
@@ -220,10 +217,8 @@ class ServerClient() {
             .subscribeBy(
                 onSuccess = {
                     callback.result(it)
-                    Log.d("test", it.message)
                 },
                 onError = {
-                    Log.d("test", it.message)
                 }
             )
     }

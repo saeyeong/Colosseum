@@ -31,7 +31,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         val email: String = binding.editEmail.text.toString()
         val password: String = binding.editPassword.text.toString()
         val passwordCheck: String = binding.editPasswordCheck.text.toString()
-        val nickname: String = binding.editNickname.text.toString()
+        val nickName: String = binding.editNickName.text.toString()
 
         val regex = """[a-z|1-9]{4,15}\@[a-z|1-9]{4,15}\..+""".toRegex()
 
@@ -41,7 +41,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             finish()
         }
 
-        if (email.isNullOrEmpty() || password.isNullOrEmpty() || nickname.isNullOrEmpty()) {
+        if (email.isNullOrEmpty() || password.isNullOrEmpty() || nickName.isNullOrEmpty()) {
 
         } else if (!regex.containsMatchIn(input = email)) {
             Toast.makeText(this, "이메일 양식이 올바르지 않습니다.", Toast.LENGTH_LONG).show()
@@ -52,7 +52,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         } else {
             val toast: () -> Unit = {Toast.makeText(this, "이메일 또는 닉네임이 중복입니다.", Toast.LENGTH_LONG).show()}
 
-            serverClient.signUpApi(email, password, nickname, toast, startActivity)
+            serverClient.signUpApi(email, password, nickName, toast, startActivity)
 
         }
 

@@ -20,9 +20,9 @@ class AlarmListAdapter(private val list: ArrayList<AlarmListEntity>?) : Recycler
 
     override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.containerView.type_icon.setImageResource(it.iconType)
-            holder.containerView.nickname.text = it.nickname
-            holder.containerView.txt_alarm.setText(R.string.heart_like_alarm)
+            holder.itemView.type_icon.setImageResource(it.iconType)
+            holder.itemView.nick_name.text = it.nick_name
+            holder.itemView.txt_alarm.setText(R.string.heart_like_alarm)
         }
     }
 }

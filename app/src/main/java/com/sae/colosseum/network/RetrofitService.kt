@@ -10,7 +10,7 @@ interface RetrofitService {
     fun putUserInfo(
         @Field("email") email: String?,
         @Field("password") password: String?,
-        @Field("nick_name") nickname: String?
+        @Field("nick_name") nickName: String?
     ): Single<ResponseEntity>
 
     @POST("user")

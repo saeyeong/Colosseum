@@ -17,7 +17,7 @@
         <activity android:name=".view.ReReplyActivity"></activity>
         <activity android:name=".view.ReplyActivity" />
         <activity
-            android:name=".view.TopicActivity"
+            android:name=".view.DetailTopicActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.IntroActivity">
             <intent-filter>
