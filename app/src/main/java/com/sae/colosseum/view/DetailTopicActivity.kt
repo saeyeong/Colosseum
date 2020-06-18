@@ -226,10 +226,10 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    fun toast(tText: String) {
+    fun toast(text: String) {
         Toast.makeText(
             this,
-            tText,
+            text,
             Toast.LENGTH_LONG
         ).show()
     }

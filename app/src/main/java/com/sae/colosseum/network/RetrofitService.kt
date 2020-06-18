@@ -27,7 +27,7 @@ interface RetrofitService {
     ): Single<ResponseEntity>
 
     @GET("user_check")
-    fun getUserIDCheck(
+    fun getUserCheck(
         @Query("type") type: String?,
         @Query("value") value: String?
     ): Single<ResponseEntity>

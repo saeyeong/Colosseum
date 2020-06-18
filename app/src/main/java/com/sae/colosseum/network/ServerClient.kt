@@ -16,7 +16,7 @@ class ServerClient() {
     private val network = NetworkHelper()
 
     fun postUser(email: String, password: String, callback: ResultInterface<Boolean>) {
-        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
 
         } else {
             network.server.postUser(email, password)
@@ -26,7 +26,7 @@ class ServerClient() {
                     onSuccess = {
                         callback.result(true)
                         GlobalApplication.prefs.myEditText = it.data.token
-                        GlobalApplication.loginUser = it.data.user
+                        loginUser = it.data.user
                     },
                     onError = {
                         callback.result(false)
@@ -36,44 +36,30 @@ class ServerClient() {
     }
 
 
-    fun signUpApi(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
-        network.server.getUserIDCheck( "EMAIL", email)
+    fun getUserCheck(type: String, value: String, callback: ResultInterface<Boolean>) {
+        network.server.getUserCheck( type, value)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    userNicknameCheckApi(email, password, nickName, toast, startActivity)
+                    callback.result(true)
                 },
                 onError = {
-                    toast()
+                    callback.result(false)
                 }
             )
     }
 
-    private fun userNicknameCheckApi(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
-        network.server.getUserIDCheck( "NICKNAME", nickName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    putUser(email, password, nickName, toast, startActivity)
-                },
-                onError = {
-                    toast()
-                }
-            )
-    }
-
-    private fun putUser(email: String, password: String, nickName: String, toast: () -> Unit, startActivity: () -> Unit) {
+    fun putUser(email: String, password: String, nickName: String, callback: ResultInterface<Boolean>) {
         network.server.putUser(email, password, nickName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    startActivity()
+                    callback.result(true)
                 },
                 onError = {
-                    toast()
+                    callback.result(false)
                 }
             )
     }
