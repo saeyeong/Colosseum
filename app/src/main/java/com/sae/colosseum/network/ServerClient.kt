@@ -1,10 +1,8 @@
 package com.sae.colosseum.network
 
-import android.util.Log
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
-import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.GlobalApplication.Companion.loginUser
 import com.sae.colosseum.utils.ResultInterface
@@ -144,6 +142,23 @@ class ServerClient() {
         callback: ResultInterface<Boolean>
     ) {
         network.server.postTopicReply(token, topicId, content, parentReplyId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    callback.result(false)
+                }
+            )
+    }
+
+    fun postTopicLike(
+        token: String?, topicId: Int?,
+        callback: ResultInterface<Boolean>
+    ) {
+        network.server.postTopicLike(token, topicId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

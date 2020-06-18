@@ -51,10 +51,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         setData()
     }
 
-    override fun onClick(v: View?) {
-
-    }
-
     fun init() {
         setListener()
         builder = AlertDialog.Builder(this)
@@ -106,11 +102,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                             toast("진영을 변경하시려면 의견을 삭제해 주세요.")
                         }
                     }
-//            // 의견 전체보기 눌렀을 때
-//            binding.btnGoReply -> {
-//                val intent = Intent(this, ReplyActivity::class.java)
-//                startActivity(intent)
-//            }
                     // 레이아웃 눌렀을때 (의견입력창 원상태로 되돌리기)
                     wrap_topic.id -> {
                         reply_off.visibility = VISIBLE
@@ -182,12 +173,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun setListener() {
-        binding.bookmark.setOnClickListener(this)
-
-//        binding.btnGoReply.setOnClickListener(this)
-    }
-
     private fun setData() {
         serverClient.getTopic(token, topicId.toString(), object : ResultInterface<DataEntity> {
             override fun result(value: DataEntity) {
@@ -199,6 +184,10 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                 binding.recyclerView.layoutManager = LinearLayoutManager(this@DetailTopicActivity)
             }
         })
+    }
+
+    private fun setListener() {
+        binding.bookmark.setOnClickListener(this)
     }
 
     private fun postTopicReply(content: String, parentReplyId: Int?) {
@@ -225,13 +214,28 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-
     fun toast(text: String) {
         Toast.makeText(
             this,
             text,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    override fun onClick(v: View?) {
+        when(v) {
+            binding.bookmark -> {
+                serverClient.postTopicLike(token, topicId, object : ResultInterface<Boolean> {
+                    override fun result(value: Boolean) {
+                        if(value) {
+
+                        } else {
+
+                        }
+                    }
+                })
+            }
+        }
     }
 
 }

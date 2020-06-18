@@ -64,6 +64,13 @@ interface RetrofitService {
         @Field("parent_reply_id") parentReplyId: Int?
     ): Single<ResponseEntity>
 
+    @POST("topic_like")
+    @FormUrlEncoded
+    fun postTopicLike(
+        @Header("X-Http-Token") token: String?,
+        @Field("reply_id") topicId: Int?
+    ): Single<ResponseEntity>
+
     @POST("topic_reply_like")
     @FormUrlEncoded
     fun postTopicReplyLike(
