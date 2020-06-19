@@ -24,6 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="내소식"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
             android:textAlignment="center"
             android:textSize="20sp" />
 

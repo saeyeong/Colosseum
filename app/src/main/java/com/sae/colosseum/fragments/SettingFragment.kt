@@ -2,7 +2,6 @@ package com.sae.colosseum.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +15,13 @@ import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
 import com.sae.colosseum.view.LoginActivity
+import com.sae.colosseum.view.AccountActivity
 
 class SettingFragment : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentSettingBinding
     var serverClient: ServerClient? = null
     var token: String? = null
+    lateinit var intent: Intent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,18 +50,22 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v) {
+            binding.btnAccount -> {
+                intent = Intent(activity, AccountActivity::class.java)
+                startActivity(intent)
+            }
             binding.btnLogout -> {
                 GlobalApplication.prefs.myEditText = ""
                 GlobalApplication.loginUser = UserEntity("","","","","","")
-                val intentLogin = Intent(activity, LoginActivity::class.java)
-                startActivity(intentLogin)
+                intent = Intent(activity, LoginActivity::class.java)
+                startActivity(intent)
                 activity?.finish()
             }
             binding.btnMemberOut -> {
                 serverClient?.deleteUser(token, "동의", object: ResultInterface<ResponseEntity> {
                     override fun result(value: ResponseEntity) {
-                        val intentLogin = Intent(activity, LoginActivity::class.java)
-                        startActivity(intentLogin)
+                        intent = Intent(activity, LoginActivity::class.java)
+                        startActivity(intent)
                         activity?.finish()
                     }
                 })

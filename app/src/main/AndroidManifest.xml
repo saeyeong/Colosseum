@@ -13,8 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ReplyModifyActivity"></activity>
-        <activity android:name=".view.ReReplyActivity"></activity>
+        <activity android:name=".view.UserInfoActivity"></activity>
+        <activity android:name=".view.AccountActivity" />
+        <activity android:name=".view.ReplyModifyActivity" />
+        <activity android:name=".view.ReReplyActivity" />
         <activity android:name=".view.ReplyActivity" />
         <activity
             android:name=".view.DetailTopicActivity"
