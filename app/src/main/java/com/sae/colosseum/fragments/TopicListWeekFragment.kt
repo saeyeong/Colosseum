@@ -13,7 +13,6 @@ import com.sae.colosseum.model.DataModel
 
 class TopicListWeekFragment : Fragment() {
     var model: DataModel? = null
-    var adapterList: ListTopicAdapter? = null
 
     lateinit var binding: FragmentPostListWeekBinding
 
@@ -33,11 +32,6 @@ class TopicListWeekFragment : Fragment() {
     }
 
     fun init() {
-//        model = DataModel()
-//        adapter = PostListAdapter(model?.itemsList)
-//
-//        post_list.adapter = adapter
-//        post_list.layoutManager = LinearLayoutManager(context)
     }
 
     companion object{

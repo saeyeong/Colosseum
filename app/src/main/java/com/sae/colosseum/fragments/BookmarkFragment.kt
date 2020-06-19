@@ -3,6 +3,7 @@ package com.sae.colosseum.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.ListTopicAdapter
-import com.sae.colosseum.databinding.FragmentTopicListHourBinding
+import com.sae.colosseum.databinding.FragmentBookmarkBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
@@ -22,20 +23,19 @@ import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
 import com.sae.colosseum.view.DetailTopicActivity
 
-class TopicListHourFragment : Fragment() {
+class BookmarkFragment : Fragment() {
     var serverClient: ServerClient? = null
     var mContext: Context? = null
     var token: String? = null
-    var glide: RequestManager? = null
     lateinit var recyclerListener: RecyclerViewListener<TopicInfoEntity, View>
-    lateinit var binding: FragmentTopicListHourBinding
+    lateinit var binding: FragmentBookmarkBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_topic_list_hour,container,false)
+            R.layout.fragment_bookmark,container,false)
 
         return binding.root
     }
@@ -48,9 +48,11 @@ class TopicListHourFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
-        mContext?.let {
-            glide = Glide.with(it)
-        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setData()
     }
 
     fun init() {
@@ -70,29 +72,16 @@ class TopicListHourFragment : Fragment() {
                 intent.putExtra("topicId", topicId)
                 mContext?.startActivity(intent)
             }
-
         }
     }
 
     private fun setData() {
-        serverClient?.getTopicList(token, object : ResultInterface<ResponseEntity> {
+        serverClient?.getTopicLike(token, object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
                 val adapter = ListTopicAdapter(value.data.topics, recyclerListener)
-                binding.listTopic.adapter = adapter
-                binding.listTopic.layoutManager = LinearLayoutManager(mContext)
+                binding.listBookmark.adapter = adapter
+                binding.listBookmark.layoutManager = LinearLayoutManager(mContext)
             }
         })
     }
-
-    companion object{
-          fun newInstance(): Fragment{
-            val args = Bundle()
-
-            val fragment = TopicListHourFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
-
 }

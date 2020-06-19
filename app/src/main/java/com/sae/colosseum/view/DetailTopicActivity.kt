@@ -8,10 +8,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.DetailTopicAdapter
 import com.sae.colosseum.databinding.ActivityTopicDetailBinding
@@ -19,11 +17,9 @@ import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
-import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.BaseActivity
 import com.sae.colosseum.utils.ResultInterface
 import kotlinx.android.synthetic.main.header_topic.*
-import kotlinx.android.synthetic.main.header_topic.view.*
 import kotlinx.android.synthetic.main.item_reply.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 
@@ -55,7 +51,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         setListener()
         builder = AlertDialog.Builder(this)
         topicId = intent.getIntExtra("topicId", -1)
-
 
         if (intent.hasExtra("topicId")) {
             setData()
@@ -228,9 +223,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                 serverClient.postTopicLike(token, topicId, object : ResultInterface<Boolean> {
                     override fun result(value: Boolean) {
                         if(value) {
-
                         } else {
-
                         }
                     }
                 })

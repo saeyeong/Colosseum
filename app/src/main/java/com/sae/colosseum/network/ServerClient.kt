@@ -1,5 +1,6 @@
 package com.sae.colosseum.network
 
+import android.util.Log
 import com.sae.colosseum.model.entity.DataEntity
 import com.sae.colosseum.model.entity.RepliesEntity
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -75,17 +76,17 @@ class ServerClient() {
             )
     }
 
-    fun getUserTokenCheck(token: String, loginActivity: () -> Unit, mainActivity: () -> Unit) {
-        network.server.getUserTokenCheck(token)
+    fun getUserInfo(token: String, callback: ResultInterface<Boolean>) {
+        network.server.getUserInfo(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
                     loginUser = it.data.user
-                    mainActivity()
+                    callback.result(true)
                 },
                 onError = {
-                    loginActivity()
+                    callback.result(false)
                 }
             )
     }
@@ -167,6 +168,22 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
+                }
+            )
+    }
+
+    fun getTopicLike(
+        token: String?,
+        callback: ResultInterface<ResponseEntity>
+    ) {
+        network.server.getTopicLike(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
+                },
+                onError = {
                 }
             )
     }

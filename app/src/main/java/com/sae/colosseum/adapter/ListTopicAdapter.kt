@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.ListTopicViewHolder
@@ -12,7 +13,6 @@ import com.sae.colosseum.model.entity.TopicInfoEntity
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class ListTopicAdapter(
-    private var glide: RequestManager?,
     private val list: ArrayList<TopicInfoEntity>?,
     private val mCallback: RecyclerViewListener<TopicInfoEntity, View>
 ) : RecyclerView.Adapter<ListTopicViewHolder>() {
@@ -42,13 +42,15 @@ open class ListTopicAdapter(
 
     override fun onBindViewHolder(holder: ListTopicViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.itemView.topic_number.text = (position + 1).toString()
-            holder.itemView.topic_title.text = it.title
-            holder.itemView.num_agree.text = it.sides[0].vote_count.toString()
-            holder.itemView.num_disagree.text = it.sides[1].vote_count.toString()
-            holder.itemView.end_date.text = it.end_date
-            holder.itemView.num_reply.text = it.reply_count.toString()
-            glide?.load(it.img_url)?.into(holder.itemView.img_topic)
+            holder.itemView.run {
+                topic_number.text = (position + 1).toString()
+                topic_title.text = it.title
+                num_agree.text = it.sides[0].vote_count.toString()
+                num_disagree.text = it.sides[1].vote_count.toString()
+                end_date.text = it.end_date
+                num_reply.text = it.reply_count.toString()
+                Glide.with(img_topic.context).load(it.img_url)?.into(img_topic)
+            }
         }
     }
 }
