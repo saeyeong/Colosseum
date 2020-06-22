@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.ListTopicAdapter
+import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.databinding.FragmentTopicListHourBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -77,9 +77,9 @@ class TopicListHourFragment : Fragment() {
     private fun setData() {
         serverClient?.getTopicList(token, object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
-                val adapter = ListTopicAdapter(value.data.topics, recyclerListener)
-                binding.listTopic.adapter = adapter
-                binding.listTopic.layoutManager = LinearLayoutManager(mContext)
+                val adapter = TopicListAdapter(value.data.topics, recyclerListener)
+                binding.list.adapter = adapter
+                binding.list.layoutManager = LinearLayoutManager(mContext)
             }
         })
     }
@@ -93,6 +93,4 @@ class TopicListHourFragment : Fragment() {
             return fragment
         }
     }
-
-
 }

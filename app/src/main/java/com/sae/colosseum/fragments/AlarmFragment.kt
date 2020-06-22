@@ -11,12 +11,17 @@ import com.sae.colosseum.R
 import com.sae.colosseum.adapter.AlarmListAdapter
 import com.sae.colosseum.databinding.FragmentAlarmBinding
 import com.sae.colosseum.model.DataModel
-import kotlinx.android.synthetic.main.fragment_alarm.*
+import com.sae.colosseum.model.entity.ResponseEntity
+import com.sae.colosseum.network.ServerClient
+import com.sae.colosseum.utils.GlobalApplication
+import com.sae.colosseum.utils.ResultInterface
 
 class AlarmFragment : Fragment() {
     var model: DataModel? = null
     var adapter: AlarmListAdapter? = null
+    lateinit var serverClient: ServerClient
 
+    val token = GlobalApplication.prefs.myEditText
     lateinit var binding: FragmentAlarmBinding
 
     override fun onCreateView(
@@ -34,5 +39,27 @@ class AlarmFragment : Fragment() {
     }
 
     fun init() {
+        serverClient = ServerClient()
+        setData()
+    }
+
+    private fun setData() {
+        serverClient.getNotification(token, object : ResultInterface<ResponseEntity> {
+            override fun result(value: ResponseEntity) {
+                adapter = AlarmListAdapter(value.data.notifications)
+                binding.list.adapter = adapter
+                binding.list.layoutManager = LinearLayoutManager(context)
+            }
+        })
+    }
+
+    companion object{
+        fun newInstance(): Fragment{
+            val args = Bundle()
+
+            val fragment = AlarmFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

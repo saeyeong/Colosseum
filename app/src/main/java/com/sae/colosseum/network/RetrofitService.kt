@@ -17,6 +17,12 @@ interface RetrofitService {
         @Header("X-Http-Token") token: String?
     ): Single<ResponseEntity>
 
+    @GET("user_info")
+    fun getUserInfo(
+        @Header("X-Http-Token") token: String?,
+        @Query("need_replies") needReplies: Int?
+    ): Single<ResponseEntity>
+
 
 
 
@@ -33,6 +39,21 @@ interface RetrofitService {
     fun postUser(
         @Field("email") email: String?,
         @Field("password") password: String?
+    ): Single<ResponseEntity>
+
+    @PATCH("user")
+    @FormUrlEncoded
+    fun patchUser(
+        @Header("X-Http-Token") token: String?,
+        @Field("nick_name") nickName: String?
+    ): Single<ResponseEntity>
+
+    @PATCH("user")
+    @FormUrlEncoded
+    fun patchUser(
+        @Header("X-Http-Token") token: String?,
+        @Field("current_password") currentPassword: String?,
+        @Field("new_password") newPassword: String?
     ): Single<ResponseEntity>
 
     @DELETE("user")
@@ -57,6 +78,14 @@ interface RetrofitService {
         @Path("topicId") topicId: String?
     ): Single<ResponseEntity>
 
+    @GET("topic/{topicId}")
+    fun getTopic(
+        @Header("X-Http-Token") token: String?,
+        @Path("topicId") topicId: String?,
+        @Query("order_type") orderType: String?,
+        @Query("page_num") pageNum: String?
+    ): Single<ResponseEntity>
+
     @POST("topic_vote")
     @FormUrlEncoded
     fun postTopicVote(
@@ -65,6 +94,14 @@ interface RetrofitService {
     ): Single<ResponseEntity>
 
 
+
+    @PUT("topic_reply")
+    @FormUrlEncoded
+    fun putTopicReply(
+        @Header("X-Http-Token") token: String?,
+        @Field("reply_id") replyId: Int?,
+        @Field("content") content: String?
+    ): Single<ResponseEntity>
 
     @PUT("topic_reply")
     @FormUrlEncoded
@@ -80,6 +117,13 @@ interface RetrofitService {
     fun postTopicReply(
         @Header("X-Http-Token") token: String?,
         @Field("topic_id") topicId: Int?,
+        @Field("content") content: String?
+    ): Single<ResponseEntity>
+
+    @POST("topic_reply")
+    @FormUrlEncoded
+    fun postTopicReply(
+        @Header("X-Http-Token") token: String?,
         @Field("content") content: String?,
         @Field("parent_reply_id") parentReplyId: Int?
     ): Single<ResponseEntity>
@@ -116,5 +160,11 @@ interface RetrofitService {
         @Header("X-Http-Token") token: String?,
         @Field("reply_id") replyId: Int?,
         @Field("is_like") isLike: Boolean?
+    ): Single<ResponseEntity>
+
+
+    @GET("notification")
+    fun getNotification(
+        @Header("X-Http-Token") token: String?
     ): Single<ResponseEntity>
 }

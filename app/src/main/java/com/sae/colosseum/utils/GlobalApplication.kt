@@ -6,12 +6,12 @@ import com.sae.colosseum.model.entity.UserEntity
 class GlobalApplication : Application() {
 
     companion object{
-        lateinit var prefs : SharedPreferencesActivity
+        lateinit var prefs : SharedPreferences
         lateinit var loginUser : UserEntity
     }
 
     override fun onCreate() {
         super.onCreate()
-        prefs = SharedPreferencesActivity(applicationContext)
+        prefs = SharedPreferences(applicationContext)
     }
 }

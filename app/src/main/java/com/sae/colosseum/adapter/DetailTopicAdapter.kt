@@ -1,11 +1,15 @@
 package com.sae.colosseum.adapter
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,15 +24,15 @@ import kotlinx.android.synthetic.main.header_topic.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 
 class DetailTopicAdapter(
-    data: DataEntity?,
-    private val itemListener: RecyclerViewListener<RepliesEntity, View>,
-    private val headerListener: RecyclerViewListener<RepliesEntity, View>
+    var list: DataEntity?,
+    private val headerListener: RecyclerViewListener<RepliesEntity, View>,
+    private val itemListener: RecyclerViewListener<RepliesEntity, View>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_HEADER = 0
     private val TYPE_ITEM = 1
-    private val topic = data?.topic
-    private val replies = data?.topic?.replies
+    private val topic = list?.topic
+    private val replies:ArrayList<RepliesEntity>? = topic?.replies
     private var upId: Int = topic?.sides?.get(0)?.id ?: -1
     private var downId: Int = topic?.sides?.get(1)?.id ?: -1
     private var mySideId = topic?.my_side_id
@@ -59,15 +63,15 @@ class DetailTopicAdapter(
                     position = holder.adapterPosition
                     item = replies?.get(position)
                     item?.run {
-                        itemListener.onClickItem(this, it, view)
+                        headerListener.onClickItem(this, it, view)
                     }
                 }.let {
                     // 좋아요/싫어요 클릭 리스너
                     holder.itemView.run {
                         edit_wrap.setOnClickListener(it)
                         btn_ok.setOnClickListener(it)
-                        up_wrap.setOnClickListener(it)
-                        down_wrap.setOnClickListener(it)
+                        wrap_up.setOnClickListener(it)
+                        wrap_down.setOnClickListener(it)
                         wrap_topic.setOnClickListener(it)
                     }
                 }
@@ -97,9 +101,9 @@ class DetailTopicAdapter(
                 holder = ReplyTopicViewHolder(view)
                 View.OnClickListener {
                     position = holder.adapterPosition
-                    item = replies?.get(position)
+                    item = replies?.get(position-1)
                     item?.run {
-                        headerListener.onClickItem(this, it, view)
+                        itemListener.onClickItem(this, it, view)
                     }
                 }.let {
                     // 좋아요/싫어요 클릭 리스너
@@ -116,12 +120,14 @@ class DetailTopicAdapter(
     }
 
     override fun getItemCount(): Int {
-        return replies?.count() ?: 0 + 1
+        return replies?.count() ?: 0
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder is ReplyTopicViewHolder) {
-            replies?.get(position)?.let {
+
+            Log.d("포지션", position.toString())
+            replies?.get(position-1)?.let {
                 holder.itemView.run {
                     nick_name.text = it.user?.nick_name
                     content.text = it.content
@@ -130,12 +136,15 @@ class DetailTopicAdapter(
                     num_dislike.text = it.dislike_count.toString()
                     num_re_reply.text = it.reply_count.toString()
 
+                    fun markReply(up: Int, down: Int) {
+                        mark_up.visibility = up
+                        mark_down.visibility = down
+                    }
+
                     if (it.side_id == upId) {
-                        userInfo.setBackgroundResource(R.color.colorUp)
-                        userInfo.background.alpha = 50
+                        markReply(VISIBLE, GONE)
                     } else if (it.side_id == downId) {
-                        userInfo.setBackgroundResource(R.color.colorDown)
-                        userInfo.background.alpha = 50
+                        markReply(GONE, VISIBLE)
                     }
 
 //                    내 댓글만 수정 메뉴 보임
@@ -167,34 +176,35 @@ class DetailTopicAdapter(
                     num_reply.text = it.reply_count.toString()
                     Glide.with(img_topic.context).load(it.img_url).into(img_topic)
 
-                    fun clickUpColor() {
-                        txt_up.setTextColor(ContextCompat.getColor(txt_up.context, R.color.colorUp))
-                        num_up.setTextColor(ContextCompat.getColor(num_up.context, R.color.colorUp))
-                        txt_down.setTextColor(ContextCompat.getColor(txt_down.context, android.R.color.tab_indicator_text))
-                        num_down.setTextColor(ContextCompat.getColor(num_down.context, android.R.color.tab_indicator_text))
-                    }
+                    val voteSum = (it.sides[0].vote_count + it.sides[1].vote_count).toFloat()
+                    val percentUp = it.sides[0].vote_count / voteSum
+                    val percentDown = it.sides[1].vote_count / voteSum
 
-                    fun clickDownColor() {
-                        txt_up.setTextColor(ContextCompat.getColor(txt_up.context, android.R.color.tab_indicator_text))
-                        num_up.setTextColor(ContextCompat.getColor(num_up.context, android.R.color.tab_indicator_text))
-                        txt_down.setTextColor(ContextCompat.getColor(txt_down.context, R.color.colorDown))
-                        num_down.setTextColor(ContextCompat.getColor(num_down.context, R.color.colorDown))
-                    }
+                    (bar_up.layoutParams as ConstraintLayout.LayoutParams)
+                        .matchConstraintPercentWidth = percentUp
+                    bar_up.requestLayout()
 
-                    fun noneColor() {
-                        txt_up.setTextColor(ContextCompat.getColor(txt_up.context, android.R.color.tab_indicator_text))
-                        num_up.setTextColor(ContextCompat.getColor(num_up.context, android.R.color.tab_indicator_text))
-                        txt_down.setTextColor(ContextCompat.getColor(txt_down.context, android.R.color.tab_indicator_text))
-                        num_down.setTextColor(ContextCompat.getColor(num_down.context, android.R.color.tab_indicator_text))
+                    (bar_down.layoutParams as ConstraintLayout.LayoutParams)
+                        .matchConstraintPercentWidth = percentDown
+                    bar_down.requestLayout()
+
+                    fun clickUpColor(context: Context, color: Int) {
+                        txt_up.setTextColor(ContextCompat.getColor(context, color))
+                        num_up.setTextColor(ContextCompat.getColor(context, color))
+                    }
+                    fun clickDownColor(context: Context, color: Int) {
+                        txt_down.setTextColor(ContextCompat.getColor(context, color))
+                        num_down.setTextColor(ContextCompat.getColor(context, color))
                     }
 
 //                    유저 찬/반 정보에 따라 버튼 색 초기화
                     if (mySideId == upId) {
-                        clickUpColor()
+                        clickUpColor(txt_up.context, R.color.colorUp)
                     } else if (mySideId == downId) {
-                        clickDownColor()
+                        clickDownColor(txt_down.context, R.color.colorDown)
                     } else {
-                        noneColor()
+                        clickUpColor(txt_up.context, android.R.color.tab_indicator_text)
+                        clickDownColor(txt_down.context, android.R.color.tab_indicator_text)
                     }
 
                 }

@@ -11,58 +11,11 @@
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/homeFragLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:tag="0">
-            <fragment
-                android:id="@+id/fragHome"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.sae.colosseum.fragments.HomeFragment" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/heartFragLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <fragment
-                android:id="@+id/fragHeart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.sae.colosseum.fragments.BookmarkFragment" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/alarmFragLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <fragment
-                android:id="@+id/fragAlarm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.sae.colosseum.fragments.AlarmFragment" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/settingFragLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <fragment
-                android:id="@+id/fragSetting"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.sae.colosseum.fragments.SettingFragment" />
-
-        </LinearLayout>
-
-    </FrameLayout>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,12 +35,12 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/home_on"
-            app:layout_constraintEnd_toStartOf="@+id/heart"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/heart"
+            android:id="@+id/bookmark"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/heart_on"
@@ -101,7 +54,7 @@
             android:layout_height="30dp"
             android:background="@drawable/alarm_on"
             app:layout_constraintEnd_toStartOf="@+id/setting"
-            app:layout_constraintStart_toEndOf="@+id/heart"
+            app:layout_constraintStart_toEndOf="@+id/bookmark"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton

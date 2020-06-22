@@ -9,5 +9,6 @@ data class TopicInfoEntity(
     val sides: List<SidesEntity>,
     val reply_count: Int,
     val my_side_id: Int,
-    val replies: ArrayList<RepliesEntity>
+    val replies: ArrayList<RepliesEntity>,
+    val is_my_like_topic: Boolean
 )

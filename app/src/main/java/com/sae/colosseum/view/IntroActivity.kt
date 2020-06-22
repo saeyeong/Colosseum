@@ -36,7 +36,7 @@ class IntroActivity : BaseActivity() {
 
     fun init() {
 
-        runnable = Runnable {
+        runnable = Runnable { // runnable remove 하긔
             var intent: Intent
 
             if (token.isNullOrEmpty()) {

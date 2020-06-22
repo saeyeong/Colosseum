@@ -28,13 +28,16 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     var mIntent: Intent? = null
     var upId: Int? = null
     var downId: Int? = null
-    var mySideId: Int? = null // 유저 찬/반 정보
-    var replyCheck: Int = -1 // 의견 작성 확인
+    var mySideId: Int = -1 // 유저 찬/반 정보
+    var replyCheck: Int = -1 // -1: 투표안함 0 : 쓸수있음 1 : 이미 썼음
     var builder: AlertDialog.Builder? = null
     private var topicId: Int = -1
     lateinit var headerListener: RecyclerViewListener<RepliesEntity, View>
     private lateinit var itemListener: RecyclerViewListener<RepliesEntity, View>
     lateinit var adapter: DetailTopicAdapter
+    var orderType: String = "NEW"
+    var pageNum: String = "1"
+    var value : DataEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +47,13 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        setData()
+        setData(orderType, pageNum)
     }
 
     fun init() {
         setListener()
         builder = AlertDialog.Builder(this)
         topicId = intent.getIntExtra("topicId", -1)
-
-        if (intent.hasExtra("topicId")) {
-            setData()
-        } else {
-            finish()
-        }
 
         headerListener = object : RecyclerViewListener<RepliesEntity, View> {
             override fun onClickItem(position: RepliesEntity, clickedView: View, itemView: View) {
@@ -70,28 +67,30 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                     // 의견 등록하기 눌렀을 때
                     btn_ok.id -> {
                         if(mySideId == -1) { // 투표 검사
-                            Toast.makeText(this@DetailTopicActivity, "투표를 완료하시면 의견을 작성하실 수 있습니다", Toast.LENGTH_LONG).show()
+                            toast("투표를 완료하시면 의견을 작성하실 수 있습니다")
+                        } else if(replyCheck == 1) {
+                            toast("의견을 이미 작성하셨습니다.")
                         } else {
                             reply_on.visibility = GONE
                             reply_off.visibility = VISIBLE
 
                             content = edit_reply.text.toString()
-                            postTopicReply(content, null)
+                            postTopicReply(content)
 
-                            replyCheck = 0 // 의견을 작성했기때문에 투표를 바꿀 수 없음
+                            replyCheck = 1
                         }
                     }
                     // 찬성 눌렀을 때
-                    up_wrap.id -> {
-                        if(replyCheck != 0) { // 의견을 작성했는지 확인 (의견을 작성한 상태면 투표를 바꿀 수 없음)
+                    wrap_up.id -> {
+                        if(replyCheck != 1) { // 의견을 작성했는지 확인 (의견을 작성한 상태면 투표를 바꿀 수 없음)
                             postTopicVote(upId)
                         } else {
                             toast("진영을 변경하시려면 의견을 삭제해 주세요.")
                         }
                     }
                     // 반대 눌렀을 때
-                    down_wrap.id -> {
-                        if(replyCheck != 0) { // 의견을 작성했는지 확인
+                    wrap_down.id -> {
+                        if(replyCheck != 1) { // 의견을 작성했는지 확인
                             postTopicVote(downId)
                         } else {
                             toast("진영을 변경하시려면 의견을 삭제해 주세요.")
@@ -117,7 +116,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                 0 -> {
                                     serverClient.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
                                         override fun result(value: ResponseEntity) {
-                                            setData()
+                                            setData(orderType, pageNum)
                                             replyCheck = -1 // 의견을 삭제했음
                                         }
                                     })
@@ -166,30 +165,52 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+
+        binding.list.layoutManager = LinearLayoutManager(this)
+
+        if (intent.hasExtra("topicId")) {
+            setData(orderType, pageNum)
+        } else {
+            finish()
+        }
+
+
     }
 
-    private fun setData() {
-        serverClient.getTopic(token, topicId.toString(), object : ResultInterface<DataEntity> {
+    private fun setData(orderType: String, pageNum: String) {
+        serverClient.getTopic(token, topicId.toString(), orderType, pageNum, object : ResultInterface<DataEntity> {
             override fun result(value: DataEntity) {
+
+                if(value.topic.is_my_like_topic) {
+                    binding.bookmark.setBackgroundResource(R.drawable.bookmark_on)
+                } else {
+                    binding.bookmark.setBackgroundResource(R.drawable.bookmark_off)
+                }
+
                 upId = value.topic.sides[0].id
                 downId = value.topic.sides[1].id
+                mySideId = value.topic.my_side_id
+
+                if (mySideId != -1) {
+                    replyCheck = 0
+                }
 
                 adapter = DetailTopicAdapter(value, headerListener, itemListener)
-                binding.recyclerView.adapter = adapter
-                binding.recyclerView.layoutManager = LinearLayoutManager(this@DetailTopicActivity)
+                binding.list.adapter = adapter
             }
         })
     }
 
     private fun setListener() {
         binding.bookmark.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
     }
 
-    private fun postTopicReply(content: String, parentReplyId: Int?) {
-        serverClient.postTopicReply(token, topicId, content, parentReplyId, object : ResultInterface<Boolean> {
+    private fun postTopicReply(content: String) {
+        serverClient.postTopicReply(token, topicId, content, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if(value) {
-                    setData()
+                    setData(orderType, pageNum)
                 } else {
                     toast("이미 의견을 작성하셨습니다.")
                 }
@@ -201,7 +222,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         serverClient.postTopicVote(token, sideId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if (value) {
-                    setData()
+                    setData(orderType, pageNum)
                 } else {
                     toast("투표를 변경하시려면 의견을 삭제해주시기 바랍니다.")
                 }
@@ -223,10 +244,15 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                 serverClient.postTopicLike(token, topicId, object : ResultInterface<Boolean> {
                     override fun result(value: Boolean) {
                         if(value) {
+                            setData(orderType, pageNum)
                         } else {
+
                         }
                     }
                 })
+            }
+            binding.btnBack -> {
+                finish()
             }
         }
     }

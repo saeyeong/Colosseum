@@ -39,8 +39,8 @@ class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
     }
 
     fun init() {
-        binding.viewPager.adapter = tabAdapter
-        binding.viewPager.addOnPageChangeListener(this)
+        binding.pager.adapter = tabAdapter
+        binding.pager.addOnPageChangeListener(this)
     }
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -60,6 +60,16 @@ class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
             2 -> {
                 collapsing.title = getString(R.string.post_list_month)
             }
+        }
+    }
+
+    companion object{
+        fun newInstance(): Fragment{
+            val args = Bundle()
+
+            val fragment = HomeFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

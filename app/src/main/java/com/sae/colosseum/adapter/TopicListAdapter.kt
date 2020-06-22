@@ -12,7 +12,7 @@ import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import kotlinx.android.synthetic.main.item_topic.view.*
 
-open class ListTopicAdapter(
+open class TopicListAdapter(
     private val list: ArrayList<TopicInfoEntity>?,
     private val mCallback: RecyclerViewListener<TopicInfoEntity, View>
 ) : RecyclerView.Adapter<ListTopicViewHolder>() {

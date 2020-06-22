@@ -63,6 +63,36 @@ class ServerClient() {
             )
     }
 
+    fun patchUser(token: String?, nickName: String?, callback: ResultInterface<Boolean>) {
+        network.server.patchUser(token, nickName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    callback.result(false)
+                    Log.d("test",it.message)
+                }
+            )
+    }
+
+    fun patchUser(token: String?, currentPassword: String?, newPassword: String?, callback: ResultInterface<Boolean>) {
+        network.server.patchUser(token, currentPassword, newPassword)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    callback.result(false)
+                    Log.d("test",it.message)
+                }
+            )
+    }
+
     fun deleteUser(token: String?, text: String?, callback: ResultInterface<ResponseEntity>) {
         network.server.deleteUser(token, text)
             .subscribeOn(Schedulers.io())
@@ -76,7 +106,7 @@ class ServerClient() {
             )
     }
 
-    fun getUserInfo(token: String, callback: ResultInterface<Boolean>) {
+    fun getUserInfo(token: String?, callback: ResultInterface<Boolean>) {
         network.server.getUserInfo(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -87,6 +117,19 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(false)
+                }
+            )
+    }
+
+    fun getUserInfo(token: String, needReplies: Int, callback: ResultInterface<ResponseEntity>) {
+        network.server.getUserInfo(token, needReplies)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
+                },
+                onError = {
                 }
             )
     }
@@ -121,6 +164,22 @@ class ServerClient() {
             )
     }
 
+    fun getTopic(
+        token: String?, topicId: String?, orderType: String?, pageNum: String?,
+        callback: ResultInterface<DataEntity>
+    ) {
+        network.server.getTopic(token, topicId.toString(), orderType, pageNum)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it.data)
+                },
+                onError = {
+                }
+            )
+    }
+
     fun postTopicVote(
         token: String?, sideId: Int?,
         callback: ResultInterface<Boolean>
@@ -139,10 +198,27 @@ class ServerClient() {
     }
 
     fun postTopicReply(
-        token: String?, topicId: Int?, content: String?, parentReplyId: Int?,
+        token: String?, content: String?, parentReplyId: Int?,
         callback: ResultInterface<Boolean>
     ) {
-        network.server.postTopicReply(token, topicId, content, parentReplyId)
+        network.server.postTopicReply(token, content, parentReplyId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(true)
+                },
+                onError = {
+                    callback.result(false)
+                }
+            )
+    }
+
+    fun postTopicReply(
+        token: String?, topicId: Int?, content: String?,
+        callback: ResultInterface<Boolean>
+    ) {
+        network.server.postTopicReply(token, topicId, content)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -165,6 +241,7 @@ class ServerClient() {
             .subscribeBy(
                 onSuccess = {
                     callback.result(true)
+                    Log.d("test","success $it")
                 },
                 onError = {
                     callback.result(false)
@@ -226,7 +303,7 @@ class ServerClient() {
         token: String?, replyId: Int?, content: String?,
         callback: ResultInterface<ResponseEntity>
     ) {
-        network.server.putTopicReply(token, replyId, content, null)
+        network.server.putTopicReply(token, replyId, content)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -243,6 +320,22 @@ class ServerClient() {
         callback: ResultInterface<ResponseEntity>
     ) {
         network.server.getTopicReReply(token, replyId.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it)
+                },
+                onError = {
+                }
+            )
+    }
+
+    fun getNotification(
+        token: String?,
+        callback: ResultInterface<ResponseEntity>
+    ) {
+        network.server.getNotification(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

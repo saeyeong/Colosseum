@@ -3,17 +3,14 @@ package com.sae.colosseum.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.ListTopicAdapter
+import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.databinding.FragmentBookmarkBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -78,10 +75,20 @@ class BookmarkFragment : Fragment() {
     private fun setData() {
         serverClient?.getTopicLike(token, object : ResultInterface<ResponseEntity> {
             override fun result(value: ResponseEntity) {
-                val adapter = ListTopicAdapter(value.data.topics, recyclerListener)
-                binding.listBookmark.adapter = adapter
-                binding.listBookmark.layoutManager = LinearLayoutManager(mContext)
+                val adapter = TopicListAdapter(value.data.topics, recyclerListener)
+                binding.list.adapter = adapter
+                binding.list.layoutManager = LinearLayoutManager(mContext)
             }
         })
+    }
+
+    companion object{
+        fun newInstance(): Fragment{
+            val args = Bundle()
+
+            val fragment = BookmarkFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

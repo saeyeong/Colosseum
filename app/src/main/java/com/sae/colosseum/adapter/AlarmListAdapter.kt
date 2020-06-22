@@ -5,24 +5,48 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.AlarmListViewHolder
-import com.sae.colosseum.model.entity.AlarmListEntity
+import com.sae.colosseum.model.entity.NotificationEntity
 import kotlinx.android.synthetic.main.item_alarm.view.*
 
-class AlarmListAdapter(private val list: ArrayList<AlarmListEntity>?) : RecyclerView.Adapter<AlarmListViewHolder>() {
+class AlarmListAdapter(private val list: ArrayList<NotificationEntity>?) : RecyclerView.Adapter<AlarmListViewHolder>() {
+    lateinit var type: String
+    private var setIconId: Int = 0
+    private var txtAlarm: Int = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_alarm, parent, false)
         return AlarmListViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return list?.count()?:0
+        return list?.count() ?: 0
     }
 
     override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.itemView.type_icon.setImageResource(it.iconType)
-            holder.itemView.nick_name.text = it.nick_name
-            holder.itemView.txt_alarm.setText(R.string.heart_like_alarm)
+
+            holder.itemView.run {
+                type = it.type
+                when(type) {
+                    "답글달림" -> {
+                        setIconId = R.drawable.comment
+                        txtAlarm = R.string.alarm_reply
+
+                    }
+                    "의견좋아요" -> {
+                        setIconId = R.drawable.like_on
+                        txtAlarm = R.string.alarm_like
+                    }
+                    "의견싫어요" -> {
+                        setIconId = R.drawable.like_off
+                        txtAlarm = R.string.alarm_dislike
+                    }
+                }
+
+                if (setIconId != 0) type_icon.setImageResource(setIconId)
+                nick_name.text = it.act_user.nick_name
+                txt_alarm.text = txt_alarm.context.getString(txtAlarm)
+            }
         }
     }
 }

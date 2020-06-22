@@ -105,9 +105,14 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun topicReply(content: String) {
-        serverClient.postTopicReply(token, null, content, replyId, object : ResultInterface<Boolean> {
+        serverClient.postTopicReply(token, content, replyId, object : ResultInterface<Boolean> {
             override fun result(value: Boolean) {
                 if(value) {
+                    Toast.makeText(
+                        this@ReReplyActivity,
+                        "댓글 등록",
+                        Toast.LENGTH_LONG
+                    ).show()
                     setData()
                 } else {
                     Toast.makeText(

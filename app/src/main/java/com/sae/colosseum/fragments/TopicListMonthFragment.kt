@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.ListTopicAdapter
 import com.sae.colosseum.databinding.FragmentPostListMonthBinding
 import com.sae.colosseum.model.DataModel
 

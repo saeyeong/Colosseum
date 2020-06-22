@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.FragmentSettingBinding
 import com.sae.colosseum.model.entity.ResponseEntity
@@ -14,10 +15,10 @@ import com.sae.colosseum.model.entity.UserEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.utils.replaceFragmentStack
 import com.sae.colosseum.view.LoginActivity
-import com.sae.colosseum.view.AccountActivity
 
-class SettingFragment : Fragment(), View.OnClickListener {
+class SettingFragment() : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentSettingBinding
     var serverClient: ServerClient? = null
     var token: String? = null
@@ -33,7 +34,6 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
@@ -44,6 +44,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     fun setListener() {
+        binding.btnAccount.setOnClickListener(this)
         binding.btnLogout.setOnClickListener(this)
         binding.btnMemberOut.setOnClickListener(this)
     }
@@ -51,8 +52,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v) {
             binding.btnAccount -> {
-                intent = Intent(activity, AccountActivity::class.java)
-                startActivity(intent)
+                replaceFragmentStack(R.id.container, AccountFragment.newInstance())
             }
             binding.btnLogout -> {
                 GlobalApplication.prefs.myEditText = ""
@@ -72,6 +72,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 GlobalApplication.prefs.myEditText = ""
                 GlobalApplication.loginUser = UserEntity("","","","","","")
             }
+        }
+    }
+
+    companion object{
+        fun newInstance(): Fragment{
+            val args = Bundle()
+
+            val fragment = SettingFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }
