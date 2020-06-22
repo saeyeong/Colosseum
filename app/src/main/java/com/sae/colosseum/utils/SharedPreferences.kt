@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 
-class SharedPreferencesActivity(context: Context) : AppCompatActivity() {
+class SharedPreferences(context: Context) {
     private val PREFS_FILENAME = "prefs"
     private val PREF_KEY_MY_EDITTEXT = "myEditText"
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
