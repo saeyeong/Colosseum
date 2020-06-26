@@ -225,7 +225,7 @@ class DetailTopicAdapter(
         }
     }
 
-    fun setRes(v: ImageView, resId: Int) {
+    private fun setRes(v: ImageView, resId: Int) {
         v.setImageResource(resId)
     }
 

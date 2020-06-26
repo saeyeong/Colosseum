@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.*
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,12 +30,9 @@ import kotlinx.android.synthetic.main.item_reply.view.*
 
 class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTopicDetailBinding
-    lateinit var topicInfo: TopicInfoEntity
-    var replyCheck: Int = -1 // -1: 투표안함 0 : 쓸수있음 1 : 이미 썼음
-    var builder: AlertDialog.Builder? = null
-    lateinit var headerListener: RecyclerViewListener<ReplyEntity, View>
-    private lateinit var itemListener: RecyclerViewListener<ReplyEntity, View>
     lateinit var adapter: DetailTopicAdapter
+    lateinit var topicInfo: TopicInfoEntity
+    var replyCheck: Int = 1 // 0 : 쓸수있음 1 : 이미 썼음
     var orderType: String = "NEW"
     var pageNum: Int = 1
     var replies: ArrayList<ReplyEntity>? = null
@@ -50,7 +50,8 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
 
     fun init() {
         setListener()
-        builder = AlertDialog.Builder(this)
+
+        val builder = AlertDialog.Builder(this)
         topicInfo = TopicInfoEntity()
         topicInfo.id = intent.getIntExtra("topicId", -1)
         replies = ArrayList()
@@ -65,7 +66,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
 
         })
 
-        headerListener = object : RecyclerViewListener<ReplyEntity, View> {
+        val headerListener = object : RecyclerViewListener<ReplyEntity, View> {
             override fun onClickItem(item: ReplyEntity, clickedView: View, itemView: View) {
                 val content: String
                 when (clickedView.id) {
@@ -88,24 +89,27 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                             postTopicReply(content)
 
                             replyCheck = 1
+
+                            btn_vote.isEnabled = false
+                            btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorNeutralGray))
                         }
                     }
                     // 찬성 눌렀을 때
                     wrap_up.id -> {
                         topicInfo.my_side_id = topicInfo.sides[0].id
-                        clickCheckColor(R.drawable.ico_check_up, R.drawable.ico_check)
+                        setRes(check_up, R.drawable.ico_check_up)
+                        setRes(check_down, R.drawable.ico_check)
                     }
                     // 반대 눌렀을 때
                     wrap_down.id -> {
                         topicInfo.my_side_id = topicInfo.sides[1].id
-                        clickCheckColor(R.drawable.ico_check, R.drawable.ico_check_down)
+                        setRes(check_up, R.drawable.ico_check)
+                        setRes(check_down, R.drawable.ico_check_down)
                     }
 //                    찬/반 투표하기 버튼
                     btn_vote.id -> {
-                        if (replyCheck != 1) { // 의견을 작성했는지 확인
+                        if (topicInfo.my_side_id != -1) { // 찬/반 선택 했는지 확인
                             postTopicVote(topicInfo.my_side_id)
-                        } else {
-                            toast("진영을 변경하시려면 의견을 삭제해 주세요.")
                         }
                     }
                     // 레이아웃 눌렀을때 (의견입력창 원상태로 되돌리기)
@@ -117,7 +121,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        itemListener = object : RecyclerViewListener<ReplyEntity, View> {
+        val itemListener = object : RecyclerViewListener<ReplyEntity, View> {
             override fun onClickItem(item: ReplyEntity, clickedView: View, itemView: View) {
                 if (clickedView.id == btn_menu.id) {
 //                의견 메뉴 눌렀을때
@@ -135,7 +139,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                         ) {
                                             if (boolean) {
                                                 setData(orderType, pageNum)
-                                                replyCheck = -1 // 의견을 삭제했음
+                                                replyCheck = 0 // 의견을 삭제했음
                                             }
                                         }
                                     })
@@ -169,26 +173,18 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                     itemView.num_dislike.text = it.dislike_count.toString()
 
                                     // 좋아요/싫어요 누른 결과 출력
-                                    if (value.my_like!!) { // my_like 가 true 일때
-                                        itemView.img_like.setImageResource(R.drawable.like_on)
-                                        itemView.img_dislike.setImageResource(R.drawable.dislike_off)
-                                    } else if (value.my_dislike!!) { // my_dislike 가 true 일때
-                                        itemView.img_dislike.setImageResource(R.drawable.dislike_on)
-                                        itemView.img_like.setImageResource(R.drawable.like_off)
-                                    } else { // 둘다 false 일때
-                                        itemView.img_dislike.setImageResource(R.drawable.dislike_off)
-                                        itemView.img_like.setImageResource(R.drawable.like_off)
+                                    setRes(itemView.img_like, R.drawable.like_off)
+                                    setRes(itemView.img_dislike, R.drawable.like_off)
+
+                                    if (it.my_like ?: run {false}) { // my_like 가 true 일때
+                                        setRes(itemView.img_like, R.drawable.like_on)
+                                    } else if (it.my_dislike ?: run {false}) { // my_dislike 가 true 일때
+                                        setRes(itemView.img_dislike, R.drawable.dislike_on)
                                     }
                                 }
                             }
                         }
                     })
-                } else {
-                    val intent = Intent(this@DetailTopicActivity, ReReplyActivity::class.java)
-                        .putExtra("topicId", topicInfo.id)
-                        .putExtra("replyId", item.id)
-                        .putExtra("replyObject", item)
-                    startActivity(intent)
                 }
             }
         }
@@ -218,7 +214,12 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
 
                         if (topicInfo.my_side_id != -1) {
                             replyCheck = 0
+                        } else {
+                            btn_vote.isEnabled = false
+                            btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorNeutralGray))
                         }
+
+
 
                         adapter.topicInfo = topicInfo
 
@@ -263,20 +264,19 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                     value?.let {
                         topicInfo.my_side_id = it.data.topic.my_side_id
 
-
-
 //                    유저 찬/반 정보에 따라 버튼 색 초기화
+                        setRes(check_up, R.drawable.ico_check)
+                        setRes(check_down, R.drawable.ico_check)
+
                         if (topicInfo.my_side_id == topicInfo.sides[0].id) {
-                            clickCheckColor(R.drawable.ico_check_up, R.drawable.ico_check)
+                            setRes(check_up, R.drawable.ico_check_up)
                         } else if (topicInfo.my_side_id == topicInfo.sides[1].id) {
-                            clickCheckColor(R.drawable.ico_check, R.drawable.ico_check_down)
-                        } else {
-                            clickCheckColor(R.drawable.ico_check, R.drawable.ico_check)
+                            setRes(check_down, R.drawable.ico_check_down)
                         }
                     }
                     toast("투표 성공")
                 } else {
-                    toast("투표를 변경하시려면 의견을 삭제해주시기 바랍니다.")
+                    toast("postTopicVote 실패")
                 }
             }
         })
@@ -319,9 +319,8 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun clickCheckColor(colorUp: Int, colorDown: Int) {
-        check_up.setImageResource(colorUp)
-        check_down.setImageResource(colorDown)
+    fun setRes(v: ImageView, id: Int) {
+        v.setImageResource(id)
     }
 
 }
