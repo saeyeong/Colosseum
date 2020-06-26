@@ -3,6 +3,7 @@ package com.sae.colosseum.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.sae.colosseum.utils.replaceFragmentStack
 
 class AccountFragment : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentAccountBinding
-    var mContext: Context? = null
     private var ft: FragmentTransaction? = null
 
     override fun onCreateView(
@@ -33,25 +33,19 @@ class AccountFragment : Fragment(), View.OnClickListener {
         init()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
     fun init() {
         setListener()
         ft = fragmentManager?.beginTransaction()
     }
 
     private fun setListener() {
+        binding.btnBack.setOnClickListener(this)
         binding.btnUserInfo.setOnClickListener(this)
         binding.btnPassword.setOnClickListener(this)
-        binding.btnBack.setOnClickListener(this)
+        binding.btnMyReply.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        val intent: Intent
-
         when(v) {
             binding.btnUserInfo -> {
                 replaceFragmentStack(R.id.container, UserInfoFragment.newInstance())
@@ -60,8 +54,7 @@ class AccountFragment : Fragment(), View.OnClickListener {
                 replaceFragmentStack(R.id.container, PasswordFragment.newInstance())
             }
             binding.btnMyReply -> {
-                intent = Intent(mContext, AccountFragment::class.java)
-                startActivity(intent)
+                replaceFragmentStack(R.id.container, UserReplyFragment.newInstance())
             }
             binding.btnBack -> {
                 fragmentManager?.run {

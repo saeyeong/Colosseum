@@ -17,16 +17,15 @@ import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
 import com.sae.colosseum.view.DetailTopicActivity
 
 class BookmarkFragment : Fragment() {
     var serverClient: ServerClient? = null
-    var mContext: Context? = null
     var token: String? = null
     lateinit var recyclerListener: RecyclerViewListener<TopicInfoEntity, View>
     lateinit var binding: FragmentBookmarkBinding
-
+    var adapter: TopicListAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,18 +41,13 @@ class BookmarkFragment : Fragment() {
         init()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
     override fun onResume() {
         super.onResume()
         setData()
     }
 
     fun init() {
-        token = GlobalApplication.prefs.myEditText
+        token = GlobalApplication.prefs.userToken
         serverClient = ServerClient()
         setData()
 
@@ -63,21 +57,26 @@ class BookmarkFragment : Fragment() {
                 clickedView: View,
                 itemView: View
             ) {
-                val intent = Intent(mContext, DetailTopicActivity::class.java)
+                val intent = Intent(context, DetailTopicActivity::class.java)
                 val topicId: Int = item.id
 
                 intent.putExtra("topicId", topicId)
-                mContext?.startActivity(intent)
+                context?.startActivity(intent)
             }
         }
     }
 
     private fun setData() {
-        serverClient?.getTopicLike(token, object : ResultInterface<ResponseEntity> {
-            override fun result(value: ResponseEntity) {
-                val adapter = TopicListAdapter(value.data.topics, recyclerListener)
-                binding.list.adapter = adapter
-                binding.list.layoutManager = LinearLayoutManager(mContext)
+        serverClient?.getTopicLike(token, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    value?.let {
+                        adapter = TopicListAdapter(it.data.topics, recyclerListener)
+                        binding.list.adapter = adapter
+                        binding.list.layoutManager = LinearLayoutManager(context)
+                    }
+                }
             }
         })
     }

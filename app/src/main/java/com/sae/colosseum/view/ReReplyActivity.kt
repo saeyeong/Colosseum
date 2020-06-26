@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,20 +13,19 @@ import com.sae.colosseum.R
 import com.sae.colosseum.adapter.ReReplyAdapter
 import com.sae.colosseum.databinding.ActivityReReplyBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
-import com.sae.colosseum.model.entity.RepliesEntity
+import com.sae.colosseum.model.entity.ReplyEntity
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.utils.BaseActivity
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
 
 class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding: ActivityReReplyBinding
     var topicId: Int = -1
     var replyId: Int = -1
-    var replyObject: RepliesEntity? = null
+    var replyObject: ReplyEntity? = null
     lateinit var adapter: ReReplyAdapter
-    lateinit var recyclerListener: RecyclerViewListener<RepliesEntity, View>
+    lateinit var recyclerListener: RecyclerViewListener<ReplyEntity, View>
     var builder: AlertDialog.Builder? = null
-    var mIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,25 +45,28 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         builder = AlertDialog.Builder(this)
         setData()
         setListener()
-        recyclerListener = object : RecyclerViewListener<RepliesEntity, View> {
-            override fun onClickItem(item: RepliesEntity, clickedView: View, itemReplyView: View) {
+        recyclerListener = object : RecyclerViewListener<ReplyEntity, View> {
+            override fun onClickItem(item: ReplyEntity, clickedView: View, itemReplyView: View) {
                 builder?.let {
                     it.setItems(R.array.menu_reply
                     ) { dialog, which ->
                         when(which) {
                             0 -> {
-                                serverClient.deleteTopicReply(token, item.id, object : ResultInterface<ResponseEntity> {
-                                    override fun result(value: ResponseEntity) {
-                                        setData()
+                                serverClient.deleteTopicReply(token, item.id, object :
+                                    ResultInterface<ResponseEntity, Boolean> {
+                                    override fun result(value: ResponseEntity?, boolean: Boolean) {
+                                        if(boolean) {
+                                            setData()
+                                        }
                                     }
                                 })
                             }
                             1 -> {
                                 if(topicId != -1) {
-                                    mIntent = Intent(this@ReReplyActivity, ReplyModifyActivity::class.java)
+                                    val intent = Intent(this@ReReplyActivity, ReplyModifyActivity::class.java)
                                         .putExtra("topicId", topicId)
                                         .putExtra("replyId", item.id)
-                                    startActivity(mIntent)
+                                    startActivity(intent)
                                 }
                             }
                         }
@@ -105,9 +106,10 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun topicReply(content: String) {
-        serverClient.postTopicReply(token, content, replyId, object : ResultInterface<Boolean> {
-            override fun result(value: Boolean) {
-                if(value) {
+        serverClient.postTopicReply(token, content, replyId, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
                     Toast.makeText(
                         this@ReReplyActivity,
                         "댓글 등록",
@@ -126,14 +128,21 @@ class ReReplyActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     private fun setData() {
-        serverClient.getTopicReReply(token, replyId.toString(), object : ResultInterface<ResponseEntity> {
-            override fun result(value: ResponseEntity) {
-                binding.txtNickName.text = value.data.reply.user?.nick_name ?: ""
+        serverClient.getTopicReReply(token, replyId.toString(), object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    value?.let {
+                        binding.txtNickName.text = it.data.reply.user?.nick_name ?: ""
 
-                value.data.reply.let {
-                    adapter = ReReplyAdapter(it.replies, recyclerListener)
-                    binding.listReReply.adapter = adapter
-                    binding.listReReply.layoutManager = LinearLayoutManager(this@ReReplyActivity)
+                        it.data.reply.run {
+                            adapter = ReReplyAdapter(replies, recyclerListener)
+                            binding.listReReply.adapter = adapter
+                            binding.listReReply.layoutManager =
+                                LinearLayoutManager(this@ReReplyActivity)
+                        }
+
+                    }
                 }
             }
         })

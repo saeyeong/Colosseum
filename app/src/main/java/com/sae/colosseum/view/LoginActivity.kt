@@ -2,16 +2,15 @@ package com.sae.colosseum.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityLoginBinding
-import com.sae.colosseum.model.entity.ResponseEntity
-import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.BaseActivity
-import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ResponseEntity
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -24,7 +23,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         init()
     }
-
     fun init() {
         setListener()
     }
@@ -32,21 +30,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     fun setListener() {
         binding.btnLogin.setOnClickListener(this)
         binding.btnSignUp.setOnClickListener(this)
-
     }
-
-
 
     override fun onClick(v: View?) {
         val email: String = binding.editEmail.text.toString()
         val password: String = binding.editPassword.text.toString()
-        val intent = Intent(this, MainActivity::class.java)
 
         when (v) {
             binding.btnLogin-> {
-                serverClient.postUser(email, password, object : ResultInterface<Boolean> {
-                    override fun result(value: Boolean) {
-                        if(value) {
+                serverClient.postUser(email, password, object :
+                    ResultInterface<ResponseEntity, Boolean> {
+                    override fun result(value: ResponseEntity?, boolean: Boolean) {
+                        if(boolean) {
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {

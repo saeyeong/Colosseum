@@ -14,12 +14,11 @@ import com.sae.colosseum.R
 import com.sae.colosseum.databinding.FragmentUserInfoBinding
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.GlobalApplication.Companion.loginUser
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ResponseEntity
 
 class UserInfoFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUserInfoBinding
-    var mContext: Context? = null
     var imm: InputMethodManager? = null
     var serverClient: ServerClient? = null
     var token: String? = null
@@ -39,11 +38,6 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         init()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         hideKeyboard()
@@ -51,14 +45,11 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
 
     fun init() {
         setListener()
-        binding.userEmail.text = loginUser.email
-
-        setData()
-
-        imm = mContext?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-
+        token = GlobalApplication.prefs.userToken
+        binding.userEmail.text = GlobalApplication.prefs.userEmail
         serverClient = ServerClient()
-        token = GlobalApplication.prefs.myEditText
+        imm = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        setData()
     }
 
     private fun setListener() {
@@ -75,19 +66,21 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
                 binding.btnOk.visibility = View.VISIBLE
                 binding.editUserNickName.requestFocus()
                 imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+                binding.editUserNickName.setSelection(binding.editUserNickName.length())
             }
             binding.btnOk -> {
                 serverClient?.patchUser(token, binding.editUserNickName.text.toString(),
-                    object : ResultInterface<Boolean> {
-                        override fun result(value: Boolean) {
-                            if(value) {
+                    object :
+                        ResultInterface<ResponseEntity, Boolean> {
+                        override fun result(value: ResponseEntity?, boolean: Boolean) {
+                            if(boolean) {
                                 setData()
                                 binding.editUserNickName.visibility = View.GONE
                                 binding.userNickName.visibility = View.VISIBLE
                                 binding.btnOk.visibility = View.GONE
                                 hideKeyboard()
                             } else {
-                                Toast.makeText(mContext, "닉네임 변경에 실패했습니다.", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, "닉네임 변경에 실패했습니다.", Toast.LENGTH_LONG).show()
                             }
                         }
                     })
@@ -102,14 +95,14 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setData() {
-        serverClient?.getUserInfo(token, object : ResultInterface<Boolean> {
-            override fun result(value: Boolean) {
-                if(!value) {
-                    Toast.makeText(mContext, "정보 불러오기에 실패했습니다.", Toast.LENGTH_LONG).show()
+        serverClient?.getUserInfo(token, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    binding.userNickName.text = GlobalApplication.prefs.userNickName
+                    binding.editUserNickName.setText(GlobalApplication.prefs.userNickName)
                 } else {
-                    binding.userNickName.text = loginUser.nick_name
-                    binding.editUserNickName.setText(loginUser.nick_name)
-                    binding.editUserNickName.setSelection(binding.editUserNickName.length())
+                    Toast.makeText(context, "정보 불러오기에 실패했습니다.", Toast.LENGTH_LONG).show()
                 }
             }
         })

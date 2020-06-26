@@ -8,7 +8,8 @@ import androidx.databinding.DataBindingUtil
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivitySignUpBinding
 import com.sae.colosseum.utils.BaseActivity
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ResponseEntity
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignUpBinding
@@ -48,15 +49,18 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         } else if (password != passwordCheck) {
             toast("비밀번호가 맞지 않습니다.")
         } else {
-            serverClient.getUserCheck("EMAIL", email, object : ResultInterface<Boolean> {
-                override fun result(value: Boolean) {
-                    if(value) {
-                        serverClient.getUserCheck("NICK_NAME", nickName, object : ResultInterface<Boolean> {
-                            override fun result(value: Boolean) {
-                                if(value) {
-                                    serverClient.putUser(email, password, nickName, object : ResultInterface<Boolean> {
-                                        override fun result(value: Boolean) {
-                                            if(value) {
+            serverClient.getUserCheck("EMAIL", email, object :
+                ResultInterface<ResponseEntity, Boolean> {
+                override fun result(value: ResponseEntity?, boolean: Boolean) {
+                    if(boolean) {
+                        serverClient.getUserCheck("NICK_NAME", nickName, object :
+                            ResultInterface<ResponseEntity, Boolean> {
+                            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                                if(boolean) {
+                                    serverClient.putUser(email, password, nickName, object :
+                                        ResultInterface<ResponseEntity, Boolean> {
+                                        override fun result(value: ResponseEntity?, boolean: Boolean) {
+                                            if(boolean) {
                                                 toast("회원가입이 완료되었습니다.")
                                                 startActivity(intent)
                                                 finish()

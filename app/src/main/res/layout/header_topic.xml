@@ -123,12 +123,11 @@
                 app:layout_constraintVertical_bias="0"
                 android:orientation="horizontal">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/bar_up"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:background="@color/colorUp"
-                    app:layout_constraintWidth_percent="0.7"
+                <ImageView
+                    android:id="@+id/check_up"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ico_check"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,12 +138,12 @@
                     android:id="@+id/txt_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="찬성 하기"
+                    android:paddingLeft="5dp"
+                    android:text="찬성"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/check_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"/>
 
@@ -152,6 +151,7 @@
                     android:id="@+id/num_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
                     android:text="100"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -159,6 +159,28 @@
                     app:layout_constraintStart_toEndOf="@+id/txt_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:background="#DEDEDE"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_up"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bar_up"
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:background="@color/colorUp"
+                    app:layout_constraintWidth_percent="0.7"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_up"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -174,30 +196,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/wrap_up"
                 app:layout_constraintVertical_bias="0">
 
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/bar_down"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:background="@color/colorDown"
-                    app:layout_constraintWidth_percent="0.7"
+                <ImageView
+                    android:id="@+id/check_down"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ico_check"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintVertical_bias="0"/>
+                    app:layout_constraintHorizontal_bias="0"/>
 
                 <TextView
                     android:id="@+id/txt_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="반대 하기"
+                    android:paddingLeft="5dp"
+                    android:text="반대"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/check_down"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="0" />
 
@@ -205,6 +224,7 @@
                     android:id="@+id/num_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
                     android:text="100"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -212,15 +232,39 @@
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toEndOf="@+id/txt_down"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:background="#DEDEDE"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bar_down"
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:background="@color/colorDown"
+                    app:layout_constraintWidth_percent="0.7"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintVertical_bias="0"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
-                android:id="@+id/btn_go"
+                android:id="@+id/btn_vote"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorGray"
+                android:background="@drawable/gray_rounded_line_background"
                 android:text="투표하기"
+                android:textColor="#808080"
                 app:layout_constraintTop_toBottomOf="@+id/wrap_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

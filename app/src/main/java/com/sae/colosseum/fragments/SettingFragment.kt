@@ -7,14 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.FragmentSettingBinding
 import com.sae.colosseum.model.entity.ResponseEntity
-import com.sae.colosseum.model.entity.UserEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
 import com.sae.colosseum.utils.replaceFragmentStack
 import com.sae.colosseum.view.LoginActivity
 
@@ -22,7 +20,6 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentSettingBinding
     var serverClient: ServerClient? = null
     var token: String? = null
-    lateinit var intent: Intent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +37,7 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     fun init() {
         setListener()
         serverClient = ServerClient()
-        token = GlobalApplication.prefs.myEditText
+        token = GlobalApplication.prefs.userToken
     }
 
     fun setListener() {
@@ -55,22 +52,29 @@ class SettingFragment() : Fragment(), View.OnClickListener {
                 replaceFragmentStack(R.id.container, AccountFragment.newInstance())
             }
             binding.btnLogout -> {
-                GlobalApplication.prefs.myEditText = ""
-                GlobalApplication.loginUser = UserEntity("","","","","","")
-                intent = Intent(activity, LoginActivity::class.java)
+                GlobalApplication.prefs.userToken = ""
+                GlobalApplication.prefs.userId = ""
+                GlobalApplication.prefs.userEmail = ""
+                GlobalApplication.prefs.userNickName = ""
+                val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
             }
             binding.btnMemberOut -> {
-                serverClient?.deleteUser(token, "동의", object: ResultInterface<ResponseEntity> {
-                    override fun result(value: ResponseEntity) {
-                        intent = Intent(activity, LoginActivity::class.java)
-                        startActivity(intent)
-                        activity?.finish()
+                serverClient?.deleteUser(token, "동의", object:
+                    ResultInterface<ResponseEntity, Boolean> {
+                    override fun result(value: ResponseEntity?, boolean: Boolean) {
+                        if(boolean){
+                            val intent = Intent(activity, LoginActivity::class.java)
+                            startActivity(intent)
+                            activity?.finish()
+                        }
                     }
                 })
-                GlobalApplication.prefs.myEditText = ""
-                GlobalApplication.loginUser = UserEntity("","","","","","")
+                GlobalApplication.prefs.userToken = ""
+                GlobalApplication.prefs.userId = ""
+                GlobalApplication.prefs.userEmail = ""
+                GlobalApplication.prefs.userNickName = ""
             }
         }
     }

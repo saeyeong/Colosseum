@@ -1,6 +1,7 @@
 package com.sae.colosseum.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.sae.colosseum.fragments.BookmarkFragment
 import com.sae.colosseum.fragments.HomeFragment
 import com.sae.colosseum.fragments.SettingFragment
 import com.sae.colosseum.utils.BaseActivity
+import com.sae.colosseum.utils.replaceFragment
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -34,6 +36,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         super.onStart()
 
         firstInitFragment()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onClick(v: View?) {
@@ -60,15 +66,26 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        val curTime: Long = System.currentTimeMillis();
-        val gapTime: Long = curTime - backBtnTime;
+        val curTime: Long = System.currentTimeMillis()
+        val gapTime: Long = curTime - backBtnTime
 
-        if(gapTime in 0..1000) {
-            super.onBackPressed();
+        fm?.let {
+            if (it.fragments.size > 1) {
+                super.onBackPressed()
+                Log.d("test","fragments.size > 1")
+            } else {
+                if(gapTime in 0..1000) {
+                    Log.d("test","gapTime in 0..1000")
+                    finish()
+                }
+                else {
+                    Log.d("test","한번더")
+                    backBtnTime = curTime
+                }
+            }
+            return
         }
-        else {
-            backBtnTime = curTime
-        }
+        super.onBackPressed()
     }
 
     fun init(){
@@ -98,13 +115,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun replaceFragment(fragment: Fragment?) {
         fragment?.let {
             if (isCurrentFragmentEqual(it)) {
-
-            } else {
-                currentFragmentTag = fragment::class.java.simpleName
-                ft= fm?.beginTransaction()
-                ft?.replace(R.id.container, it)
-                ft?.commit()
+                return@let
             }
+            currentFragmentTag = fragment::class.java.simpleName
+            ft = fm?.beginTransaction()
+            ft?.replace(R.id.container, it)
+            ft?.addToBackStack(null)
+            ft?.commit()
         }
     }
 

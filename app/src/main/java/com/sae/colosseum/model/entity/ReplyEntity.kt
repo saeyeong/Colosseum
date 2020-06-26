@@ -5,8 +5,8 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
 @Parcelize
-data class RepliesEntity(
-    var replies: @RawValue ArrayList<RepliesEntity>?,
+data class ReplyEntity(
+    var replies: @RawValue ArrayList<ReplyEntity>?,
     val id: Int?,
     val content: String?,
     val side_id: Int?,

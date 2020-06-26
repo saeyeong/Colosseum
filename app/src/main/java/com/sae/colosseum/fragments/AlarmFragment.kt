@@ -14,14 +14,14 @@ import com.sae.colosseum.model.DataModel
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
 
 class AlarmFragment : Fragment() {
     var model: DataModel? = null
     var adapter: AlarmListAdapter? = null
     lateinit var serverClient: ServerClient
 
-    val token = GlobalApplication.prefs.myEditText
+    val token = GlobalApplication.prefs.userToken
     lateinit var binding: FragmentAlarmBinding
 
     override fun onCreateView(
@@ -44,11 +44,16 @@ class AlarmFragment : Fragment() {
     }
 
     private fun setData() {
-        serverClient.getNotification(token, object : ResultInterface<ResponseEntity> {
-            override fun result(value: ResponseEntity) {
-                adapter = AlarmListAdapter(value.data.notifications)
-                binding.list.adapter = adapter
-                binding.list.layoutManager = LinearLayoutManager(context)
+        serverClient.getNotification(token, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    value?.let {
+                        adapter = AlarmListAdapter(it.data.notifications)
+                        binding.list.adapter = adapter
+                        binding.list.layoutManager = LinearLayoutManager(context)
+                    }
+                }
             }
         })
     }

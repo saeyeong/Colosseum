@@ -10,6 +10,7 @@ import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.ListTopicViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
+import com.sae.colosseum.utils.GlobalApplication
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class TopicListAdapter(
@@ -49,7 +50,7 @@ open class TopicListAdapter(
                 num_disagree.text = it.sides[1].vote_count.toString()
                 end_date.text = it.end_date
                 num_reply.text = it.reply_count.toString()
-                Glide.with(img_topic.context).load(it.img_url)?.into(img_topic)
+                Glide.with(GlobalApplication.instance.applicationContext).load(it.img_url).into(img_topic)
             }
         }
     }

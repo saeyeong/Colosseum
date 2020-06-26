@@ -26,77 +26,17 @@
         app:layout_constraintVertical_bias="0"
         android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@id/wrap"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0">
-
-            <TextView
-                android:id="@+id/mark_up"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:text="찬성"
-                android:textColor="@color/colorUp"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0"/>
-
-            <TextView
-                android:id="@+id/mark_down"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:text="반대"
-                android:textColor="@color/colorDown"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0"/>
-
-            <TextView
-                android:id="@+id/nick_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constraintHorizontal_bias="0" />
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/btn_menu"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:src="@drawable/menu"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/nick_name"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="1" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintHorizontal_bias="0" />
 
         <TextView
             android:id="@+id/txt_date"
@@ -104,24 +44,11 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@+id/wrap"
+            app:layout_constraintTop_toBottomOf="@+id/content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0"/>
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="5"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_date"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintHorizontal_bias="0"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -129,7 +56,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content"
+            app:layout_constraintTop_toBottomOf="@+id/txt_date"
             app:layout_constraintVertical_bias="0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,6 +93,18 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:src="@drawable/menu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/like_wrap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/like_wrap"
@@ -210,6 +149,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1">
+
                 <ImageView
                     android:id="@+id/img_dislike"
                     android:layout_width="15dp"
@@ -230,7 +170,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/img_dislike"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

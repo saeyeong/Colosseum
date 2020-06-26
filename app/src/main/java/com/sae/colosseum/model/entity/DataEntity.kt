@@ -5,7 +5,9 @@ data class DataEntity (
     val token: String,
     val topic: TopicInfoEntity,
     val topics: ArrayList<TopicInfoEntity>,
-    val replies: ArrayList<RepliesEntity>,
-    val reply: RepliesEntity,
+    val reply: ReplyEntity,
+    val replies: ArrayList<ReplyEntity>,
+    val my_replies: ArrayList<ReplyEntity>,
+    val my_replies_count: Int,
     val notifications: ArrayList<NotificationEntity>
 )

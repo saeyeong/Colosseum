@@ -14,11 +14,11 @@ import com.sae.colosseum.R
 import com.sae.colosseum.databinding.FragmentPasswordBinding
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
-import com.sae.colosseum.utils.ResultInterface
+import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ResponseEntity
 
 class PasswordFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentPasswordBinding
-    var mContext: Context? = null
     var imm: InputMethodManager? = null
     var serverClient: ServerClient? = null
     var token: String? = null
@@ -41,11 +41,6 @@ class PasswordFragment : Fragment(), View.OnClickListener {
         init()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         hideKeyboard()
@@ -54,10 +49,10 @@ class PasswordFragment : Fragment(), View.OnClickListener {
     fun init() {
         setListener()
 
-        imm = mContext?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
 
         serverClient = ServerClient()
-        token = GlobalApplication.prefs.myEditText
+        token = GlobalApplication.prefs.userToken
     }
 
     private fun setListener() {
@@ -75,11 +70,11 @@ class PasswordFragment : Fragment(), View.OnClickListener {
                 if(editPassword.isNullOrEmpty() || editNewPassword.isNullOrEmpty() || editCheckNewPassword.isNullOrEmpty()) {
 
                 } else if(editPassword?.length !in 8..15) {
-                    Toast.makeText(mContext, "비밀번호는 8자리 이상 15자리 이하로 입력해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "비밀번호는 8자리 이상 15자리 이하로 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else if(editNewPassword != editCheckNewPassword) {
-                    Toast.makeText(mContext, "새 비밀번호 확인과 같지 않습니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "새 비밀번호 확인과 같지 않습니다.", Toast.LENGTH_LONG).show()
                 } else if(editPassword == editNewPassword) {
-                    Toast.makeText(mContext, "현재 비밀번호와 새 비밀번호가 같습니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "현재 비밀번호와 새 비밀번호가 같습니다.", Toast.LENGTH_LONG).show()
                 } else {
                     hideKeyboard()
                     patchUser()
@@ -104,20 +99,20 @@ class PasswordFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun patchUser() {
+    private fun patchUser() {
         serverClient?.patchUser(token, editPassword, editCheckNewPassword,
-            object : ResultInterface<Boolean> {
-                override fun result(value: Boolean) {
-                    if(value) {
-                        Toast.makeText(mContext, "비밀번호를 변경했습니다.", Toast.LENGTH_LONG).show()
+            object : ResultInterface<ResponseEntity, Boolean> {
+                override fun result(value: ResponseEntity?, boolean: Boolean) {
+                    if(boolean) {
+                        Toast.makeText(context, "비밀번호를 변경했습니다.", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(mContext, "비밀번호 변경에 실패했습니다.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "비밀번호 변경에 실패했습니다.", Toast.LENGTH_LONG).show()
                     }
                 }
             })
     }
 
-    fun hideKeyboard(){
+    private fun hideKeyboard(){
         imm?.hideSoftInputFromWindow(binding.editPassword.windowToken, 0)
     }
 }
