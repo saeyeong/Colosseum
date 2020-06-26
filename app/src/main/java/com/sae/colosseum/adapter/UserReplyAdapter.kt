@@ -27,6 +27,8 @@ open class UserReplyAdapter(
         list?.get(position)?.let {
             holder.itemView.run {
                 content.text = it.content
+                txt_date.text = it.updated_at
+                txt_topic.text = it.project_info.title
             }
         }
     }

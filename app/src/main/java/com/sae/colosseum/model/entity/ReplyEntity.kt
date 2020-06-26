@@ -16,5 +16,6 @@ data class ReplyEntity(
     val dislike_count: Int?,
     val my_like: Boolean?,
     val my_dislike: Boolean?,
-    val reply_count: Int?
+    val reply_count: Int?,
+    val project_info: @RawValue TopicInfoEntity
 ): Parcelable
