@@ -304,6 +304,7 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
+                    Log.d("test",it.message)
                 }
             )
     }
@@ -325,11 +326,11 @@ class ServerClient() {
             )
     }
 
-    fun getTopicReReply(
+    fun getTopicReply(
         token: String?, replyId: String?,
         callback: ResultInterface<ResponseEntity, Boolean>
     ) {
-        network.server.getTopicReReply(token, replyId.toString())
+        network.server.getTopicReply(token, replyId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

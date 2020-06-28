@@ -12,8 +12,8 @@ import com.sae.colosseum.model.entity.ResponseEntity
 
 class IntroActivity : BaseActivity() {
 
-    var handler: Handler? = null
-    var runnable: Runnable? = null
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class IntroActivity : BaseActivity() {
 
     }
 
-    fun delayApi() {
+    private fun delayApi() {
         handler?.run {
             postDelayed(runnable, 1300)
         }

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
+import com.sae.colosseum.adapter.DetailTopicAdapter
 import com.sae.colosseum.adapter.TopicListAdapter
 import com.sae.colosseum.databinding.FragmentTopicListHourBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
@@ -19,13 +20,16 @@ import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.network.ServerClient
 import com.sae.colosseum.utils.GlobalApplication
 import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ReplyEntity
 import com.sae.colosseum.view.DetailTopicActivity
 
 class TopicListHourFragment : Fragment() {
     var serverClient: ServerClient? = null
     var token: String? = null
-    lateinit var recyclerListener: RecyclerViewListener<TopicInfoEntity, View>
+    lateinit var recyclerListener: RecyclerViewListener<View, Int, View>
     lateinit var binding: FragmentTopicListHourBinding
+    lateinit var adapter: TopicListAdapter
+    var topics: ArrayList<TopicInfoEntity>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,20 +51,24 @@ class TopicListHourFragment : Fragment() {
         serverClient = ServerClient()
         setData()
 
-        recyclerListener = object : RecyclerViewListener<TopicInfoEntity, View> {
+        recyclerListener = object : RecyclerViewListener<View, Int, View> {
             override fun onClickItem(
-                item: TopicInfoEntity,
                 clickedView: View,
+                position: Int,
                 itemView: View
             ) {
                 val intent = Intent(context, DetailTopicActivity::class.java)
-                val topicId: Int = item.id
+                val topicId: Int = topics?.get(position)?.id ?: 0
 
                 intent.putExtra("topicId", topicId)
                 context?.startActivity(intent)
             }
 
         }
+
+        binding.list.layoutManager = LinearLayoutManager(context)
+        adapter = TopicListAdapter(topics, recyclerListener)
+        binding.list.adapter = adapter
     }
 
     private fun setData() {
@@ -68,9 +76,11 @@ class TopicListHourFragment : Fragment() {
             ResultInterface<ResponseEntity, Boolean> {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if(boolean) {
-                    val adapter = TopicListAdapter(value?.data?.topics, recyclerListener)
-                    binding.list.adapter = adapter
-                    binding.list.layoutManager = LinearLayoutManager(context)
+                    value?.let {
+                        topics = it.data.topics
+                        adapter.list = it.data.topics
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
         })

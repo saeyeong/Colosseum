@@ -72,14 +72,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         fm?.let {
             if (it.fragments.size > 1) {
                 super.onBackPressed()
-                Log.d("test","fragments.size > 1")
             } else {
                 if(gapTime in 0..1000) {
-                    Log.d("test","gapTime in 0..1000")
                     finish()
                 }
                 else {
-                    Log.d("test","한번더")
                     backBtnTime = curTime
                 }
             }

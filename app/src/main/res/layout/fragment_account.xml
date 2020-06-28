@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:text="계정"
                 android:textStyle="bold"
-                android:textColor="@color/colorBlack"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -23,9 +23,10 @@ import com.sae.colosseum.view.DetailTopicActivity
 class BookmarkFragment : Fragment() {
     var serverClient: ServerClient? = null
     var token: String? = null
-    lateinit var recyclerListener: RecyclerViewListener<TopicInfoEntity, View>
+    lateinit var recyclerListener: RecyclerViewListener<View, Int, View>
     lateinit var binding: FragmentBookmarkBinding
-    var adapter: TopicListAdapter? = null
+    lateinit var adapter: TopicListAdapter
+    var topics: ArrayList<TopicInfoEntity>? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,19 +52,23 @@ class BookmarkFragment : Fragment() {
         serverClient = ServerClient()
         setData()
 
-        recyclerListener = object : RecyclerViewListener<TopicInfoEntity, View> {
+        recyclerListener = object : RecyclerViewListener<View, Int, View> {
             override fun onClickItem(
-                item: TopicInfoEntity,
                 clickedView: View,
+                position: Int,
                 itemView: View
             ) {
                 val intent = Intent(context, DetailTopicActivity::class.java)
-                val topicId: Int = item.id
+                val topicId: Int = topics?.get(position)?.id ?: 0
 
                 intent.putExtra("topicId", topicId)
                 context?.startActivity(intent)
             }
         }
+
+        binding.list.layoutManager = LinearLayoutManager(context)
+        adapter = TopicListAdapter(topics, recyclerListener)
+        binding.list.adapter = adapter
     }
 
     private fun setData() {
@@ -72,9 +77,8 @@ class BookmarkFragment : Fragment() {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if(boolean) {
                     value?.let {
-                        adapter = TopicListAdapter(it.data.topics, recyclerListener)
-                        binding.list.adapter = adapter
-                        binding.list.layoutManager = LinearLayoutManager(context)
+                        adapter.list = it.data.topics
+                        adapter.notifyDataSetChanged()
                     }
                 }
             }

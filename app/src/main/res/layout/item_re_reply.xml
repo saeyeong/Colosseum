@@ -37,18 +37,19 @@
             app:layout_constraintVertical_bias="0">
 
             <TextView
-                android:id="@+id/nick_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="새요미"
+                android:paddingBottom="5dp"
+                android:text="안녕"
+                android:maxLines="5"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintHorizontal_bias="0"/>
 
             <ImageView
                 android:visibility="gone"
@@ -76,21 +77,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0"/>
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:text="안녕"
-            android:maxLines="5"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_date"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintHorizontal_bias="0"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

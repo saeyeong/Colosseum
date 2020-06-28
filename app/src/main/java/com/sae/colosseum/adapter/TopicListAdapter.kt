@@ -14,8 +14,8 @@ import com.sae.colosseum.utils.GlobalApplication
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class TopicListAdapter(
-    private val list: ArrayList<TopicInfoEntity>?,
-    private val mCallback: RecyclerViewListener<TopicInfoEntity, View>
+    var list: ArrayList<TopicInfoEntity>?,
+    private val mCallback: RecyclerViewListener<View, Int, View>
 ) : RecyclerView.Adapter<ListTopicViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListTopicViewHolder {
@@ -27,10 +27,11 @@ open class TopicListAdapter(
         holder.itemView.setOnClickListener {
             position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                item = list?.get(position)
-                item?.run {
-                    mCallback.onClickItem(this, it, view)
-                }
+//                item = list?.get(position)
+//                item?.run {
+//                }
+                mCallback.onClickItem(it, position, view)
+
             }
         }
 

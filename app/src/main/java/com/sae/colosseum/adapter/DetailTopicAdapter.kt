@@ -19,7 +19,6 @@ import com.sae.colosseum.R
 import com.sae.colosseum.adapter.holder.HeaderTopicViewHolder
 import com.sae.colosseum.adapter.holder.ReplyTopicViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
-import com.sae.colosseum.model.entity.ReplyEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
 import kotlinx.android.synthetic.main.header_topic.view.*
@@ -27,13 +26,12 @@ import kotlinx.android.synthetic.main.item_reply.view.*
 
 class DetailTopicAdapter(
     var topicInfo: TopicInfoEntity?,
-    private val headerListener: RecyclerViewListener<ReplyEntity, View>,
-    private val itemListener: RecyclerViewListener<ReplyEntity, View>
+    private val headerListener: RecyclerViewListener<View, Int, View>,
+    private val itemListener: RecyclerViewListener<View, Int, View>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_HEADER = 0
     private val TYPE_ITEM = 1
-    private val boldSpan: StyleSpan = StyleSpan(Typeface.BOLD)
 
     override fun getItemViewType(position: Int): Int {
         return when(position) {
@@ -50,7 +48,6 @@ class DetailTopicAdapter(
         val view: View
         val holder: RecyclerView.ViewHolder
         var position: Int
-        var item: ReplyEntity?
 
         when(viewType) {
             TYPE_HEADER -> {
@@ -59,10 +56,7 @@ class DetailTopicAdapter(
                 holder = HeaderTopicViewHolder(view)
                 View.OnClickListener {
                     position = holder.adapterPosition
-                    item = topicInfo?.replies?.get(position)
-                    item?.run {
-                        headerListener.onClickItem(this, it, view)
-                    }
+                    headerListener.onClickItem(it, position, view)
                 }.let {
                     // 좋아요/싫어요 클릭 리스너
                     holder.itemView.run {
@@ -79,18 +73,14 @@ class DetailTopicAdapter(
                 view = LayoutInflater.from(parent.context).inflate(R.layout.item_reply, parent, false)
                 holder = ReplyTopicViewHolder(view)
                 View.OnClickListener {
-                    position = holder.adapterPosition
-                    item = topicInfo?.replies?.get(position-1)
-                    item?.run {
-                        itemListener.onClickItem(this, it, view)
-                    }
+                    position = holder.adapterPosition - 1
+                    itemListener.onClickItem(it, position, view)
                 }.let {
-                    // 좋아요/싫어요 클릭 리스너
                     holder.itemView.run {
                         like_wrap.setOnClickListener(it)
                         dislike_wrap.setOnClickListener(it)
                         btn_menu.setOnClickListener(it)
-                        btn_re_reply.setOnClickListener(it)
+                        wrap_re_reply.setOnClickListener(it)
                     }
                 }
             }
@@ -99,7 +89,8 @@ class DetailTopicAdapter(
     }
 
     override fun getItemCount(): Int {
-        return topicInfo?.replies?.count() ?: 0
+        val replyCount = topicInfo?.replies?.count() ?: 0
+        return replyCount + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -107,7 +98,9 @@ class DetailTopicAdapter(
 
             topicInfo?.replies?.get(position-1)?.let {
                 holder.itemView.run {
+                    list.adapter = null
 
+                    val boldSpan: StyleSpan = StyleSpan(Typeface.BOLD)
                     val spannableStringBuilder = SpannableStringBuilder()
                     var mySide = ""
                     var mySideColor = R.color.colorPrimary
@@ -139,9 +132,11 @@ class DetailTopicAdapter(
                     num_re_reply.text = it.reply_count.toString()
 
 //                    내 댓글만 수정 메뉴 보임
-                    if (it.user?.id == GlobalApplication.prefs.userId) {
-                        btn_menu.visibility = VISIBLE
-                    }
+                    val replyId = it.user?.id
+                    val myId = GlobalApplication.prefs.userId
+
+                    if (replyId == myId) btn_menu.visibility = VISIBLE
+                    else btn_menu.visibility = GONE
 
 //                    좋아요/싫어요 상태
                     when {

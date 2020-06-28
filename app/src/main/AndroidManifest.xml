@@ -14,8 +14,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.ReplyModifyActivity" />
-        <activity android:name=".view.ReReplyActivity" />
-        <activity android:name=".view.ReplyActivity" />
         <activity
             android:name=".view.DetailTopicActivity"
             android:windowSoftInputMode="adjustPan" />

@@ -135,7 +135,7 @@ interface RetrofitService {
     ): Single<ResponseEntity>
 
     @GET("topic_reply/{replyId}")
-    fun getTopicReReply(
+    fun getTopicReply(
         @Header("X-Http-Token") token: String?,
         @Path("replyId") replyId: String?
     ): Single<ResponseEntity>
