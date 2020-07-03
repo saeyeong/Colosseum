@@ -160,12 +160,12 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
 //                    좋아요 눌렀을때
                     img_like.id -> {
                         val isLike = true
-                        postTopicReplyLike(itemView, position, isLike)
+                        postTopicReplyLike(itemView, replyId, isLike)
                     }
 //                    싫어요 눌렀을때
                     img_dislike.id -> {
                         val isLike = false
-                        postTopicReplyLike(itemView, position, isLike)
+                        postTopicReplyLike(itemView, replyId, isLike)
                     }
 //                    댓글 눌렀을때
                     num_re_reply.id -> {
