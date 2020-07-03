@@ -31,7 +31,7 @@ class ReplyModifyActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setListener() {
-        binding.btnOk.setOnClickListener(this)
+        binding.btnConfirm.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {

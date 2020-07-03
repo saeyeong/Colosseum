@@ -16,7 +16,45 @@
         <item>수정</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ko_email">이메일</string>
+    <string name="ko_password">비밀번호</string>
+    <string name="ko_sign_in">로그인</string>
+    <string name="ko_sign_up">가입하기</string>
+    <string name="ko_find_email">이메일 찾기</string>
+    <string name="ko_find_password">비밀번호 찾기</string>
+    <string name="ko_ok">확인</string>
+    <string name="ko_password_confirm">비밀번호 확인</string>
+    <string name="ko_nickname">닉네임</string>
+    <string name="ko_detail_topic">토론장</string>
+    <string name="ko_account">계정</string>
+    <string name="ko_user_info">개인 정보</string>
+    <string name="ko_my_reply">내가 작성한 의견</string>
+    <string name="ko_my_alarm">내소식</string>
+    <string name="ko_topic_interest">관심 토론</string>
+    <string name="ko_current_password">현재 비밀번호</string>
+    <string name="ko_new_password">새 비밀번호</string>
+    <string name="ko_new_password_confirm">새 비밀번호 확인</string>
+    <string name="ko_setting">설정</string>
+    <string name="ko_tos">이용약관</string>
+    <string name="ko_logout">로그아웃</string>
+    <string name="ko_member_out">회원탈퇴</string>
+    <string name="ko_message_user_reply">%1$s개의 의견을 작성하셨습니다.</string>
+    <string name="ko_date_topic">작성일</string>
+    <string name="ko_up">찬성</string>
+    <string name="ko_down">반대</string>
+    <string name="ko_num_up">찬성 %1$s</string>
+    <string name="ko_num_down">반대 %1$s</string>
+    <string name="ko_vote">투표하기</string>
+    <string name="ko_num_reply">의견 %1$s</string>
+    <string name="ko_please_reply">의견을 입력해주세요.</string>
+    <string name="ko_message_warning_reply">타인에게 피해를 줄 수 있는 의견은 삭제되거나 관련 법률에 의해 제재를 받을 수 있습니다.</string>
+    <string name="ko_post">등록하기</string>
+    <string name="character_limit">%1$s / 300</string>
+    <string name="ko_sort_by_like">추천순</string>
+    <string name="ko_sort_by_newest">최신순</string>
+    <string name="ko_re_reply">댓글 %1$s</string>
+    <string name="zero">0</string>
+
+    <string name="toolbar_reply_modify">의견 수정</string>
 
 </resources>

@@ -44,24 +44,24 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.home-> {
+            binding.tabHome-> {
                 replaceFragment(HomeFragment.newInstance())
             }
-            binding.bookmark -> {
+            binding.tabBookmark -> {
                 replaceFragment(BookmarkFragment.newInstance())
             }
-            binding.alarm -> {
+            binding.tabAlarm -> {
                 replaceFragment(AlarmFragment.newInstance())
             }
-            binding.setting -> {
+            binding.tabSetting -> {
                 replaceFragment(SettingFragment.newInstance())
             }
         }
 
-        binding.home.background.alpha = 100
-        binding.bookmark.background.alpha = 100
-        binding.alarm.background.alpha = 100
-        binding.setting.background.alpha = 100
+        binding.tabHome.background.alpha = 100
+        binding.tabBookmark.background.alpha = 100
+        binding.tabAlarm.background.alpha = 100
+        binding.tabSetting.background.alpha = 100
         v?.background?.alpha = 255
     }
 
@@ -93,16 +93,16 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             ft = it.beginTransaction()
         }
 
-        binding.bookmark.background.alpha = 100
-        binding.alarm.background.alpha = 100
-        binding.setting.background.alpha = 100
+        binding.tabBookmark.background.alpha = 100
+        binding.tabAlarm.background.alpha = 100
+        binding.tabSetting.background.alpha = 100
     }
 
     private fun setListener(){
-        binding.home.setOnClickListener(this)
-        binding.bookmark.setOnClickListener(this)
-        binding.alarm.setOnClickListener(this)
-        binding.setting.setOnClickListener(this)
+        binding.tabHome.setOnClickListener(this)
+        binding.tabBookmark.setOnClickListener(this)
+        binding.tabAlarm.setOnClickListener(this)
+        binding.tabSetting.setOnClickListener(this)
     }
 
     private fun firstInitFragment() {

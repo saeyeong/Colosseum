@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.sae.colosseum.fragments.*
 
-class TabAdapter(fm: FragmentManager) :
+class TopicListPagerAdapter(fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private var fragmentList: ArrayList<Fragment>? = null
@@ -26,20 +26,20 @@ class TabAdapter(fm: FragmentManager) :
 
             return it[position]
         }
-        return TopicListHourFragment()
+        return TopicListFragment()
     }
 
-    fun addToListFragmentItem(fragment: Fragment) {
+    private fun addToListFragmentItem(fragment: Fragment) {
         fragmentList?.let {
             it.add(fragment)
         }
     }
 
-    fun makeTempPage() {
+    private fun makeTempPage() {
         fragmentList?.let {
-            addToListFragmentItem(TopicListHourFragment.newInstance())
-            addToListFragmentItem(TopicListWeekFragment.newInstance())
-            addToListFragmentItem(TopicListMonthFragment.newInstance())
+            addToListFragmentItem(TopicListFragment.newInstance())
+            addToListFragmentItem(TopicListFragment.newInstance())
+            addToListFragmentItem(TopicListFragment.newInstance())
         }
     }
 }

@@ -11,6 +11,7 @@ import com.sae.colosseum.adapter.holder.ListTopicViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
+import kotlinx.android.synthetic.main.item_reply.view.*
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class TopicListAdapter(
@@ -22,17 +23,10 @@ open class TopicListAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false)
         val holder = ListTopicViewHolder(view)
         var position: Int
-        var item: TopicInfoEntity?
 
         holder.itemView.setOnClickListener {
             position = holder.adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-//                item = list?.get(position)
-//                item?.run {
-//                }
-                mCallback.onClickItem(it, position, view)
-
-            }
+            if (position != RecyclerView.NO_POSITION) mCallback.onClickItem(it, position, view)
         }
 
         return holder
@@ -47,10 +41,16 @@ open class TopicListAdapter(
             holder.itemView.run {
                 topic_number.text = (position + 1).toString()
                 topic_title.text = it.title
-                num_agree.text = it.sides[0].vote_count.toString()
-                num_disagree.text = it.sides[1].vote_count.toString()
+
+                val upCount = it.sides?.get(0)?.vote_count?.toString() ?: ""
+                val downCount = it.sides?.get(1)?.vote_count?.toString() ?: ""
+                val replyCount = it.reply_count?.toString() ?: ""
+
+                num_up.text = context.getString(R.string.ko_num_up, upCount)
+                num_down.text = context.getString(R.string.ko_num_down, downCount)
+                num_reply.text = context.getString(R.string.ko_num_reply, replyCount)
+
                 end_date.text = it.end_date
-                num_reply.text = it.reply_count.toString()
                 Glide.with(GlobalApplication.instance.applicationContext).load(it.img_url).into(img_topic)
             }
         }

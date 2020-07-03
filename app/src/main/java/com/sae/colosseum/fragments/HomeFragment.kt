@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.TabAdapter
+import com.sae.colosseum.adapter.TopicListPagerAdapter
 import com.sae.colosseum.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
 
     lateinit var binding: FragmentHomeBinding
-    private val tabAdapter : TabAdapter by lazy {
-        TabAdapter(childFragmentManager)
+    private val topicListPagerAdapter : TopicListPagerAdapter by lazy {
+        TopicListPagerAdapter(childFragmentManager)
     }
 
     override fun onCreateView(
@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), ViewPager.OnPageChangeListener {
     }
 
     fun init() {
-        binding.pager.adapter = tabAdapter
+        binding.pager.adapter = topicListPagerAdapter
         binding.pager.addOnPageChangeListener(this)
     }
 

@@ -1,8 +1,6 @@
 package com.sae.colosseum.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,8 +70,8 @@ class UserReplyFragment : Fragment(), View.OnClickListener {
             ResultInterface<ResponseEntity, Boolean> {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if(boolean) {
-                    binding.numReply.text = value?.data?.my_replies_count.toString()
-
+                    val numReply = value?.data?.my_replies_count.toString()
+                    binding.messageNumUserReply.text = getString(R.string.ko_message_user_reply, numReply)
                     adapter.list = value?.data?.my_replies
                     adapter.notifyDataSetChanged()
                 } else {

@@ -1,110 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout>
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.SignUpActivity">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txt_colosseum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:text="Colosseum"
-        android:textColor="#000000"
-        android:textSize="45sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_70"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:text="@string/app_name"
+        android:textSize="@dimen/sp_45"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
     <TextView
         android:id="@+id/txt_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="회원가입"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/ko_sign_up"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintTop_toBottomOf="@+id/txt_colosseum"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_colosseum" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
     <EditText
         android:id="@+id/edit_email"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_20"
+        android:padding="@dimen/dp_10"
         android:maxLength="31"
-        android:hint="이메일 주소"
-        android:textSize="15sp"
+        android:hint="@string/ko_email"
+        android:textSize="@dimen/sp_15"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/gray_rounded_line_background"
         app:layout_constraintTop_toBottomOf="@+id/txt_signUp"
-        android:background="@drawable/gray_rounded_line_background"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
 
     <EditText
         android:id="@+id/edit_password"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
         android:maxLength="15"
-        android:hint="비밀번호"
-        android:textSize="15sp"
+        android:hint="@string/ko_password"
+        android:textSize="@dimen/sp_15"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/gray_rounded_line_background"
         app:layout_constraintTop_toBottomOf="@+id/edit_email"
-        android:background="@drawable/gray_rounded_line_background"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
     <EditText
         android:id="@+id/edit_password_check"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
         android:maxLength="15"
-        android:hint="비밀번호 재확인"
-        android:textSize="15sp"
+        android:hint="@string/ko_password_confirm"
+        android:textSize="@dimen/sp_15"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/gray_rounded_line_background"
         app:layout_constraintTop_toBottomOf="@+id/edit_password"
-        android:background="@drawable/gray_rounded_line_background"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
     <EditText
         android:id="@+id/edit_nick_name"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
         android:maxLength="15"
-        android:hint="닉네임"
-        android:textSize="15sp"
+        android:hint="@string/ko_nickname"
+        android:textSize="@dimen/sp_15"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/gray_rounded_line_background"
         app:layout_constraintTop_toBottomOf="@+id/edit_password_check"
-        android:background="@drawable/gray_rounded_line_background"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
     <Button
         android:id="@+id/btn_sign_up"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="@string/ko_sign_up"
+        android:textColor="@color/colorWhite"
         android:background="@drawable/sign_up_btn_background"
-        android:text="가입"
-        android:textColor="#F6F6F6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_nick_name"
-        android:stateListAnimator="@null"/>
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

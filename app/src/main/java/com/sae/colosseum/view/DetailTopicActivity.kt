@@ -26,6 +26,7 @@ import com.sae.colosseum.utils.BaseActivity
 import com.sae.colosseum.interfaces.ResultInterface
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import kotlinx.android.synthetic.main.header_topic.*
+import kotlinx.android.synthetic.main.header_topic.view.*
 import kotlinx.android.synthetic.main.item_reply.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 
@@ -33,7 +34,10 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTopicDetailBinding
     lateinit var detailTopicAdapter: DetailTopicAdapter
     lateinit var reReplyAdapter: ReReplyAdapter
-    lateinit var topicInfo: TopicInfoEntity
+    var topicInfo: TopicInfoEntity? = null
+    var topicUp = topicInfo?.sides?.get(0)
+    var topicDown = topicInfo?.sides?.get(0)
+    var userSideId = topicInfo?.my_side_id
     var replyCheck: Int = 1 // 0 : 쓸수있음 1 : 이미 썼음
     var orderType: String = "NEW"
     var pageNum: Int = 1
@@ -51,9 +55,9 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         setListener()
 
         builder = AlertDialog.Builder(this)
-        topicInfo = TopicInfoEntity()
         topicId = intent.getIntExtra("topicId", -1)
         replies = ArrayList()
+
 
         binding.list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -69,14 +73,14 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             override fun onClickItem(clickedView: View, position: Int, itemView: View) {
                 when (clickedView.id) {
                     // 의견 영역 눌렀을 때
-                    edit_wrap.id -> {
+                    wrap_edit_reply.id -> {
                         reply_off.visibility = GONE
                         reply_on.visibility = VISIBLE
                     }
                     // 의견 등록하기 눌렀을 때
                     btn_ok.id -> {
                         when {
-                            topicInfo.my_side_id == -1 -> { // 투표 검사
+                            userSideId == -1 -> { // 투표 검사
                                 toast("투표를 완료하시면 의견을 작성하실 수 있습니다")
                             }
                             replyCheck == 1 -> {
@@ -92,30 +96,30 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                 replyCheck = 1
 
                                 btn_vote.isEnabled = false
-                                btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorNeutralGray))
+                                btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorAltoGray))
                             }
                         }
                     }
                     // 찬성 눌렀을 때
-                    wrap_up.id -> {
-                        topicInfo.my_side_id = topicInfo.sides[0].id
+                    txt_up.id -> {
+                        userSideId = topicUp?.id
                         setRes(check_up, R.drawable.ico_check_up)
                         setRes(check_down, R.drawable.ico_check)
                     }
                     // 반대 눌렀을 때
-                    wrap_down.id -> {
-                        topicInfo.my_side_id = topicInfo.sides[1].id
+                    txt_down.id -> {
+                        userSideId = topicDown?.id
                         setRes(check_up, R.drawable.ico_check)
                         setRes(check_down, R.drawable.ico_check_down)
                     }
 //                    찬/반 투표하기 버튼
                     btn_vote.id -> {
-                        if (topicInfo.my_side_id != -1) { // 찬/반 선택 했는지 확인
-                            postTopicVote(topicInfo.my_side_id)
+                        if (userSideId != -1) { // 찬/반 선택 했는지 확인
+                            postTopicVote(userSideId)
                         }
                     }
                     // 레이아웃 눌렀을때 (의견입력창 원상태로 되돌리기)
-                    wrap_topic.id -> {
+                    wrap_cont.id -> {
                         reply_off.visibility = VISIBLE
                         reply_on.visibility = GONE
                     }
@@ -154,17 +158,17 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
 //                    좋아요 눌렀을때
-                    like_wrap.id -> {
+                    img_like.id -> {
                         val isLike = true
                         postTopicReplyLike(itemView, position, isLike)
                     }
 //                    싫어요 눌렀을때
-                    dislike_wrap.id -> {
+                    img_dislike.id -> {
                         val isLike = false
                         postTopicReplyLike(itemView, position, isLike)
                     }
 //                    댓글 눌렀을때
-                    wrap_re_reply.id -> {
+                    num_re_reply.id -> {
                         if (replyInfo?.reply_count != 0) {
                             getTopicReply(replyId, itemView)
                         } else {
@@ -185,8 +189,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         } else {
             finish()
         }
-
-
     }
 
     private fun getTopic(orderType: String, pageNum: Int) {
@@ -194,19 +196,20 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             ResultInterface<DataEntity, Boolean> {
             override fun result(value: DataEntity?, boolean: Boolean) {
                 if (boolean) {
-                    value?.let {
-                        topicInfo = it.topic
-                        setBookmark(topicInfo.is_my_like_topic)
+                    value?.topic?.let {
+                        setBookmark(it.is_my_like_topic)
 
-                        if (topicInfo.my_side_id != -1) {
+                        if (it.my_side_id != -1) {
                             replyCheck = 0
                         } else {
                             btn_vote.isEnabled = false
-                            btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorNeutralGray))
+                            btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorAltoGray))
                         }
 
-                        detailTopicAdapter.topicInfo = topicInfo
-                        topicInfo.replies?.run { replies?.addAll(this) }
+                        detailTopicAdapter.topicInfo = it
+
+                        it.replies?.run { replies?.addAll(this) }
+
                         detailTopicAdapter.topicInfo?.replies = replies
                         detailTopicAdapter.notifyDataSetChanged()
                     }
@@ -223,7 +226,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun postTopicReply(content: String) {
-        serverClient.postTopicReply(token, topicInfo.id, content, object :
+        serverClient.postTopicReply(token, topicInfo?.id, content, object :
             ResultInterface<ResponseEntity, Boolean> {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if (boolean) {
@@ -241,16 +244,18 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if (boolean) {
                     value?.let {
-                        topicInfo.my_side_id = it.data.topic.my_side_id
+                        userSideId = it.data.topic.my_side_id
 
 //                    유저 찬/반 정보에 따라 버튼 색 초기화
                         setRes(check_up, R.drawable.ico_check)
                         setRes(check_down, R.drawable.ico_check)
 
-                        if (topicInfo.my_side_id == topicInfo.sides[0].id) {
-                            setRes(check_up, R.drawable.ico_check_up)
-                        } else if (topicInfo.my_side_id == topicInfo.sides[1].id) {
-                            setRes(check_down, R.drawable.ico_check_down)
+                        val upId = topicUp?.id ?: 0
+                        val downId = topicDown?.id ?: 0
+
+                        when(userSideId) {
+                            upId -> setRes(check_up, R.drawable.ico_check_up)
+                            downId -> setRes(check_down, R.drawable.ico_check_down)
                         }
                     }
                     toast("투표 성공")
@@ -272,14 +277,13 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.bookmark -> {
-                serverClient.postTopicLike(token, topicInfo.id, object :
+                serverClient.postTopicLike(token, topicId, object :
                     ResultInterface<ResponseEntity, Boolean> {
                     override fun result(value: ResponseEntity?, boolean: Boolean) {
                         if (boolean) {
-                            value?.let {
-                                topicInfo.is_my_like_topic = it.data.topic.is_my_like_topic
-                                setBookmark(topicInfo.is_my_like_topic)
-                            }
+                            val isMyLikeTopic = value?.data?.topic?.is_my_like_topic ?: run { false }
+                            topicInfo?.is_my_like_topic = isMyLikeTopic
+                            setBookmark(isMyLikeTopic)
                         }
                     }
                 })
@@ -354,8 +358,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                     val itemListener = object : RecyclerViewListener<View, Int, View> {
                         override fun onClickItem(clickedView: View, position: Int, itemView: View) {
 
-                            val replyInfo = replies?.get(position)
-                            val replyId = replyInfo?.id ?: 0
+                            val replyIds = replies?.get(position)?.id ?: 0
 
                             when(clickedView.id) {
 //                    의견 메뉴 눌렀을때
@@ -364,7 +367,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                         it.setItems(R.array.menu_reply) { _, which ->
                                             when (which) {
                                                 0 -> {
-                                                    deleteTopicReply(replyId, position)
+                                                    deleteTopicReply(replyIds, position)
                                                 }
                                                 1 -> {
 //                                        if (topicInfo.id != -1) {

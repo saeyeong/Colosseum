@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.colosseum.R
 import com.sae.colosseum.adapter.TopicListAdapter
-import com.sae.colosseum.databinding.FragmentBookmarkBinding
+import com.sae.colosseum.databinding.FragmentInterestBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.model.entity.TopicInfoEntity
@@ -24,7 +24,7 @@ class BookmarkFragment : Fragment() {
     var serverClient: ServerClient? = null
     var token: String? = null
     lateinit var recyclerListener: RecyclerViewListener<View, Int, View>
-    lateinit var binding: FragmentBookmarkBinding
+    lateinit var binding: FragmentInterestBinding
     lateinit var adapter: TopicListAdapter
     var topics: ArrayList<TopicInfoEntity>? = null
     override fun onCreateView(
@@ -32,7 +32,7 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_bookmark,container,false)
+            R.layout.fragment_interest,container,false)
 
         return binding.root
     }
