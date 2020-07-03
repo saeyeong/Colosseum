@@ -133,7 +133,6 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
-                    Log.d("test", it.message)
                 }
             )
     }
@@ -182,7 +181,6 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
-                    Log.d("test",it.message)
                 }
             )
     }
@@ -191,7 +189,6 @@ class ServerClient() {
         token: String?, sideId: Int?,
         callback: ResultInterface<ResponseEntity, Boolean>
     ) {
-        Log.d("test","파라미터 : $sideId")
         network.server.postTopicVote(token, sideId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -201,7 +198,6 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
-                    Log.d("test",it.message)
                 }
             )
     }
@@ -304,7 +300,6 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
-                    Log.d("test",it.message)
                 }
             )
     }

@@ -19,12 +19,9 @@ import com.sae.colosseum.adapter.DetailTopicAdapter
 import com.sae.colosseum.adapter.ReReplyAdapter
 import com.sae.colosseum.databinding.ActivityTopicDetailBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
-import com.sae.colosseum.model.entity.DataEntity
-import com.sae.colosseum.model.entity.ReplyEntity
-import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.utils.BaseActivity
 import com.sae.colosseum.interfaces.ResultInterface
-import com.sae.colosseum.model.entity.TopicInfoEntity
+import com.sae.colosseum.model.entity.*
 import kotlinx.android.synthetic.main.header_topic.*
 import kotlinx.android.synthetic.main.header_topic.view.*
 import kotlinx.android.synthetic.main.item_reply.*
@@ -35,9 +32,9 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     lateinit var detailTopicAdapter: DetailTopicAdapter
     lateinit var reReplyAdapter: ReReplyAdapter
     var topicInfo: TopicInfoEntity? = null
-    var topicUp = topicInfo?.sides?.get(0)
-    var topicDown = topicInfo?.sides?.get(0)
-    var userSideId = topicInfo?.my_side_id
+    var topicUp: SidesEntity? = null
+    var topicDown: SidesEntity? = null
+    var userSideId: Int? = null
     var replyCheck: Int = 1 // 0 : 쓸수있음 1 : 이미 썼음
     var orderType: String = "NEW"
     var pageNum: Int = 1
@@ -197,13 +194,15 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             override fun result(value: DataEntity?, boolean: Boolean) {
                 if (boolean) {
                     value?.topic?.let {
+
+                        topicUp = it.sides?.get(0)
+                        topicDown = it.sides?.get(1)
+                        userSideId = it.my_side_id
+
                         setBookmark(it.is_my_like_topic)
 
                         if (it.my_side_id != -1) {
                             replyCheck = 0
-                        } else {
-                            btn_vote.isEnabled = false
-                            btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorAltoGray))
                         }
 
                         detailTopicAdapter.topicInfo = it
@@ -213,8 +212,6 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                         detailTopicAdapter.topicInfo?.replies = replies
                         detailTopicAdapter.notifyDataSetChanged()
                     }
-                } else {
-                    Log.d("test", "토픽목록불러오기실패")
                 }
             }
         })
@@ -243,24 +240,14 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
             ResultInterface<ResponseEntity, Boolean> {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if (boolean) {
-                    value?.let {
-                        userSideId = it.data.topic.my_side_id
-
-//                    유저 찬/반 정보에 따라 버튼 색 초기화
-                        setRes(check_up, R.drawable.ico_check)
-                        setRes(check_down, R.drawable.ico_check)
-
-                        val upId = topicUp?.id ?: 0
-                        val downId = topicDown?.id ?: 0
-
-                        when(userSideId) {
-                            upId -> setRes(check_up, R.drawable.ico_check_up)
-                            downId -> setRes(check_down, R.drawable.ico_check_down)
-                        }
+                    value?.data?.topic?.let {
+                        userSideId = it.my_side_id
+                        detailTopicAdapter.topicInfo = it
+                        detailTopicAdapter.notifyDataSetChanged()
                     }
                     toast("투표 성공")
                 } else {
-                    toast("postTopicVote 실패")
+                    toast("투표를 다시 하시려면 의견을 삭제해주세요.")
                 }
             }
         })

@@ -6,7 +6,7 @@ data class TopicInfoEntity(
     val img_url: String?,
     val start_date: String?,
     val end_date: String?,
-    val sides: List<SidesEntity>?,
+    var sides: List<SidesEntity>?,
     val reply_count: Int?,
     var my_side_id: Int?,
     var replies: ArrayList<ReplyEntity>?,
