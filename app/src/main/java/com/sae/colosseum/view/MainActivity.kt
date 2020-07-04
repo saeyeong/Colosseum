@@ -1,20 +1,22 @@
 package com.sae.colosseum.view
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.sae.colosseum.R
 import com.sae.colosseum.databinding.ActivityMainBinding
-import com.sae.colosseum.fragments.AlarmFragment
+import com.sae.colosseum.fragments.NotificationFragment
 import com.sae.colosseum.fragments.BookmarkFragment
 import com.sae.colosseum.fragments.HomeFragment
 import com.sae.colosseum.fragments.SettingFragment
+import com.sae.colosseum.interfaces.ResultInterface
+import com.sae.colosseum.model.entity.ResponseEntity
 import com.sae.colosseum.utils.BaseActivity
-import com.sae.colosseum.utils.replaceFragment
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -39,6 +41,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onResume() {
+        getNotification()
         super.onResume()
     }
 
@@ -50,8 +53,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             binding.tabBookmark -> {
                 replaceFragment(BookmarkFragment.newInstance())
             }
-            binding.tabAlarm -> {
-                replaceFragment(AlarmFragment.newInstance())
+            binding.tabNotification -> {
+                replaceFragment(NotificationFragment.newInstance())
             }
             binding.tabSetting -> {
                 replaceFragment(SettingFragment.newInstance())
@@ -60,7 +63,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         binding.tabHome.background.alpha = 100
         binding.tabBookmark.background.alpha = 100
-        binding.tabAlarm.background.alpha = 100
+        binding.tabNotification.background.alpha = 100
         binding.tabSetting.background.alpha = 100
         v?.background?.alpha = 255
     }
@@ -87,21 +90,21 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     fun init(){
         setListener()
-
+        getNotification()
         supportFragmentManager.let {
             fm = it
             ft = it.beginTransaction()
         }
 
         binding.tabBookmark.background.alpha = 100
-        binding.tabAlarm.background.alpha = 100
+        binding.tabNotification.background.alpha = 100
         binding.tabSetting.background.alpha = 100
     }
 
     private fun setListener(){
         binding.tabHome.setOnClickListener(this)
         binding.tabBookmark.setOnClickListener(this)
-        binding.tabAlarm.setOnClickListener(this)
+        binding.tabNotification.setOnClickListener(this)
         binding.tabSetting.setOnClickListener(this)
     }
 
@@ -128,5 +131,20 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         } ?: run {
             return false
         }
+    }
+
+    fun getNotification() {
+        serverClient.getNotification(token, false, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    val unreadNotyCount = value?.data?.unread_noty_count ?: 0
+                    if(unreadNotyCount != 0) {
+                        binding.numNotification.text = unreadNotyCount.toString()
+                        binding.numNotification.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
     }
 }

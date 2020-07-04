@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
         android:background="@color/colorDarkGray"
-        android:paddingTop="@dimen/dp_10"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,18 +44,35 @@
             android:background="@drawable/heart_on"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tab_home"
-            app:layout_constraintEnd_toStartOf="@+id/tab_alarm"
+            app:layout_constraintEnd_toStartOf="@+id/tab_notification"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageButton
-            android:id="@+id/tab_alarm"
+            android:id="@+id/tab_notification"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:background="@drawable/alarm_on"
+            android:background="@drawable/notification_on"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tab_bookmark"
             app:layout_constraintEnd_toStartOf="@+id/tab_setting"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/num_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_5"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/notifications_count_background"
+            app:layout_constraintCircle="@id/tab_notification"
+            app:layout_constraintCircleAngle="50"
+            app:layout_constraintCircleRadius="@dimen/dp_20"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageButton
             android:id="@+id/tab_setting"
@@ -64,7 +80,7 @@
             android:layout_height="@dimen/dp_30"
             android:background="@drawable/setting_on"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tab_alarm"
+            app:layout_constraintStart_toEndOf="@+id/tab_notification"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 

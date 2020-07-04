@@ -4,25 +4,25 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.holder.AlarmListViewHolder
+import com.sae.colosseum.adapter.holder.NotificationListViewHolder
 import com.sae.colosseum.model.entity.NotificationEntity
-import kotlinx.android.synthetic.main.item_alarm.view.*
+import kotlinx.android.synthetic.main.item_notification.view.*
 
-class AlarmListAdapter(private val list: ArrayList<NotificationEntity>?) : RecyclerView.Adapter<AlarmListViewHolder>() {
+class NotificationListAdapter(private val list: ArrayList<NotificationEntity>?) : RecyclerView.Adapter<NotificationListViewHolder>() {
     lateinit var type: String
     private var setIconId: Int = 0
     private var txtAlarm: Int = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_alarm, parent, false)
-        return AlarmListViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationListViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_notification, parent, false)
+        return NotificationListViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return list?.count() ?: 0
     }
 
-    override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NotificationListViewHolder, position: Int) {
         list?.get(position)?.let {
 
             holder.itemView.run {

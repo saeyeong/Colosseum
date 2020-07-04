@@ -165,6 +165,14 @@ interface RetrofitService {
 
     @GET("notification")
     fun getNotification(
-        @Header("X-Http-Token") token: String?
+        @Header("X-Http-Token") token: String?,
+        @Query("need_all_notis") needAllNotis: Boolean?
+    ): Single<ResponseEntity>
+
+    @FormUrlEncoded
+    @POST("notification")
+    fun postNotification(
+        @Header("X-Http-Token") token: String?,
+        @Field("noti_id") notiId: Int?
     ): Single<ResponseEntity>
 }

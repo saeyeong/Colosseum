@@ -9,5 +9,6 @@ data class DataEntity (
     val replies: ArrayList<ReplyEntity>,
     val my_replies: ArrayList<ReplyEntity>,
     val my_replies_count: Int,
+    val unread_noty_count: Int,
     val notifications: ArrayList<NotificationEntity>
 )

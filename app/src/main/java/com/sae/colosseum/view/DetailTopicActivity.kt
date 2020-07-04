@@ -51,33 +51,27 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
     fun init() {
         setListener()
 
-        builder = AlertDialog.Builder(this)
+        builder = AlertDialog.Builder(this)// fragmetDialog  사용하기
         topicId = intent.getIntExtra("topicId", -1)
         replies = ArrayList()
 
 
-        binding.list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1)) {
-                    this@DetailTopicActivity.pageNum += 1
-                    getTopic(orderType, pageNum)
-                }
-            }
-        })
+
 
         val headerListener = object : RecyclerViewListener<View, Int, View> {
             override fun onClickItem(clickedView: View, position: Int, itemView: View) {
                 when (clickedView.id) {
                     // 의견 영역 눌렀을 때
                     wrap_edit_reply.id -> {
+                        //펑션화 하기
                         reply_off.visibility = GONE
                         reply_on.visibility = VISIBLE
                     }
                     // 의견 등록하기 눌렀을 때
                     btn_ok.id -> {
+                        //메서드화 하기
                         when {
-                            userSideId == -1 -> { // 투표 검사
+                            userSideId == -1 -> { // 투표 검사, -1 -> enum 클래스로 관리하기, 하드코딩 최대한 지양하기
                                 toast("투표를 완료하시면 의견을 작성하실 수 있습니다")
                             }
                             replyCheck == 1 -> {
@@ -93,13 +87,13 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                                 replyCheck = 1
 
                                 btn_vote.isEnabled = false
-                                btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorAltoGray))
+                                btn_vote.setTextColor(getColor(btn_ok.context, R.color.colorAltoGray)) // 두세번이상쓰면 재사용 -> 함수만들기
                             }
                         }
                     }
                     // 찬성 눌렀을 때
                     txt_up.id -> {
-                        userSideId = topicUp?.id
+                        userSideId = topicUp?.id // 함수로 빼기
                         setRes(check_up, R.drawable.ico_check_up)
                         setRes(check_down, R.drawable.ico_check)
                     }
@@ -136,7 +130,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                         builder.let {
                             it.setItems(R.array.menu_reply) { _, which ->
                                 when (which) {
-                                    0 -> {
+                                    0 -> { //enum 으로
                                         deleteTopicReply(replyId, position)
                                     }
                                     1 -> {
@@ -170,7 +164,7 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                             getTopicReply(replyId, itemView)
                         } else {
                             reReplyAdapter.list = null
-                            reReplyAdapter.notifyDataSetChanged()
+                            reReplyAdapter.notifyDataSetChanged() // 함수로뺴기 전체,특정타입 노티 정할수있게
                         }
                     }
                 }
@@ -188,13 +182,14 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+
+
     private fun getTopic(orderType: String, pageNum: Int) {
-        serverClient.getTopic(token, topicId.toString(), orderType, pageNum, object :
+        serverClient.getTopic(token, topicId.toString(), orderType, pageNum, object : //익명객체 변수로뺴기 , 다시접근을위해
             ResultInterface<DataEntity, Boolean> {
             override fun result(value: DataEntity?, boolean: Boolean) {
                 if (boolean) {
                     value?.topic?.let {
-
                         topicUp = it.sides?.get(0)
                         topicDown = it.sides?.get(1)
                         userSideId = it.my_side_id
@@ -212,18 +207,28 @@ class DetailTopicActivity : BaseActivity(), View.OnClickListener {
                         detailTopicAdapter.topicInfo?.replies = replies
                         detailTopicAdapter.notifyDataSetChanged()
                     }
+                } else {
+                  false
+                }      //false라도 넣기
+            }
+        })
+    }
+    private fun setListener() {
+        binding.bookmark.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    this@DetailTopicActivity.pageNum += 1
+                    getTopic(orderType, pageNum)
                 }
             }
         })
     }
 
-    private fun setListener() {
-        binding.bookmark.setOnClickListener(this)
-        binding.btnBack.setOnClickListener(this)
-    }
-
     private fun postTopicReply(content: String) {
-        serverClient.postTopicReply(token, topicInfo?.id, content, object :
+        serverClient.postTopicReply(token, topicId, content, object :
             ResultInterface<ResponseEntity, Boolean> {
             override fun result(value: ResponseEntity?, boolean: Boolean) {
                 if (boolean) {

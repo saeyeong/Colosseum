@@ -33,32 +33,37 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val email: String = binding.editEmail.text.toString()
-        val password: String = binding.editPassword.text.toString()
-
         when (v) {
             binding.btnLogin-> {
-                serverClient.postUser(email, password, object :
-                    ResultInterface<ResponseEntity, Boolean> {
-                    override fun result(value: ResponseEntity?, boolean: Boolean) {
-                        if(boolean) {
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "아이디와 비밀번호를 다시 한번 확인해주세요.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                })
+                postUser()
             }
             binding.btnSignUp -> {
                 val intent = Intent(this, SignUpActivity::class.java)
                 startActivity(intent)
             }
         }
+
+    }
+
+    private fun postUser() {
+        val email: String = binding.editEmail.text.toString()
+        val password: String = binding.editPassword.text.toString()
+
+        serverClient.postUser(email, password, object :
+            ResultInterface<ResponseEntity, Boolean> {
+            override fun result(value: ResponseEntity?, boolean: Boolean) {
+                if(boolean) {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "아이디와 비밀번호를 다시 한번 확인해주세요.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        })
     }
 }

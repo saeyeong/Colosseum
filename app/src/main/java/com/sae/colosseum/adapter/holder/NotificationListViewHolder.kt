@@ -4,5 +4,5 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 
-class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+class NotificationListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 }

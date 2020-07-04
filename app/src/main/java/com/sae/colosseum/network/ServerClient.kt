@@ -229,9 +229,11 @@ class ServerClient() {
             .subscribeBy(
                 onSuccess = {
                     callback.result(it, true)
+                    Log.d("test","성공")
                 },
                 onError = {
                     callback.result(null, false)
+                    Log.d("test",it.message)
                 }
             )
     }
@@ -340,9 +342,28 @@ class ServerClient() {
 
     fun getNotification(
         token: String?,
+        needAllNotis: Boolean?,
         callback: ResultInterface<ResponseEntity, Boolean>
     ) {
-        network.server.getNotification(token)
+        network.server.getNotification(token, needAllNotis)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    callback.result(it, true)
+                },
+                onError = {
+                    callback.result(null, false)
+                }
+            )
+    }
+
+    fun postNotification(
+        token: String?,
+        notiId: Int?,
+        callback: ResultInterface<ResponseEntity, Boolean>
+    ) {
+        network.server.postNotification(token, notiId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
