@@ -11,7 +11,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.holder.ReReplyViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.ReplyEntity
 import com.sae.colosseum.utils.GlobalApplication
@@ -21,7 +20,9 @@ import java.util.*
 class ReReplyAdapter(
     var list: ArrayList<ReplyEntity>?,
     private val mCallback: RecyclerViewListener<View, Int, View>
-) : RecyclerView.Adapter<ReReplyViewHolder>() {
+) : RecyclerView.Adapter<ReReplyAdapter.ReReplyViewHolder>() {
+
+    class ReReplyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReReplyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_re_reply, parent, false)

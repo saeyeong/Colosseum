@@ -1,17 +1,19 @@
 package com.sae.colosseum.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.holder.NotificationListViewHolder
 import com.sae.colosseum.model.entity.NotificationEntity
 import kotlinx.android.synthetic.main.item_notification.view.*
 
-class NotificationListAdapter(private val list: ArrayList<NotificationEntity>?) : RecyclerView.Adapter<NotificationListViewHolder>() {
+class NotificationListAdapter(private val list: ArrayList<NotificationEntity>?) : RecyclerView.Adapter<NotificationListAdapter.NotificationListViewHolder>() {
     lateinit var type: String
     private var setIconId: Int = 0
     private var txtAlarm: Int = 0
+
+    class NotificationListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_notification, parent, false)

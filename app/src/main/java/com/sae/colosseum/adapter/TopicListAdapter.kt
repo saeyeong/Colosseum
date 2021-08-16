@@ -5,21 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.holder.ListTopicViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
-import kotlinx.android.synthetic.main.item_reply.view.*
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class TopicListAdapter(
     var list: ArrayList<TopicInfoEntity>?,
     private val mCallback: RecyclerViewListener<View, Int, View>
-) : RecyclerView.Adapter<ListTopicViewHolder>() {
+) : RecyclerView.Adapter<TopicListAdapter.ListTopicViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListTopicViewHolder {
+    class ListTopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicListAdapter.ListTopicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false)
         val holder = ListTopicViewHolder(view)
         var position: Int

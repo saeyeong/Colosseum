@@ -16,8 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sae.colosseum.R
-import com.sae.colosseum.adapter.holder.HeaderTopicViewHolder
-import com.sae.colosseum.adapter.holder.ReplyTopicViewHolder
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
@@ -43,6 +41,9 @@ class DetailTopicAdapter(
             }
         }
     }
+
+    class HeaderTopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ReplyTopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
