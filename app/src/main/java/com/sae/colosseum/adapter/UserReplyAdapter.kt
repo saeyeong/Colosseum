@@ -4,17 +4,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sae.colosseum.R
+import com.sae.colosseum.databinding.ItemTopicBinding
+import com.sae.colosseum.databinding.ItemUserReplyBinding
 import com.sae.colosseum.model.entity.ReplyEntity
-import kotlinx.android.synthetic.main.item_user_reply.view.*
+import com.sae.colosseum.model.entity.TopicInfoEntity
+import com.sae.colosseum.utils.GlobalApplication
 
 open class UserReplyAdapter(
     var list: ArrayList<ReplyEntity>?
-) : RecyclerView.Adapter<UserReplyAdapter.UserReplyViewHolder>() {
+) : RecyclerView.Adapter<UserReplyAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserReplyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user_reply, parent, false)
-        val holder = UserReplyViewHolder(view)
+    class ViewHolder(
+        val viewBinding: ItemUserReplyBinding
+    ) : RecyclerView.ViewHolder(
+        viewBinding.root
+    ) {
+
+        fun bindViewHolder(item: ReplyEntity) {
+            viewBinding.content.text = item.content
+            viewBinding.txtDate.text = item.updated_at
+            viewBinding.txtTopic.text = item.project_info.title
+
+            viewBinding.executePendingBindings()
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = ItemUserReplyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val holder = ViewHolder(view)
 
         return holder
     }
@@ -23,15 +43,9 @@ open class UserReplyAdapter(
         return list?.count() ?: 0
     }
 
-    class UserReplyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    override fun onBindViewHolder(holder: UserReplyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.itemView.run {
-                content.text = it.content
-                txt_date.text = it.updated_at
-                txt_topic.text = it.project_info.title
-            }
+            holder.bindViewHolder(it)
         }
     }
 }

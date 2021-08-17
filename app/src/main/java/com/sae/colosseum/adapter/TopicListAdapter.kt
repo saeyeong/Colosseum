@@ -6,26 +6,50 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sae.colosseum.R
+import com.sae.colosseum.databinding.ItemTopicBinding
 import com.sae.colosseum.interfaces.RecyclerViewListener
 import com.sae.colosseum.model.entity.TopicInfoEntity
 import com.sae.colosseum.utils.GlobalApplication
-import kotlinx.android.synthetic.main.item_topic.view.*
 
 open class TopicListAdapter(
     var list: ArrayList<TopicInfoEntity>?,
     private val mCallback: RecyclerViewListener<View, Int, View>
-) : RecyclerView.Adapter<TopicListAdapter.ListTopicViewHolder>() {
+) : RecyclerView.Adapter<TopicListAdapter.ViewHolder>() {
 
-    class ListTopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ViewHolder(
+        val viewBinding: ItemTopicBinding
+    ) : RecyclerView.ViewHolder(
+        viewBinding.root
+    ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicListAdapter.ListTopicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false)
-        val holder = ListTopicViewHolder(view)
-        var position: Int
+        fun bindViewHolder(item: TopicInfoEntity, position: Int) {
 
-        holder.itemView.setOnClickListener {
-            position = holder.adapterPosition
-            if (position != RecyclerView.NO_POSITION) mCallback.onClickItem(it, position, view)
+            viewBinding.topicNumber.text = (position + 1).toString()
+            viewBinding.topicTitle.text = item.title
+
+            val upCount = item.sides?.get(0)?.vote_count?.toString() ?: ""
+            val downCount = item.sides?.get(1)?.vote_count?.toString() ?: ""
+            val replyCount = item.reply_count?.toString() ?: ""
+
+            viewBinding.numUp.text = viewBinding.numUp.context.getString(R.string.ko_num_up, upCount)
+            viewBinding.numDown.text = viewBinding.numDown.context.getString(R.string.ko_num_down, downCount)
+            viewBinding.numReply.text = viewBinding.numReply.context.getString(R.string.ko_num_reply, replyCount)
+
+            viewBinding.endDate.text = item.end_date
+            Glide.with(GlobalApplication.instance.applicationContext).load(item.img_url).into(viewBinding.imgTopic)
+
+            viewBinding.executePendingBindings()
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = ItemTopicBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val holder = ViewHolder(view)
+
+        holder.viewBinding.root.setOnClickListener {
+            if (holder.bindingAdapterPosition != RecyclerView.NO_POSITION)
+                mCallback.onClickItem(it, holder.bindingAdapterPosition, view.root)
         }
 
         return holder
@@ -35,23 +59,9 @@ open class TopicListAdapter(
         return list?.count() ?: 0
     }
 
-    override fun onBindViewHolder(holder: ListTopicViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         list?.get(position)?.let {
-            holder.itemView.run {
-                topic_number.text = (position + 1).toString()
-                topic_title.text = it.title
-
-                val upCount = it.sides?.get(0)?.vote_count?.toString() ?: ""
-                val downCount = it.sides?.get(1)?.vote_count?.toString() ?: ""
-                val replyCount = it.reply_count?.toString() ?: ""
-
-                num_up.text = context.getString(R.string.ko_num_up, upCount)
-                num_down.text = context.getString(R.string.ko_num_down, downCount)
-                num_reply.text = context.getString(R.string.ko_num_reply, replyCount)
-
-                end_date.text = it.end_date
-                Glide.with(GlobalApplication.instance.applicationContext).load(it.img_url).into(img_topic)
-            }
+            holder.bindViewHolder(it, position)
         }
     }
 }
