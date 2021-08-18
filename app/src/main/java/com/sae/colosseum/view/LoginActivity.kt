@@ -18,7 +18,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         init()
@@ -46,24 +45,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun postUser() {
-        val email: String = binding.editEmail.text.toString()
-        val password: String = binding.editPassword.text.toString()
+        val email = binding.editEmail.text.toString()
+        val password = binding.editPassword.text.toString()
 
-        serverClient.postUser(email, password, object :
-            ResultInterface<ResponseEntity, Boolean> {
-            override fun result(value: ResponseEntity?, boolean: Boolean) {
-                if(boolean) {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "아이디와 비밀번호를 다시 한번 확인해주세요.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        })
+        serverClient.postUser(email, password, ::startMainActivity, ::showToast)
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showToast(m: String) {
+        Toast.makeText(
+            this,
+            m,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

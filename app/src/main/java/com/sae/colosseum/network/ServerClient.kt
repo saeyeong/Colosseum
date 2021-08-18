@@ -13,26 +13,25 @@ import io.reactivex.schedulers.Schedulers
 class ServerClient() {
     private val network = NetworkHelper()
 
-    fun postUser(email: String, password: String, callback: ResultInterface<ResponseEntity, Boolean>) {
-        if (email.isEmpty() || password.isEmpty()) {
 
-        } else {
-            network.server.postUser(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        GlobalApplication.prefs.userToken = it.data.token
-                        GlobalApplication.prefs.userId = it.data.user.id
-                        GlobalApplication.prefs.userNickName = it.data.user.nick_name
-                        GlobalApplication.prefs.userEmail = it.data.user.email
-                        callback.result(it, true)
-                    },
-                    onError = {
-                        callback.result(null, false)
-                    }
-                )
-        }
+
+
+    fun postUser(email: String, password: String, startMainActivity: ()->Unit, showToast: (m:String)->Unit) {
+        network.server.postUser(email, password)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    GlobalApplication.prefs.userToken = it.data.token
+                    GlobalApplication.prefs.userId = it.data.user.id
+                    GlobalApplication.prefs.userNickName = it.data.user.nick_name
+                    GlobalApplication.prefs.userEmail = it.data.user.email
+                    startMainActivity.invoke()
+                },
+                onError = {
+                    showToast.invoke("아이디와 비밀번호를 다시 한번 확인해주세요.")
+                }
+            )
     }
 
 
@@ -233,7 +232,7 @@ class ServerClient() {
                 },
                 onError = {
                     callback.result(null, false)
-                    Log.d("test",it.message)
+                    Log.d("test",it.message ?: "")
                 }
             )
     }
